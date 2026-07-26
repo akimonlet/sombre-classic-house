@@ -1,0 +1,137 @@
+<form class="{{cssClass}} sombre-sheet" autocomplete="off">
+  <header class="sombre-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="">
+    <div class="identity">
+      <p class="eyebrow">Sombre Classic · House of the Rising Dead</p>
+      <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Nom du personnage">
+      <div class="identity-fields">
+        <label>
+          <span>Joueur</span>
+          <input name="system.playerName" type="text" value="{{system.playerName}}">
+        </label>
+        <label>
+          <span>Profession</span>
+          <input name="system.profession" type="text" value="{{system.profession}}">
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <div class="sheet-scroll">
+    <section class="sheet-card personality-card">
+      <div class="section-heading">
+        <div>
+          <small>Profil psychologique</small>
+          <h2>Personnalité</h2>
+        </div>
+        <button type="button" data-random-personality>
+          <i class="fa-solid fa-shuffle"></i> Hasard
+        </button>
+      </div>
+      <select name="system.personality">
+        {{#each personalityChoices}}
+          <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+      <div class="personality-phases">
+        {{#each personalityPhases}}
+          <div class="phase {{#if current}}current{{/if}}">
+            <small>Phase {{number}}</small>
+            <strong>{{label}}</strong>
+          </div>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="sheet-card traits-card">
+      <div class="section-heading">
+        <div>
+          <small>Profil House</small>
+          <h2>Traits</h2>
+        </div>
+        <button type="button" data-random-traits>
+          <i class="fa-solid fa-shuffle"></i> Paire aléatoire
+        </button>
+      </div>
+      <div class="traits-grid">
+        <label>
+          <span>Avantage</span>
+          <select name="system.advantage">
+            {{#each advantageChoices}}
+              <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+          </select>
+          <textarea name="system.advantageDescription" rows="2" placeholder="Description à compléter depuis Sombre 3">{{system.advantageDescription}}</textarea>
+        </label>
+        <label>
+          <span>Désavantage</span>
+          <select name="system.disadvantage">
+            {{#each disadvantageChoices}}
+              <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+          </select>
+          <textarea name="system.disadvantageDescription" rows="2" placeholder="Description à compléter depuis Sombre 3">{{system.disadvantageDescription}}</textarea>
+        </label>
+      </div>
+      <p class="hint">Les Traits incompatibles avec House ne sont pas proposés. Les descriptions restent libres jusqu’à réception de Sombre 3.</p>
+    </section>
+
+    <div class="resource-grid">
+      <section class="resource-card spirit">
+        <div class="resource-title">
+          <button type="button" data-roll="test" data-ability="spirit"><i class="fa-solid fa-dice-d20"></i> ESPRIT</button>
+          <strong>{{system.resources.spirit.value}}</strong>
+          <span>{{spiritState}}</span>
+        </div>
+        <div class="gauge">
+          {{#each spiritGauge}}
+            <button type="button" class="{{#if active}}active{{/if}} {{#if filled}}filled{{/if}}" data-resource="spirit" data-value="{{level}}" title="Esprit {{level}}">{{level}}</button>
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="resource-card body">
+        <div class="resource-title">
+          <button type="button" data-roll="test" data-ability="body"><i class="fa-solid fa-dice-d20"></i> CORPS</button>
+          <strong>{{system.resources.body.value}}</strong>
+          <span>{{bodyState}}</span>
+        </div>
+        <div class="gauge">
+          {{#each bodyGauge}}
+            <button type="button" class="{{#if active}}active{{/if}} {{#if filled}}filled{{/if}}" data-resource="body" data-value="{{level}}" title="Corps {{level}}">{{level}}</button>
+          {{/each}}
+        </div>
+      </section>
+
+      <section class="resource-card adrenaline">
+        <div class="resource-title">
+          <span>ADRÉNALINE</span>
+          <strong>{{system.resources.adrenaline.value}}</strong>
+          <small>Réserve</small>
+        </div>
+        <div class="gauge compact">
+          {{#each adrenalineGauge}}
+            <button type="button" class="{{#if active}}active{{/if}} {{#if filled}}filled{{/if}}" data-resource="adrenaline" data-value="{{level}}" title="Adrénaline {{level}}">{{level}}</button>
+          {{/each}}
+        </div>
+      </section>
+    </div>
+
+    <section class="dice-strip">
+      <span>Jets rapides</span>
+      <button type="button" data-roll="attack" data-ability="body"><i class="fa-solid fa-burst"></i> Attaque (d20 + d6)</button>
+      <button type="button" data-roll="damage"><i class="fa-solid fa-dice-six"></i> d6</button>
+    </section>
+
+    <div class="notes-grid">
+      <label class="sheet-card">
+        <span>Background et liens</span>
+        <textarea name="system.background" rows="6" placeholder="Passé, relations, détails du personnage…">{{system.background}}</textarea>
+      </label>
+      <label class="sheet-card">
+        <span>Équipement et notes</span>
+        <textarea name="system.equipment" rows="6" placeholder="Objets, munitions, blessures décrites…">{{system.equipment}}</textarea>
+      </label>
+    </div>
+  </div>
+</form>
