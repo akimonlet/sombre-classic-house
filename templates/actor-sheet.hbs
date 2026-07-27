@@ -34,8 +34,10 @@
           <small>Profil psychologique</small>
           <h2>Personnalité</h2>
         </div>
-        <button type="button" data-random-personality>
-          <i class="fa-solid fa-shuffle"></i> Hasard
+        <button type="button" data-random-personality {{#unless canRandomizePersonality}}disabled{{/unless}}
+                title="{{#unless canRandomizePersonality}}Tirage aléatoire déjà utilisé{{else}}Tirer une Personnalité au hasard{{/unless}}">
+          <i class="fa-solid fa-shuffle"></i>
+          {{#if canRandomizePersonality}}Hasard{{else}}Hasard utilisé{{/if}}
         </button>
       </div>
       <select name="system.personality">
@@ -73,8 +75,10 @@
           <small>Profil House</small>
           <h2>Traits</h2>
         </div>
-        <button type="button" data-random-traits>
-          <i class="fa-solid fa-shuffle"></i> Paire aléatoire
+        <button type="button" data-random-traits {{#unless canRandomizeTraits}}disabled{{/unless}}
+                title="{{#unless canRandomizeTraits}}Tirage aléatoire déjà utilisé{{else}}Tirer une paire de Traits au hasard{{/unless}}">
+          <i class="fa-solid fa-shuffle"></i>
+          {{#if canRandomizeTraits}}Paire aléatoire{{else}}Hasard utilisé{{/if}}
         </button>
       </div>
       <div class="traits-grid">
@@ -97,21 +101,6 @@
       </div>
       <p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>
     </section>
-
-    <details class="creation-help sheet-card">
-      <summary><i class="fa-solid fa-clipboard-check"></i> Rappels de création pour House</summary>
-      <ul>
-        <li>Recevoir la carte spéciale avant de choisir les Traits.</li>
-        <li>Définir un concept court : nom, profession et Personnalité.</li>
-        <li>Créer un lien positif avec au moins un autre survivant.</li>
-        <li>Les Traits sont facultatifs ; si tu en prends, choisis un Avantage et un Désavantage.</li>
-        <li>Commencer à 10 en Esprit : deux cases sont déjà perdues.</li>
-        <li>Le groupe doit compter au moins deux personnages possédant Tir.</li>
-        <li>Le casting comprend au moins un personnage noir, un personnage latino et une femme.</li>
-        <li>Construire un groupe disparate, pas une escouade de professionnels du combat.</li>
-        <li>Au départ, tu ne possèdes que tes vêtements et le contenu de ta carte spéciale.</li>
-      </ul>
-    </details>
 
     <div class="resource-grid">
       <section class="resource-card spirit">
