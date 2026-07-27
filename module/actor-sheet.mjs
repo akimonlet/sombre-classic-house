@@ -5,7 +5,8 @@ import {
   LAST_NAMES,
   PERSONALITIES,
   PROFESSIONS,
-  SPECIAL_CARDS
+  SPECIAL_CARDS,
+  TRAIT_HELP
 } from "./constants.mjs";
 import { PERSONALITY_HELP } from "./personality-help.mjs";
 
@@ -64,7 +65,10 @@ export class SombreActorSheet extends ActorSheet {
       actor: this.actor,
       system,
       editable: this.isEditable,
+      isGM: game.user.isGM,
       personalityChoices: choices(PERSONALITIES, system.personality),
+      personalityLabel: personality.join(" → "),
+      personalityRevealed: game.user.isGM || system.personalityRandomUsed,
       canRandomizePersonality: game.user.isGM || !system.personalityRandomUsed,
       canRandomizeTraits: game.user.isGM || !system.traitsRandomUsed,
       personalityPhases: personality.map((label, index) => ({
@@ -75,6 +79,8 @@ export class SombreActorSheet extends ActorSheet {
       })),
       advantageChoices: choices(ADVANTAGES, system.advantage, "Aucun Avantage"),
       disadvantageChoices: choices(DISADVANTAGES, system.disadvantage, "Aucun Désavantage"),
+      advantageHelp: TRAIT_HELP[system.advantage] ?? "",
+      disadvantageHelp: TRAIT_HELP[system.disadvantage] ?? "",
       specialCardChoices: choices(SPECIAL_CARDS, system.specialCard, "À distribuer"),
       bodyGauge: gauge(body, system.resources.body.max),
       spiritGauge: gauge(spirit, system.resources.spirit.max),
