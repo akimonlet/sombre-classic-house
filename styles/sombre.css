@@ -434,6 +434,23 @@
   border-color: #922b23;
 }
 
+.sombre-roll .sombre-damage {
+  display: block;
+  margin: 7px 0 2px;
+  color: #a52d24;
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: 22px;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sombre-roll .sombre-damage + small {
+  display: block;
+  color: #6d604b;
+  font-size: 11px;
+}
+
 @media (max-width: 700px) {
   .sombre-classic.sheet.actor {
     min-width: 440px;

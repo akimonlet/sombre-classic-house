@@ -249,9 +249,9 @@ export class SombreActorSheet extends ActorSheet {
       if (!success) {
         outcome = `<strong>échec</strong>${adrenalineDetail} · d6 ${d6} ignoré · aucun dommage`;
       } else if (d6 <= 4) {
-        outcome = `<strong>réussite</strong>${adrenalineDetail} · d6 ${d6} · <strong>3 Blessures</strong> (dommages fixes)`;
+        outcome = `<strong>réussite</strong>${adrenalineDetail} · d6 ${d6}<strong class="sombre-damage">3 Blessures</strong><small>dommages fixes</small>`;
       } else {
-        outcome = `<strong>réussite</strong>${adrenalineDetail} · d6 ${d6} · <strong>${d20} Blessure${d20 > 1 ? "s" : ""}</strong> (dommages variables)`;
+        outcome = `<strong>réussite</strong>${adrenalineDetail} · d6 ${d6}<strong class="sombre-damage">${d20} Blessure${d20 > 1 ? "s" : ""}</strong><small>dommages variables</small>`;
       }
 
       const flavor = [
