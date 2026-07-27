@@ -151,11 +151,17 @@
         <div class="resource-title">
           <span>ADRÉNALINE</span>
           <strong>{{system.resources.adrenaline.value}}</strong>
-          <small>Réserve</small>
+          <small>Cochée(s) · {{adrenalineUnlocked}}/3 débloqué(s)</small>
         </div>
+        <p class="resource-help">Coche 1 cercle avant un jet de Corps pour le faire sous 12 ; il reste coché même en cas d’échec.</p>
         <div class="gauge compact">
           {{#each adrenalineGauge}}
-            <button type="button" class="{{#if active}}active{{/if}} {{#if filled}}filled{{/if}}" data-resource="adrenaline" data-value="{{level}}" title="Adrénaline {{level}}">{{level}}</button>
+            <button type="button"
+                    class="{{#if active}}active{{/if}} {{#if filled}}filled{{/if}} {{#if locked}}locked{{/if}}"
+                    data-resource="adrenaline"
+                    data-value="{{level}}"
+                    title="{{title}}"
+                    {{#if disabled}}disabled{{/if}}>{{level}}</button>
           {{/each}}
         </div>
       </section>

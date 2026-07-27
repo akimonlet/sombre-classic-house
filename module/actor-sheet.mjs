@@ -17,6 +17,12 @@ const bodyState = (value) => {
   return "Indemne";
 };
 
+const adrenalineUnlocked = (body) => {
+  if (body <= 4) return 3;
+  if (body <= 8) return 2;
+  return 1;
+};
+
 const spiritState = (value) => {
   if (value <= 0) return "Fou";
   if (value <= 4) return "Désaxé";
@@ -59,6 +65,24 @@ export class SombreActorSheet extends ActorSheet {
     const body = system.resources.body.value;
     const personality = PERSONALITIES[system.personality] ?? PERSONALITIES[0];
     const phaseIndex = spirit >= 9 ? 0 : spirit >= 5 ? 1 : 2;
+    const unlockedAdrenaline = adrenalineUnlocked(body);
+    const checkedAdrenaline = system.resources.adrenaline.value;
+    const adrenalineUnlockStates = ["", "Indemne", "Blessé", "Mutilé"];
+    const adrenalineGauge = gauge(checkedAdrenaline, system.resources.adrenaline.max).map((entry) => {
+      const locked = entry.level > unlockedAdrenaline;
+      const checked = entry.level > 0 && entry.level <= checkedAdrenaline;
+      const isNext = entry.level === checkedAdrenaline + 1;
+      let title = entry.level === 0 ? "Réinitialiser l’Adrénaline (MJ)" : "Cercle déjà coché";
+      if (locked) title = `Se débloque au statut ${adrenalineUnlockStates[entry.level]}`;
+      else if (isNext) title = "Cliquer pour cocher ce cercle d’Adrénaline";
+
+      return {
+        ...entry,
+        locked,
+        disabled: !game.user.isGM && (entry.level === 0 || locked || !isNext),
+        title
+      };
+    });
 
     return {
       ...context,
@@ -84,7 +108,8 @@ export class SombreActorSheet extends ActorSheet {
       specialCardChoices: choices(SPECIAL_CARDS, system.specialCard, "À distribuer"),
       bodyGauge: gauge(body, system.resources.body.max),
       spiritGauge: gauge(spirit, system.resources.spirit.max),
-      adrenalineGauge: gauge(system.resources.adrenaline.value, system.resources.adrenaline.max),
+      adrenalineGauge,
+      adrenalineUnlocked: unlockedAdrenaline,
       bodyState: bodyState(body),
       spiritState: spiritState(spirit)
     };
@@ -109,6 +134,16 @@ export class SombreActorSheet extends ActorSheet {
     const button = event.currentTarget;
     const resource = button.dataset.resource;
     const value = Number(button.dataset.value);
+
+    if (resource === "adrenaline" && !game.user.isGM) {
+      const current = Number(this.actor.system.resources.adrenaline.value);
+      const unlocked = adrenalineUnlocked(Number(this.actor.system.resources.body.value));
+      if (value !== current + 1 || value > unlocked) {
+        ui.notifications.warn("Ce cercle d’Adrénaline n’est pas encore disponible.");
+        return;
+      }
+    }
+
     await this.actor.update({ [`system.resources.${resource}.value`]: value });
   }
 

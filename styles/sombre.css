@@ -328,6 +328,13 @@
   grid-column: 1 / -1;
 }
 
+.resource-help {
+  margin: 8px 0 0;
+  color: #554a39;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
 .resource-title > button,
 .resource-title > span {
   font-family: Impact, "Arial Narrow", sans-serif;
@@ -376,6 +383,11 @@
 .gauge button.active {
   outline: 2px solid #a52d24;
   outline-offset: 1px;
+}
+
+.gauge button.locked {
+  opacity: 0.38;
+  filter: grayscale(1);
 }
 
 .dice-strip {

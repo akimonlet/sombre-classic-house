@@ -24,7 +24,8 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - lien positif et carte spéciale sur la fiche ;
 - tirages aléatoires de Personnalité et de Traits limités à une utilisation par joueur et par personnage ;
 - résultats de Personnalité et de Traits verrouillés côté joueur, avec aides de lecture pour les Traits ;
-- Corps, Esprit et Adrénaline réglables par clic ;
+- Corps et Esprit réglables par clic ;
+- Adrénaline cochée cercle par cercle, avec déblocage automatique selon l’état du Corps ;
 - phase de Personnalité mise en évidence selon l'Esprit ;
 - jets de Corps, d'Esprit, d'attaque et de d6 dans le chat Foundry ;
 - Corps et Esprit disponibles comme barres de token.
@@ -32,6 +33,6 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 ## Limites
 
 - cible exclusivement Foundry VTT 12 ;
-- les Traits sont proposés sans recopier leur texte officiel ;
+- les aides des Traits synthétisent leurs effets décrits dans *Sombre 1*, pages 15 à 18 ;
 - les cartes spéciales sont consignées sur la fiche mais distribuées par le MJ ;
 - aucun contenu du scénario ou plan n'est distribué.
