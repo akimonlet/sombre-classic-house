@@ -231,25 +231,52 @@ export class SombreActorSheet extends ActorSheet {
     const usesAdrenaline = ability === "body" && Boolean(this.actor.system.adrenalinePending);
     const target = usesAdrenaline ? 12 : this.actor.system.resources[ability].value;
     const label = ability === "body" ? "Corps" : "Esprit";
-    const formula = kind === "attack" ? "1d20 + 1d6" : "1d20";
 
     if (usesAdrenaline) {
       await this.actor.update({ "system.adrenalinePending": false });
     }
 
-    const roll = await new Roll(formula).evaluate();
-    const d20 = roll.dice[0].total;
+    const d20Roll = await new Roll("1d20").evaluate();
+    const d20 = d20Roll.total;
     const success = d20 <= target;
-    const damage = kind === "attack" ? roll.dice[1].total : null;
-    const detail = damage === null ? "" : ` · d6 : <strong>${damage}</strong>`;
     const adrenalineDetail = usesAdrenaline ? " · Adrénaline" : "";
+
+    if (kind === "attack") {
+      const damageRoll = await new Roll("1d6").evaluate();
+      const d6 = damageRoll.total;
+      let outcome;
+
+      if (!success) {
+        outcome = `<strong>échec</strong>${adrenalineDetail} · d6 ${d6} ignoré · aucun dommage`;
+      } else if (d6 <= 4) {
+        outcome = `<strong>réussite</strong>${adrenalineDetail} · d6 ${d6} · <strong>3 Blessures</strong> (dommages fixes)`;
+      } else {
+        outcome = `<strong>réussite</strong>${adrenalineDetail} · d6 ${d6} · <strong>${d20} Blessure${d20 > 1 ? "s" : ""}</strong> (dommages variables)`;
+      }
+
+      const flavor = [
+        `<strong>${this.actor.name}</strong> — attaque`,
+        `<span class="sombre-roll ${success ? "success" : "failure"}">`,
+        `${d20} sous ${target} : ${outcome}`,
+        "</span>"
+      ].join(" ");
+
+      await ChatMessage.create({
+        speaker,
+        flavor,
+        rolls: [d20Roll, damageRoll],
+        sound: CONFIG.sounds.dice
+      });
+      return;
+    }
+
     const flavor = [
-      `<strong>${this.actor.name}</strong> — ${kind === "attack" ? "attaque" : `jet d’${label}`}`,
+      `<strong>${this.actor.name}</strong> — jet d’${label}`,
       `<span class="sombre-roll ${success ? "success" : "failure"}">`,
-      `${d20} sous ${target} : <strong>${success ? "réussite" : "échec"}</strong>${adrenalineDetail}${detail}`,
+      `${d20} sous ${target} : <strong>${success ? "réussite" : "échec"}</strong>${adrenalineDetail}`,
       "</span>"
     ].join(" ");
 
-    await roll.toMessage({ speaker, flavor });
+    await d20Roll.toMessage({ speaker, flavor });
   }
 }

@@ -27,7 +27,7 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - Corps et Esprit réglables par clic ;
 - Adrénaline cochée cercle par cercle, avec déblocage automatique selon l’état du Corps et prochain jet de Corps sous 12 ;
 - phase de Personnalité mise en évidence selon l'Esprit ;
-- jets de Corps, d'Esprit, d'attaque et de d6 dans le chat Foundry ;
+- jets de Corps, d'Esprit, d'attaque et de d6 dans le chat Foundry, avec calcul automatique des dommages fixes ou variables ;
 - Corps et Esprit disponibles comme barres de token.
 
 ## Limites
