@@ -40,6 +40,7 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
       disadvantage: new fields.StringField({ required: true, nullable: false, initial: "" }),
       disadvantageDescription: new fields.StringField({ required: true, nullable: false, initial: "" }),
       traitsRandomUsed: new fields.BooleanField({ required: true, nullable: false, initial: false }),
+      adrenalinePending: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       resources: new fields.SchemaField({
         body: resourceField(12, 12),
         spirit: resourceField(10, 12),

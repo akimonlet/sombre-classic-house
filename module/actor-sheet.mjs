@@ -67,6 +67,7 @@ export class SombreActorSheet extends ActorSheet {
     const phaseIndex = spirit >= 9 ? 0 : spirit >= 5 ? 1 : 2;
     const unlockedAdrenaline = adrenalineUnlocked(body);
     const checkedAdrenaline = system.resources.adrenaline.value;
+    const adrenalinePending = Boolean(system.adrenalinePending);
     const adrenalineUnlockStates = ["", "Indemne", "Blessé", "Mutilé"];
     const adrenalineGauge = gauge(checkedAdrenaline, system.resources.adrenaline.max).map((entry) => {
       const locked = entry.level > unlockedAdrenaline;
@@ -75,11 +76,12 @@ export class SombreActorSheet extends ActorSheet {
       let title = entry.level === 0 ? "Réinitialiser l’Adrénaline (MJ)" : "Cercle déjà coché";
       if (locked) title = `Se débloque au statut ${adrenalineUnlockStates[entry.level]}`;
       else if (isNext) title = "Cliquer pour cocher ce cercle d’Adrénaline";
+      if (adrenalinePending && isNext) title = "Effectue d’abord le jet de Corps déjà préparé";
 
       return {
         ...entry,
         locked,
-        disabled: !game.user.isGM && (entry.level === 0 || locked || !isNext),
+        disabled: !game.user.isGM && (adrenalinePending || entry.level === 0 || locked || !isNext),
         title
       };
     });
@@ -134,17 +136,23 @@ export class SombreActorSheet extends ActorSheet {
     const button = event.currentTarget;
     const resource = button.dataset.resource;
     const value = Number(button.dataset.value);
+    const update = { [`system.resources.${resource}.value`]: value };
 
-    if (resource === "adrenaline" && !game.user.isGM) {
+    if (resource === "adrenaline") {
       const current = Number(this.actor.system.resources.adrenaline.value);
       const unlocked = adrenalineUnlocked(Number(this.actor.system.resources.body.value));
-      if (value !== current + 1 || value > unlocked) {
+      if (!game.user.isGM && this.actor.system.adrenalinePending) {
+        ui.notifications.warn("Effectue d’abord le jet de Corps déjà préparé.");
+        return;
+      }
+      if (!game.user.isGM && (value !== current + 1 || value > unlocked)) {
         ui.notifications.warn("Ce cercle d’Adrénaline n’est pas encore disponible.");
         return;
       }
+      update["system.adrenalinePending"] = value > current;
     }
 
-    await this.actor.update({ [`system.resources.${resource}.value`]: value });
+    await this.actor.update(update);
   }
 
   async _onRandomPersonality(event) {
@@ -220,18 +228,25 @@ export class SombreActorSheet extends ActorSheet {
     }
 
     const ability = event.currentTarget.dataset.ability;
-    const target = this.actor.system.resources[ability].value;
+    const usesAdrenaline = ability === "body" && Boolean(this.actor.system.adrenalinePending);
+    const target = usesAdrenaline ? 12 : this.actor.system.resources[ability].value;
     const label = ability === "body" ? "Corps" : "Esprit";
     const formula = kind === "attack" ? "1d20 + 1d6" : "1d20";
+
+    if (usesAdrenaline) {
+      await this.actor.update({ "system.adrenalinePending": false });
+    }
+
     const roll = await new Roll(formula).evaluate();
     const d20 = roll.dice[0].total;
     const success = d20 <= target;
     const damage = kind === "attack" ? roll.dice[1].total : null;
     const detail = damage === null ? "" : ` · d6 : <strong>${damage}</strong>`;
+    const adrenalineDetail = usesAdrenaline ? " · Adrénaline" : "";
     const flavor = [
       `<strong>${this.actor.name}</strong> — ${kind === "attack" ? "attaque" : `jet d’${label}`}`,
       `<span class="sombre-roll ${success ? "success" : "failure"}">`,
-      `${d20} sous ${target} : <strong>${success ? "réussite" : "échec"}</strong>${detail}`,
+      `${d20} sous ${target} : <strong>${success ? "réussite" : "échec"}</strong>${adrenalineDetail}${detail}`,
       "</span>"
     ].join(" ");
 

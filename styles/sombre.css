@@ -335,6 +335,13 @@
   line-height: 1.35;
 }
 
+.resource-help.adrenaline-ready {
+  padding: 7px 9px;
+  color: #f4ead0;
+  background: #8e241d;
+  border-left: 4px solid #3b1814;
+}
+
 .resource-title > button,
 .resource-title > span {
   font-family: Impact, "Arial Narrow", sans-serif;
