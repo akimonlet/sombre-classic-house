@@ -21,7 +21,8 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - 24 Personnalités avec leurs trois phases et leur guide de roleplay affiché sous la fiche ;
 - Avantages et Désavantages autorisés dans *House* ;
 - générateurs de nom et de profession adaptés au Texas de 1973 ;
-- rappels de création propres à *House*, lien positif et carte spéciale ;
+- lien positif et carte spéciale sur la fiche ;
+- tirages aléatoires de Personnalité et de Traits limités à une utilisation par joueur et par personnage ;
 - Corps, Esprit et Adrénaline réglables par clic ;
 - phase de Personnalité mise en évidence selon l'Esprit ;
 - jets de Corps, d'Esprit, d'attaque et de d6 dans le chat Foundry ;
