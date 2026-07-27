@@ -3,15 +3,25 @@
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="">
     <div class="identity">
       <p class="eyebrow">Sombre Classic · House of the Rising Dead</p>
-      <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Nom du personnage">
+      <div class="field-with-action name-field">
+        <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Nom du personnage">
+        <button type="button" data-random-name title="Proposer un nom texan au hasard">
+          <i class="fa-solid fa-shuffle"></i> Nom
+        </button>
+      </div>
       <div class="identity-fields">
         <label>
           <span>Joueur</span>
           <input name="system.playerName" type="text" value="{{system.playerName}}">
         </label>
         <label>
-          <span>Profession</span>
-          <input name="system.profession" type="text" value="{{system.profession}}">
+          <span class="label-with-action">
+            Profession
+            <button type="button" data-random-profession title="Proposer une profession au hasard">
+              <i class="fa-solid fa-shuffle"></i>
+            </button>
+          </span>
+          <input name="system.profession" type="text" value="{{system.profession}}" placeholder="Profession ordinaire">
         </label>
       </div>
     </div>
@@ -35,10 +45,12 @@
       </select>
       <div class="personality-phases">
         {{#each personalityPhases}}
-          <div class="phase {{#if current}}current{{/if}}">
+          <button type="button" class="phase {{#if current}}current{{/if}}"
+                  data-personality-help="{{label}}"
+                  title="Afficher le guide de roleplay">
             <small>Phase {{number}}</small>
             <strong>{{label}}</strong>
-          </div>
+          </button>
         {{/each}}
       </div>
     </section>
@@ -61,7 +73,6 @@
               <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
             {{/each}}
           </select>
-          <textarea name="system.advantageDescription" rows="2" placeholder="Description à compléter depuis Sombre 3">{{system.advantageDescription}}</textarea>
         </label>
         <label>
           <span>Désavantage</span>
@@ -70,11 +81,25 @@
               <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
             {{/each}}
           </select>
-          <textarea name="system.disadvantageDescription" rows="2" placeholder="Description à compléter depuis Sombre 3">{{system.disadvantageDescription}}</textarea>
         </label>
       </div>
-      <p class="hint">Les Traits incompatibles avec House ne sont pas proposés. Les descriptions restent libres jusqu’à réception de Sombre 3.</p>
+      <p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>
     </section>
+
+    <details class="creation-help sheet-card">
+      <summary><i class="fa-solid fa-clipboard-check"></i> Rappels de création pour House</summary>
+      <ul>
+        <li>Recevoir la carte spéciale avant de choisir les Traits.</li>
+        <li>Définir un concept court : nom, profession et Personnalité.</li>
+        <li>Créer un lien positif avec au moins un autre survivant.</li>
+        <li>Les Traits sont facultatifs ; si tu en prends, choisis un Avantage et un Désavantage.</li>
+        <li>Commencer à 10 en Esprit : deux cases sont déjà perdues.</li>
+        <li>Le groupe doit compter au moins deux personnages possédant Tir.</li>
+        <li>Le casting comprend au moins un personnage noir, un personnage latino et une femme.</li>
+        <li>Construire un groupe disparate, pas une escouade de professionnels du combat.</li>
+        <li>Au départ, tu ne possèdes que tes vêtements et le contenu de ta carte spéciale.</li>
+      </ul>
+    </details>
 
     <div class="resource-grid">
       <section class="resource-card spirit">
@@ -125,10 +150,18 @@
 
     <div class="notes-grid">
       <label class="sheet-card">
-        <span>Background et liens</span>
+        <span>Lien positif</span>
+        <input name="system.positiveLink" type="text" value="{{system.positiveLink}}" placeholder="Avec quel autre survivant, et pourquoi ?">
+        <span>Background court</span>
         <textarea name="system.background" rows="6" placeholder="Passé, relations, détails du personnage…">{{system.background}}</textarea>
       </label>
       <label class="sheet-card">
+        <span>Carte spéciale</span>
+        <select name="system.specialCard">
+          {{#each specialCardChoices}}
+            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
         <span>Équipement et notes</span>
         <textarea name="system.equipment" rows="6" placeholder="Objets, munitions, blessures décrites…">{{system.equipment}}</textarea>
       </label>
