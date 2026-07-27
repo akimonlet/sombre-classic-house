@@ -65,6 +65,8 @@ export class SombreActorSheet extends ActorSheet {
       system,
       editable: this.isEditable,
       personalityChoices: choices(PERSONALITIES, system.personality),
+      canRandomizePersonality: game.user.isGM || !system.personalityRandomUsed,
+      canRandomizeTraits: game.user.isGM || !system.traitsRandomUsed,
       personalityPhases: personality.map((label, index) => ({
         number: index + 1,
         label,
@@ -106,17 +108,33 @@ export class SombreActorSheet extends ActorSheet {
 
   async _onRandomPersonality(event) {
     event.preventDefault();
-    await this.actor.update({ "system.personality": Math.floor(Math.random() * PERSONALITIES.length) });
+    if (!game.user.isGM && this.actor.system.personalityRandomUsed) {
+      ui.notifications.warn("Le tirage aléatoire de Personnalité a déjà été utilisé.");
+      return;
+    }
+
+    const update = {
+      "system.personality": Math.floor(Math.random() * PERSONALITIES.length)
+    };
+    if (!game.user.isGM) update["system.personalityRandomUsed"] = true;
+    await this.actor.update(update);
   }
 
   async _onRandomTraits(event) {
     event.preventDefault();
+    if (!game.user.isGM && this.actor.system.traitsRandomUsed) {
+      ui.notifications.warn("Le tirage aléatoire des Traits a déjà été utilisé.");
+      return;
+    }
+
     const advantage = ADVANTAGES[Math.floor(Math.random() * ADVANTAGES.length)];
     const disadvantage = DISADVANTAGES[Math.floor(Math.random() * DISADVANTAGES.length)];
-    await this.actor.update({
+    const update = {
       "system.advantage": advantage,
       "system.disadvantage": disadvantage
-    });
+    };
+    if (!game.user.isGM) update["system.traitsRandomUsed"] = true;
+    await this.actor.update(update);
   }
 
   async _onRandomName(event) {

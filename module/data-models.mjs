@@ -34,10 +34,12 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
         max: 23,
         initial: 0
       }),
+      personalityRandomUsed: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       advantage: new fields.StringField({ required: true, nullable: false, initial: "" }),
       advantageDescription: new fields.StringField({ required: true, nullable: false, initial: "" }),
       disadvantage: new fields.StringField({ required: true, nullable: false, initial: "" }),
       disadvantageDescription: new fields.StringField({ required: true, nullable: false, initial: "" }),
+      traitsRandomUsed: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       resources: new fields.SchemaField({
         body: resourceField(12, 12),
         spirit: resourceField(10, 12),
