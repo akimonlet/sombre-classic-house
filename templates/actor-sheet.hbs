@@ -40,33 +40,41 @@
           {{#if canRandomizePersonality}}Hasard{{else}}Hasard utilisé{{/if}}
         </button>
       </div>
-      <select name="system.personality">
-        {{#each personalityChoices}}
-          <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
-        {{/each}}
-      </select>
-      <div class="personality-phases">
-        {{#each personalityPhases}}
-          <button type="button" class="phase {{#if current}}current viewing{{/if}}"
-                  data-personality-help="{{number}}"
-                  aria-expanded="{{#if current}}true{{else}}false{{/if}}"
-                  title="Afficher le guide de roleplay de cette phase">
-            <small>Phase {{number}}</small>
-            <strong>{{label}}</strong>
-          </button>
-        {{/each}}
-      </div>
-      <div class="personality-guides">
-        {{#each personalityPhases}}
-          <div class="personality-guide" data-personality-guide="{{number}}" {{#unless current}}hidden{{/unless}}>
-            <strong>Phase {{number}} — {{label}}</strong>
-            <p>{{description}}</p>
-          </div>
-        {{/each}}
-        <small class="personality-guide-note">
-          La phase active dépend de l’Esprit. Cliquer ici ne change pas la jauge.
-        </small>
-      </div>
+      {{#if isGM}}
+        <select name="system.personality">
+          {{#each personalityChoices}}
+            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      {{else}}
+        <div class="locked-selection">
+          {{#if personalityRevealed}}{{personalityLabel}}{{else}}À tirer au hasard{{/if}}
+        </div>
+      {{/if}}
+      {{#if personalityRevealed}}
+        <div class="personality-phases">
+          {{#each personalityPhases}}
+            <button type="button" class="phase {{#if current}}current viewing{{/if}}"
+                    data-personality-help="{{number}}"
+                    aria-expanded="{{#if current}}true{{else}}false{{/if}}"
+                    title="Afficher le guide de roleplay de cette phase">
+              <small>Phase {{number}}</small>
+              <strong>{{label}}</strong>
+            </button>
+          {{/each}}
+        </div>
+        <div class="personality-guides">
+          {{#each personalityPhases}}
+            <div class="personality-guide" data-personality-guide="{{number}}" {{#unless current}}hidden{{/unless}}>
+              <strong>Phase {{number}} — {{label}}</strong>
+              <p>{{description}}</p>
+            </div>
+          {{/each}}
+          <small class="personality-guide-note">
+            La phase active dépend de l’Esprit. Cliquer ici ne change pas la jauge.
+          </small>
+        </div>
+      {{/if}}
     </section>
 
     <section class="sheet-card traits-card">
@@ -84,19 +92,29 @@
       <div class="traits-grid">
         <label>
           <span>Avantage</span>
-          <select name="system.advantage">
-            {{#each advantageChoices}}
-              <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
-            {{/each}}
-          </select>
+          {{#if isGM}}
+            <select name="system.advantage">
+              {{#each advantageChoices}}
+                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+              {{/each}}
+            </select>
+          {{else}}
+            <div class="locked-selection">{{#if system.advantage}}{{system.advantage}}{{else}}À tirer au hasard{{/if}}</div>
+          {{/if}}
+          {{#if advantageHelp}}<small class="trait-help">{{advantageHelp}}</small>{{/if}}
         </label>
         <label>
           <span>Désavantage</span>
-          <select name="system.disadvantage">
-            {{#each disadvantageChoices}}
-              <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
-            {{/each}}
-          </select>
+          {{#if isGM}}
+            <select name="system.disadvantage">
+              {{#each disadvantageChoices}}
+                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+              {{/each}}
+            </select>
+          {{else}}
+            <div class="locked-selection">{{#if system.disadvantage}}{{system.disadvantage}}{{else}}À tirer au hasard{{/if}}</div>
+          {{/if}}
+          {{#if disadvantageHelp}}<small class="trait-help">{{disadvantageHelp}}</small>{{/if}}
         </label>
       </div>
       <p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>
