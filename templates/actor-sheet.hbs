@@ -12,16 +12,16 @@
       <div class="identity-fields">
         <label>
           <span>Joueur</span>
-          <input name="system.playerName" type="text" value="{{system.playerName}}">
+          <input name="system.playerName" type="text" value="{{system.playerName}}" placeholder="Nom du joueur">
         </label>
-        <label>
-          <span class="label-with-action">
-            Profession
+        <label class="profession-field">
+          <span>Profession</span>
+          <span class="field-with-action profession-input">
+            <input name="system.profession" type="text" value="{{system.profession}}" placeholder="Profession ordinaire">
             <button type="button" data-random-profession title="Proposer une profession au hasard">
               <i class="fa-solid fa-shuffle"></i>
             </button>
           </span>
-          <input name="system.profession" type="text" value="{{system.profession}}" placeholder="Profession ordinaire">
         </label>
       </div>
     </div>
