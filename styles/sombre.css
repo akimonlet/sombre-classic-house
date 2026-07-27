@@ -294,15 +294,18 @@
 
 .traits-grid .locked-selection {
   margin-top: 0;
+  font-size: 16px;
 }
 
 .trait-help {
+  display: block;
   min-height: 3.8em;
   padding: 8px 9px;
   color: #514838;
   background: rgba(255, 250, 232, 0.42);
   border-left: 3px solid #9f8e68;
-  line-height: 1.35;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .traits-grid textarea {
