@@ -18,17 +18,18 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 ## Fonctionnalités
 
 - fiche sauvegardée par Foundry ;
-- 24 Personnalités avec leurs trois phases ;
+- 24 Personnalités avec leurs trois phases et leur guide de roleplay au clic ;
 - Avantages et Désavantages autorisés dans *House* ;
-- zones libres pour les futures descriptions de Traits ;
+- générateurs de nom et de profession adaptés au Texas de 1973 ;
+- rappels de création propres à *House*, lien positif et carte spéciale ;
 - Corps, Esprit et Adrénaline réglables par clic ;
 - phase de Personnalité mise en évidence selon l'Esprit ;
 - jets de Corps, d'Esprit, d'attaque et de d6 dans le chat Foundry ;
 - Corps et Esprit disponibles comme barres de token.
 
-## Limites de cette première version
+## Limites
 
 - cible exclusivement Foundry VTT 12 ;
-- aucune description officielle des Traits n'est incluse ;
-- aucune automatisation des cartes secrètes du scénario ;
+- les Traits sont proposés sans recopier leur texte officiel ;
+- les cartes spéciales sont consignées sur la fiche mais distribuées par le MJ ;
 - aucun contenu du scénario ou plan n'est distribué.
