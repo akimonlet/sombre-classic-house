@@ -18,7 +18,7 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 ## Fonctionnalités
 
 - fiche sauvegardée par Foundry ;
-- 24 Personnalités avec leurs trois phases et leur guide de roleplay au clic ;
+- 24 Personnalités avec leurs trois phases et leur guide de roleplay affiché sous la fiche ;
 - Avantages et Désavantages autorisés dans *House* ;
 - générateurs de nom et de profession adaptés au Texas de 1973 ;
 - rappels de création propres à *House*, lien positif et carte spéciale ;
