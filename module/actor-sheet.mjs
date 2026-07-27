@@ -68,6 +68,7 @@ export class SombreActorSheet extends ActorSheet {
       personalityPhases: personality.map((label, index) => ({
         number: index + 1,
         label,
+        description: PERSONALITY_HELP[label] ?? "Aucun guide disponible.",
         current: index === phaseIndex
       })),
       advantageChoices: choices(ADVANTAGES, system.advantage, "Aucun Avantage"),
@@ -83,6 +84,8 @@ export class SombreActorSheet extends ActorSheet {
 
   activateListeners(html) {
     super.activateListeners(html);
+    html.find("[data-personality-help]").on("click", this._onPersonalityHelp.bind(this));
+
     if (!this.isEditable) return;
 
     html.find("[data-resource][data-value]").on("click", this._onSetResource.bind(this));
@@ -91,7 +94,6 @@ export class SombreActorSheet extends ActorSheet {
     html.find("[data-random-traits]").on("click", this._onRandomTraits.bind(this));
     html.find("[data-random-name]").on("click", this._onRandomName.bind(this));
     html.find("[data-random-profession]").on("click", this._onRandomProfession.bind(this));
-    html.find("[data-personality-help]").on("click", this._onPersonalityHelp.bind(this));
   }
 
   async _onSetResource(event) {
@@ -133,25 +135,18 @@ export class SombreActorSheet extends ActorSheet {
   _onPersonalityHelp(event) {
     event.preventDefault();
     const button = event.currentTarget;
-    const phase = button.dataset.personalityHelp;
-    const description = foundry.utils.escapeHTML(PERSONALITY_HELP[phase] ?? "Aucun guide disponible.");
+    const card = button.closest(".personality-card");
+    const selectedPhase = button.dataset.personalityHelp;
 
-    new Dialog({
-      title: `${phase} — guide de roleplay`,
-      content: `
-        <div class="sombre-personality-help">
-          <p>${description}</p>
-          <small>Cette phase s’active automatiquement selon la jauge d’Esprit.</small>
-        </div>
-      `,
-      buttons: {
-        close: {
-          icon: '<i class="fa-solid fa-xmark"></i>',
-          label: "Fermer"
-        }
-      },
-      default: "close"
-    }).render(true);
+    card.querySelectorAll("[data-personality-help]").forEach((phaseButton) => {
+      const selected = phaseButton === button;
+      phaseButton.classList.toggle("viewing", selected);
+      phaseButton.setAttribute("aria-expanded", String(selected));
+    });
+
+    card.querySelectorAll("[data-personality-guide]").forEach((guide) => {
+      guide.hidden = guide.dataset.personalityGuide !== selectedPhase;
+    });
   }
 
   async _onRoll(event) {
