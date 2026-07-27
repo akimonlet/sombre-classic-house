@@ -239,19 +239,32 @@
   background: #a33027;
 }
 
-.sombre-personality-help {
-  padding: 4px 8px;
-  color: #28231d;
-  font-family: "Courier New", Courier, monospace;
-  line-height: 1.45;
+.phase.viewing {
+  outline: 2px solid #b9a477;
+  outline-offset: 1px;
 }
 
-.sombre-personality-help p {
-  margin: 0 0 12px;
-  white-space: pre-line;
+.personality-guides {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: rgba(255, 250, 232, 0.62);
+  border-left: 4px solid #85261f;
+  line-height: 1.4;
 }
 
-.sombre-personality-help small {
+.personality-guide[hidden] {
+  display: none;
+}
+
+.personality-guide > strong {
+  color: #85261f;
+}
+
+.personality-guide p {
+  margin: 7px 0 9px;
+}
+
+.personality-guide-note {
   color: #675d4c;
 }
 
