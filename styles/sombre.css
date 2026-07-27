@@ -208,6 +208,17 @@
   margin-top: 10px;
 }
 
+.locked-selection {
+  min-height: 32px;
+  margin-top: 10px;
+  padding: 7px 9px;
+  color: #28231d;
+  background: rgba(255, 250, 232, 0.72);
+  border: 1px solid #9a8968;
+  border-radius: 2px;
+  font-weight: 700;
+}
+
 .personality-phases {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -279,6 +290,19 @@
 
 .traits-grid {
   margin-top: 10px;
+}
+
+.traits-grid .locked-selection {
+  margin-top: 0;
+}
+
+.trait-help {
+  min-height: 3.8em;
+  padding: 8px 9px;
+  color: #514838;
+  background: rgba(255, 250, 232, 0.42);
+  border-left: 3px solid #9f8e68;
+  line-height: 1.35;
 }
 
 .traits-grid textarea {
