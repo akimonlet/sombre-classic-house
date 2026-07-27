@@ -39,3 +39,36 @@ export const DISADVANTAGES = [
   "Écervelé", "Ennemi mortel", "Inapte", "Invalide", "Maladroit",
   "Panique", "Panne", "Somnambule", "Trauma", "Vieux"
 ];
+
+export const FIRST_NAMES = [
+  "Angela", "Barbara", "Carol", "Cynthia", "Deborah", "Dolores", "Donna",
+  "Gloria", "Karen", "Linda", "Maria", "Patricia", "Rosa", "Susan",
+  "Teresa", "Yolanda", "Anthony", "Carlos", "Charles", "Clarence", "David",
+  "Edward", "Frank", "James", "Jesse", "John", "José", "Joseph", "Luis",
+  "Michael", "Miguel", "Ramón", "Richard", "Robert", "Thomas", "William"
+];
+
+export const LAST_NAMES = [
+  "Anderson", "Brown", "Davis", "Flores", "Garcia", "Gonzalez", "Harris",
+  "Hernandez", "Jackson", "Jefferson", "Johnson", "Jones", "Lopez", "Martin",
+  "Martinez", "Miller", "Moore", "Perez", "Ramirez", "Robinson", "Rodriguez",
+  "Smith", "Taylor", "Thomas", "Thompson", "Washington", "White", "Williams",
+  "Wilson"
+];
+
+export const PROFESSIONS = [
+  "Agent de police", "Assistant social", "Caissière", "Chauffeur routier",
+  "Coiffeuse", "Comptable", "Cuisinier", "Employé de banque", "Étudiant",
+  "Facteur", "Gardien de nuit", "Infirmière", "Instituteur", "Journaliste local",
+  "Mécanicien automobile", "Musicien", "Ouvrier d’usine", "Pasteur",
+  "Photographe", "Représentant de commerce", "Secrétaire", "Serveuse",
+  "Technicien radio", "Vendeur", "Vétéran du Vietnam", "Vétérinaire"
+];
+
+export const SPECIAL_CARDS = [
+  "Revolver",
+  "Petit sac à dos",
+  "Rien",
+  "Jeu de cartes",
+  "Aucune"
+];

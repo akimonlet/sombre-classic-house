@@ -1,4 +1,13 @@
-import { ADVANTAGES, DISADVANTAGES, PERSONALITIES } from "./constants.mjs";
+import {
+  ADVANTAGES,
+  DISADVANTAGES,
+  FIRST_NAMES,
+  LAST_NAMES,
+  PERSONALITIES,
+  PROFESSIONS,
+  SPECIAL_CARDS
+} from "./constants.mjs";
+import { PERSONALITY_HELP } from "./personality-help.mjs";
 
 const bodyState = (value) => {
   if (value <= 0) return "Mort";
@@ -63,6 +72,7 @@ export class SombreActorSheet extends ActorSheet {
       })),
       advantageChoices: choices(ADVANTAGES, system.advantage, "Aucun Avantage"),
       disadvantageChoices: choices(DISADVANTAGES, system.disadvantage, "Aucun Désavantage"),
+      specialCardChoices: choices(SPECIAL_CARDS, system.specialCard, "À distribuer"),
       bodyGauge: gauge(body, system.resources.body.max),
       spiritGauge: gauge(spirit, system.resources.spirit.max),
       adrenalineGauge: gauge(system.resources.adrenaline.value, system.resources.adrenaline.max),
@@ -79,6 +89,9 @@ export class SombreActorSheet extends ActorSheet {
     html.find("[data-roll]").on("click", this._onRoll.bind(this));
     html.find("[data-random-personality]").on("click", this._onRandomPersonality.bind(this));
     html.find("[data-random-traits]").on("click", this._onRandomTraits.bind(this));
+    html.find("[data-random-name]").on("click", this._onRandomName.bind(this));
+    html.find("[data-random-profession]").on("click", this._onRandomProfession.bind(this));
+    html.find("[data-personality-help]").on("click", this._onPersonalityHelp.bind(this));
   }
 
   async _onSetResource(event) {
@@ -102,6 +115,43 @@ export class SombreActorSheet extends ActorSheet {
       "system.advantage": advantage,
       "system.disadvantage": disadvantage
     });
+  }
+
+  async _onRandomName(event) {
+    event.preventDefault();
+    const firstName = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
+    const lastName = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
+    await this.actor.update({ name: `${firstName} ${lastName}` });
+  }
+
+  async _onRandomProfession(event) {
+    event.preventDefault();
+    const profession = PROFESSIONS[Math.floor(Math.random() * PROFESSIONS.length)];
+    await this.actor.update({ "system.profession": profession });
+  }
+
+  _onPersonalityHelp(event) {
+    event.preventDefault();
+    const button = event.currentTarget;
+    const phase = button.dataset.personalityHelp;
+    const description = foundry.utils.escapeHTML(PERSONALITY_HELP[phase] ?? "Aucun guide disponible.");
+
+    new Dialog({
+      title: `${phase} — guide de roleplay`,
+      content: `
+        <div class="sombre-personality-help">
+          <p>${description}</p>
+          <small>Cette phase s’active automatiquement selon la jauge d’Esprit.</small>
+        </div>
+      `,
+      buttons: {
+        close: {
+          icon: '<i class="fa-solid fa-xmark"></i>',
+          label: "Fermer"
+        }
+      },
+      default: "close"
+    }).render(true);
   }
 
   async _onRoll(event) {

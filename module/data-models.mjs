@@ -24,6 +24,8 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
     return {
       playerName: new fields.StringField({ required: true, nullable: false, initial: "" }),
       profession: new fields.StringField({ required: true, nullable: false, initial: "" }),
+      positiveLink: new fields.StringField({ required: true, nullable: false, initial: "" }),
+      specialCard: new fields.StringField({ required: true, nullable: false, initial: "" }),
       personality: new fields.NumberField({
         required: true,
         nullable: false,
@@ -38,7 +40,7 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
       disadvantageDescription: new fields.StringField({ required: true, nullable: false, initial: "" }),
       resources: new fields.SchemaField({
         body: resourceField(12, 12),
-        spirit: resourceField(12, 12),
+        spirit: resourceField(10, 12),
         adrenaline: resourceField(0, 3)
       }),
       background: new fields.StringField({ required: true, nullable: false, initial: "" }),
