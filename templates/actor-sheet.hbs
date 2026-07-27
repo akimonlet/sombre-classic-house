@@ -45,13 +45,25 @@
       </select>
       <div class="personality-phases">
         {{#each personalityPhases}}
-          <button type="button" class="phase {{#if current}}current{{/if}}"
-                  data-personality-help="{{label}}"
-                  title="Afficher le guide de roleplay">
+          <button type="button" class="phase {{#if current}}current viewing{{/if}}"
+                  data-personality-help="{{number}}"
+                  aria-expanded="{{#if current}}true{{else}}false{{/if}}"
+                  title="Afficher le guide de roleplay de cette phase">
             <small>Phase {{number}}</small>
             <strong>{{label}}</strong>
           </button>
         {{/each}}
+      </div>
+      <div class="personality-guides">
+        {{#each personalityPhases}}
+          <div class="personality-guide" data-personality-guide="{{number}}" {{#unless current}}hidden{{/unless}}>
+            <strong>Phase {{number}} — {{label}}</strong>
+            <p>{{description}}</p>
+          </div>
+        {{/each}}
+        <small class="personality-guide-note">
+          La phase active dépend de l’Esprit. Cliquer ici ne change pas la jauge.
+        </small>
       </div>
     </section>
 
