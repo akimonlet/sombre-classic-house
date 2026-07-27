@@ -57,12 +57,14 @@ export const LAST_NAMES = [
 ];
 
 export const PROFESSIONS = [
-  "Agent de police", "Assistant social", "Caissière", "Chauffeur routier",
-  "Coiffeuse", "Comptable", "Cuisinier", "Employé de banque", "Étudiant",
-  "Facteur", "Gardien de nuit", "Infirmière", "Instituteur", "Journaliste local",
-  "Mécanicien automobile", "Musicien", "Ouvrier d’usine", "Pasteur",
-  "Photographe", "Représentant de commerce", "Secrétaire", "Serveuse",
-  "Technicien radio", "Vendeur", "Vétéran du Vietnam", "Vétérinaire"
+  "Agent de police", "Aide-soignant", "Caissier", "Chauffeur routier",
+  "Coiffeur", "Comptable", "Cuisinier de diner", "Employé de banque",
+  "Employé de station-service", "Étudiant", "Facteur", "Femme au foyer",
+  "Gardien de nuit", "Infirmier", "Instituteur", "Journaliste local",
+  "Manœuvre agricole", "Mécanicien automobile", "Ouvrier du bâtiment",
+  "Ouvrier du pétrole", "Ouvrier d’usine", "Pasteur", "Plombier",
+  "Rancher", "Représentant de commerce", "Secrétaire", "Serveur",
+  "Technicien radio", "Vendeur de quincaillerie", "Vétérinaire"
 ];
 
 export const SPECIAL_CARDS = [
