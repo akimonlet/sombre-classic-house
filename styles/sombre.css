@@ -67,6 +67,31 @@
   font-weight: 700;
 }
 
+.field-with-action,
+.label-with-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field-with-action input {
+  flex: 1;
+  min-width: 0;
+}
+
+.field-with-action button {
+  flex: 0 0 auto;
+}
+
+.label-with-action {
+  justify-content: space-between;
+}
+
+.label-with-action button {
+  min-height: 20px;
+  padding: 1px 7px;
+}
+
 .identity-fields,
 .traits-grid,
 .notes-grid {
@@ -160,9 +185,14 @@
 }
 
 .phase {
+  width: 100%;
+  min-height: 0;
   padding: 9px;
   color: #625846;
+  background: transparent;
   border: 1px dashed #9b8c70;
+  text-align: left;
+  cursor: help;
 }
 
 .phase small,
@@ -174,6 +204,33 @@
   color: #f3e8cd;
   background: #85261f;
   border-style: solid;
+}
+
+.phase:hover,
+.phase:focus {
+  color: #f3e8cd;
+  background: #5f5140;
+}
+
+.phase.current:hover,
+.phase.current:focus {
+  background: #a33027;
+}
+
+.sombre-personality-help {
+  padding: 4px 8px;
+  color: #28231d;
+  font-family: "Courier New", Courier, monospace;
+  line-height: 1.45;
+}
+
+.sombre-personality-help p {
+  margin: 0 0 12px;
+  white-space: pre-line;
+}
+
+.sombre-personality-help small {
+  color: #675d4c;
 }
 
 .traits-grid {
@@ -188,6 +245,23 @@
   margin: 9px 0 0;
   color: #675d4c;
   font-size: 11px;
+}
+
+.creation-help summary {
+  cursor: pointer;
+  font-family: Impact, "Arial Narrow", sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.creation-help ul {
+  margin: 12px 0 0;
+  padding-left: 22px;
+}
+
+.creation-help li + li {
+  margin-top: 5px;
 }
 
 .resource-grid {
