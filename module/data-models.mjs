@@ -24,6 +24,8 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
     return {
       playerName: new fields.StringField({ required: true, nullable: false, initial: "" }),
       profession: new fields.StringField({ required: true, nullable: false, initial: "" }),
+      nameRandomLocked: new fields.BooleanField({ required: true, nullable: false, initial: false }),
+      professionRandomLocked: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       positiveLink: new fields.StringField({ required: true, nullable: false, initial: "" }),
       specialCard: new fields.StringField({ required: true, nullable: false, initial: "" }),
       personality: new fields.NumberField({
@@ -35,11 +37,13 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
         initial: 0
       }),
       personalityRandomUsed: new fields.BooleanField({ required: true, nullable: false, initial: false }),
+      personalityRandomLocked: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       advantage: new fields.StringField({ required: true, nullable: false, initial: "" }),
       advantageDescription: new fields.StringField({ required: true, nullable: false, initial: "" }),
       disadvantage: new fields.StringField({ required: true, nullable: false, initial: "" }),
       disadvantageDescription: new fields.StringField({ required: true, nullable: false, initial: "" }),
       traitsRandomUsed: new fields.BooleanField({ required: true, nullable: false, initial: false }),
+      traitsRandomLocked: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       adrenalinePending: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       resources: new fields.SchemaField({
         body: resourceField(12, 12),

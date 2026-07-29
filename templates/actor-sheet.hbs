@@ -5,9 +5,17 @@
       <p class="eyebrow">Sombre Classic · House of the Rising Dead</p>
       <div class="field-with-action name-field">
         <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Nom du personnage">
-        <button type="button" data-random-name title="Proposer un nom texan au hasard">
+        <button type="button" data-random-name {{#unless canRandomizeName}}disabled{{/unless}}
+                title="{{#if canRandomizeName}}Proposer un nom texan au hasard{{else}}Tirage du nom verrouillé par le MJ{{/if}}">
           <i class="fa-solid fa-shuffle"></i> Nom
         </button>
+        {{#if isGM}}
+          <button type="button" class="random-lock {{#if nameRandomLocked}}active{{/if}}"
+                  data-lock-random="name"
+                  title="{{#if nameRandomLocked}}Déverrouiller le tirage du nom{{else}}Verrouiller le tirage du nom{{/if}}">
+            <i class="fa-solid {{#if nameRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+          </button>
+        {{/if}}
       </div>
       <div class="identity-fields">
         <label>
@@ -18,9 +26,17 @@
           <span>Profession</span>
           <span class="field-with-action profession-input">
             <input name="system.profession" type="text" value="{{system.profession}}" placeholder="Profession ordinaire">
-            <button type="button" data-random-profession title="Proposer une profession au hasard">
+            <button type="button" data-random-profession {{#unless canRandomizeProfession}}disabled{{/unless}}
+                    title="{{#if canRandomizeProfession}}Proposer une profession au hasard{{else}}Tirage de la profession verrouillé par le MJ{{/if}}">
               <i class="fa-solid fa-shuffle"></i>
             </button>
+            {{#if isGM}}
+              <button type="button" class="random-lock {{#if professionRandomLocked}}active{{/if}}"
+                      data-lock-random="profession"
+                      title="{{#if professionRandomLocked}}Déverrouiller le tirage de la profession{{else}}Verrouiller le tirage de la profession{{/if}}">
+                <i class="fa-solid {{#if professionRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+              </button>
+            {{/if}}
           </span>
         </label>
       </div>
@@ -34,11 +50,20 @@
           <small>Profil psychologique</small>
           <h2>Personnalité</h2>
         </div>
-        <button type="button" data-random-personality {{#unless canRandomizePersonality}}disabled{{/unless}}
-                title="{{#unless canRandomizePersonality}}Tirage aléatoire déjà utilisé{{else}}Tirer une Personnalité au hasard{{/unless}}">
-          <i class="fa-solid fa-shuffle"></i>
-          {{#if canRandomizePersonality}}Hasard{{else}}Hasard utilisé{{/if}}
-        </button>
+        <div class="heading-actions">
+          <button type="button" data-random-personality {{#unless canRandomizePersonality}}disabled{{/unless}}
+                  title="{{#if canRandomizePersonality}}Tirer une Personnalité au hasard{{else}}{{#if personalityRandomLocked}}Tirage verrouillé par le MJ{{else}}Tirage aléatoire déjà utilisé{{/if}}{{/if}}">
+            <i class="fa-solid fa-shuffle"></i>
+            {{#if canRandomizePersonality}}Hasard{{else}}{{#if personalityRandomLocked}}Verrouillé{{else}}Hasard utilisé{{/if}}{{/if}}
+          </button>
+          {{#if isGM}}
+            <button type="button" class="random-lock {{#if personalityRandomLocked}}active{{/if}}"
+                    data-lock-random="personality"
+                    title="{{#if personalityRandomLocked}}Déverrouiller le tirage pour les joueurs{{else}}Verrouiller le tirage pour les joueurs{{/if}}">
+              <i class="fa-solid {{#if personalityRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+            </button>
+          {{/if}}
+        </div>
       </div>
       {{#if isGM}}
         <select name="system.personality">
@@ -83,11 +108,20 @@
           <small>Profil House</small>
           <h2>Traits</h2>
         </div>
-        <button type="button" data-random-traits {{#unless canRandomizeTraits}}disabled{{/unless}}
-                title="{{#unless canRandomizeTraits}}Tirage aléatoire déjà utilisé{{else}}Tirer une paire de Traits au hasard{{/unless}}">
-          <i class="fa-solid fa-shuffle"></i>
-          {{#if canRandomizeTraits}}Paire aléatoire{{else}}Hasard utilisé{{/if}}
-        </button>
+        <div class="heading-actions">
+          <button type="button" data-random-traits {{#unless canRandomizeTraits}}disabled{{/unless}}
+                  title="{{#if canRandomizeTraits}}Tirer une paire de Traits au hasard{{else}}{{#if traitsRandomLocked}}Tirage verrouillé par le MJ{{else}}Tirage aléatoire déjà utilisé{{/if}}{{/if}}">
+            <i class="fa-solid fa-shuffle"></i>
+            {{#if canRandomizeTraits}}Paire aléatoire{{else}}{{#if traitsRandomLocked}}Verrouillé{{else}}Hasard utilisé{{/if}}{{/if}}
+          </button>
+          {{#if isGM}}
+            <button type="button" class="random-lock {{#if traitsRandomLocked}}active{{/if}}"
+                    data-lock-random="traits"
+                    title="{{#if traitsRandomLocked}}Déverrouiller le tirage pour les joueurs{{else}}Verrouiller le tirage pour les joueurs{{/if}}">
+              <i class="fa-solid {{#if traitsRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+            </button>
+          {{/if}}
+        </div>
       </div>
       <div class="traits-grid">
         <label>
@@ -177,7 +211,7 @@
 
     <div class="notes-grid">
       <label class="sheet-card">
-        <span>Lien positif</span>
+        <span>Lien positif — personne et raison</span>
         <input name="system.positiveLink" type="text" value="{{system.positiveLink}}" placeholder="Avec quel autre survivant, et pourquoi ?">
         <span>Background court</span>
         <textarea name="system.background" rows="6" placeholder="Passé, relations, détails du personnage…">{{system.background}}</textarea>

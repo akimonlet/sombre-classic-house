@@ -168,6 +168,23 @@
   text-transform: uppercase;
 }
 
+.heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.heading-actions .random-lock {
+  min-width: 32px;
+  padding: 5px 8px;
+}
+
+.heading-actions .random-lock.active {
+  color: #fff1d0;
+  background: #98271f;
+  border-color: #c84a3f;
+}
+
 .sombre-sheet button {
   min-height: 28px;
   padding: 4px 9px;

@@ -1,5 +1,6 @@
 import { SombreVictimData } from "./module/data-models.mjs";
 import { SombreActorSheet } from "./module/actor-sheet.mjs";
+import { createPregensOnce, registerPregenSetting } from "./module/pregens.mjs";
 
 Hooks.once("init", () => {
   console.log("Sombre Classic — House | Initialisation");
@@ -21,4 +22,8 @@ Hooks.once("init", () => {
     makeDefault: true,
     label: "Fiche Sombre Classic"
   });
+
+  registerPregenSetting();
 });
+
+Hooks.once("ready", createPregensOnce);

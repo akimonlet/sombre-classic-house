@@ -95,8 +95,14 @@ export class SombreActorSheet extends ActorSheet {
       personalityChoices: choices(PERSONALITIES, system.personality),
       personalityLabel: personality.join(" → "),
       personalityRevealed: game.user.isGM || system.personalityRandomUsed,
-      canRandomizePersonality: game.user.isGM || !system.personalityRandomUsed,
-      canRandomizeTraits: game.user.isGM || !system.traitsRandomUsed,
+      personalityRandomLocked: Boolean(system.personalityRandomLocked),
+      traitsRandomLocked: Boolean(system.traitsRandomLocked),
+      nameRandomLocked: Boolean(system.nameRandomLocked),
+      professionRandomLocked: Boolean(system.professionRandomLocked),
+      canRandomizeName: game.user.isGM || !system.nameRandomLocked,
+      canRandomizeProfession: game.user.isGM || !system.professionRandomLocked,
+      canRandomizePersonality: game.user.isGM || (!system.personalityRandomUsed && !system.personalityRandomLocked),
+      canRandomizeTraits: game.user.isGM || (!system.traitsRandomUsed && !system.traitsRandomLocked),
       personalityPhases: personality.map((label, index) => ({
         number: index + 1,
         label,
@@ -129,6 +135,7 @@ export class SombreActorSheet extends ActorSheet {
     html.find("[data-random-traits]").on("click", this._onRandomTraits.bind(this));
     html.find("[data-random-name]").on("click", this._onRandomName.bind(this));
     html.find("[data-random-profession]").on("click", this._onRandomProfession.bind(this));
+    html.find("[data-lock-random]").on("click", this._onToggleRandomLock.bind(this));
   }
 
   async _onSetResource(event) {
@@ -157,6 +164,10 @@ export class SombreActorSheet extends ActorSheet {
 
   async _onRandomPersonality(event) {
     event.preventDefault();
+    if (!game.user.isGM && this.actor.system.personalityRandomLocked) {
+      ui.notifications.warn("Le tirage aléatoire de Personnalité a été verrouillé par le MJ.");
+      return;
+    }
     if (!game.user.isGM && this.actor.system.personalityRandomUsed) {
       ui.notifications.warn("Le tirage aléatoire de Personnalité a déjà été utilisé.");
       return;
@@ -171,6 +182,10 @@ export class SombreActorSheet extends ActorSheet {
 
   async _onRandomTraits(event) {
     event.preventDefault();
+    if (!game.user.isGM && this.actor.system.traitsRandomLocked) {
+      ui.notifications.warn("Le tirage aléatoire des Traits a été verrouillé par le MJ.");
+      return;
+    }
     if (!game.user.isGM && this.actor.system.traitsRandomUsed) {
       ui.notifications.warn("Le tirage aléatoire des Traits a déjà été utilisé.");
       return;
@@ -186,8 +201,31 @@ export class SombreActorSheet extends ActorSheet {
     await this.actor.update(update);
   }
 
+  async _onToggleRandomLock(event) {
+    event.preventDefault();
+    if (!game.user.isGM) return;
+
+    const kind = event.currentTarget.dataset.lockRandom;
+    const lockData = {
+      name: ["nameRandomLocked", "Nom"],
+      profession: ["professionRandomLocked", "Profession"],
+      personality: ["personalityRandomLocked", "Personnalité"],
+      traits: ["traitsRandomLocked", "Traits"]
+    };
+    if (!lockData[kind]) return;
+
+    const [field, label] = lockData[kind];
+    const locked = !Boolean(this.actor.system[field]);
+    await this.actor.update({ [`system.${field}`]: locked });
+    ui.notifications.info(`Tirage de ${label} ${locked ? "verrouillé pour les joueurs" : "déverrouillé"}.`);
+  }
+
   async _onRandomName(event) {
     event.preventDefault();
+    if (!game.user.isGM && this.actor.system.nameRandomLocked) {
+      ui.notifications.warn("Le tirage aléatoire du nom a été verrouillé par le MJ.");
+      return;
+    }
     const firstName = FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
     const lastName = LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
     await this.actor.update({ name: `${firstName} ${lastName}` });
@@ -195,6 +233,10 @@ export class SombreActorSheet extends ActorSheet {
 
   async _onRandomProfession(event) {
     event.preventDefault();
+    if (!game.user.isGM && this.actor.system.professionRandomLocked) {
+      ui.notifications.warn("Le tirage aléatoire de la profession a été verrouillé par le MJ.");
+      return;
+    }
     const profession = PROFESSIONS[Math.floor(Math.random() * PROFESSIONS.length)];
     await this.actor.update({ "system.profession": profession });
   }
