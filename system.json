@@ -2,7 +2,7 @@
   "id": "sombre-classic-house",
   "title": "Sombre Classic — House",
   "description": "Mini-système personnel pour jouer House of the Rising Dead avec une fiche Sombre Classic.",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "compatibility": {
     "minimum": 12,
     "verified": 12,
@@ -10,7 +10,7 @@
   },
   "url": "https://github.com/akimonlet/sombre-classic-house",
   "manifest": "https://raw.githubusercontent.com/akimonlet/sombre-classic-house/main/system.json",
-  "download": "https://github.com/akimonlet/sombre-classic-house/releases/download/v0.3.2/sombre-classic-house-v0.3.2.zip",
+  "download": "https://github.com/akimonlet/sombre-classic-house/releases/download/v0.3.3/sombre-classic-house-v0.3.3.zip",
   "authors": [
     {
       "name": "akimine"

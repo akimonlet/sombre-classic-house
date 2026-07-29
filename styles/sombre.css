@@ -493,7 +493,7 @@
 }
 
 .details-field textarea[name="system.positiveLink"] {
-  min-height: 74px;
+  min-height: 220px;
   font-weight: 700;
 }
 

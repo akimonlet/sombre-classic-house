@@ -27,6 +27,7 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - cadenas contrôlés par le MJ pour désactiver séparément les tirages de nom, profession, Personnalité et Traits ;
 - onglet **Liens & notes** offrant toute la largeur de la fiche au lien positif, au background, à la carte spéciale et à l’équipement ;
 - relations des prétirés présentées intégralement, avec une ligne vide entre chaque personnage ;
+- champ des liens ouvert en grand par défaut pour afficher les quatre relations ;
 - tirages aléatoires de Personnalité et de Traits limités à une utilisation par joueur et par personnage ;
 - résultats de Personnalité et de Traits verrouillés côté joueur, avec aides de lecture pour les Traits ;
 - Corps et Esprit réglables par clic ;
