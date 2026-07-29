@@ -43,8 +43,18 @@
     </div>
   </header>
 
+  <nav class="sheet-tabs" aria-label="Sections de la fiche">
+    <button type="button" class="{{#if mainTabActive}}active{{/if}}" data-sheet-tab="main">
+      <i class="fa-solid fa-user"></i> Fiche
+    </button>
+    <button type="button" class="{{#if detailsTabActive}}active{{/if}}" data-sheet-tab="details">
+      <i class="fa-solid fa-address-card"></i> Liens & notes
+    </button>
+  </nav>
+
   <div class="sheet-scroll">
-    <section class="sheet-card personality-card">
+    <div class="sheet-tab-content" data-sheet-tab-content="main" {{#unless mainTabActive}}hidden{{/unless}}>
+      <section class="sheet-card personality-card">
       <div class="section-heading">
         <div>
           <small>Profil psychologique</small>
@@ -100,9 +110,9 @@
           </small>
         </div>
       {{/if}}
-    </section>
+      </section>
 
-    <section class="sheet-card traits-card">
+      <section class="sheet-card traits-card">
       <div class="section-heading">
         <div>
           <small>Profil House</small>
@@ -152,9 +162,9 @@
         </label>
       </div>
       <p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>
-    </section>
+      </section>
 
-    <div class="resource-grid">
+      <div class="resource-grid">
       <section class="resource-card spirit">
         <div class="resource-title">
           <button type="button" data-roll="test" data-ability="spirit"><i class="fa-solid fa-dice-d20"></i> ESPRIT</button>
@@ -201,31 +211,53 @@
           {{/each}}
         </div>
       </section>
+      </div>
+
+      <section class="dice-strip">
+        <span>Jets rapides</span>
+        <button type="button" data-roll="attack" data-ability="body"><i class="fa-solid fa-burst"></i> Attaque (d20 + d6)</button>
+        <button type="button" data-roll="damage"><i class="fa-solid fa-dice-six"></i> d6</button>
+      </section>
     </div>
 
-    <section class="dice-strip">
-      <span>Jets rapides</span>
-      <button type="button" data-roll="attack" data-ability="body"><i class="fa-solid fa-burst"></i> Attaque (d20 + d6)</button>
-      <button type="button" data-roll="damage"><i class="fa-solid fa-dice-six"></i> d6</button>
-    </section>
+    <div class="sheet-tab-content details-layout" data-sheet-tab-content="details" {{#unless detailsTabActive}}hidden{{/unless}}>
+      <section class="sheet-card">
+        <div class="section-heading">
+          <div>
+            <small>Famille et amitiés</small>
+            <h2>Liens</h2>
+          </div>
+        </div>
+        <label class="details-field">
+          <span>Lien positif — personne et raison</span>
+          <textarea name="system.positiveLink" rows="3" placeholder="Avec quel autre survivant, et pourquoi ?">{{system.positiveLink}}</textarea>
+        </label>
+        <label class="details-field">
+          <span>Background court</span>
+          <textarea name="system.background" rows="5" placeholder="Passé, relations, détails du personnage…">{{system.background}}</textarea>
+        </label>
+      </section>
 
-    <div class="notes-grid">
-      <label class="sheet-card">
-        <span>Lien positif — personne et raison</span>
-        <input name="system.positiveLink" type="text" value="{{system.positiveLink}}" placeholder="Avec quel autre survivant, et pourquoi ?">
-        <span>Background court</span>
-        <textarea name="system.background" rows="6" placeholder="Passé, relations, détails du personnage…">{{system.background}}</textarea>
-      </label>
-      <label class="sheet-card">
-        <span>Carte spéciale</span>
-        <select name="system.specialCard">
-          {{#each specialCardChoices}}
-            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
-          {{/each}}
-        </select>
-        <span>Équipement et notes</span>
-        <textarea name="system.equipment" rows="6" placeholder="Objets, munitions, blessures décrites…">{{system.equipment}}</textarea>
-      </label>
+      <section class="sheet-card">
+        <div class="section-heading">
+          <div>
+            <small>Survie</small>
+            <h2>Carte & équipement</h2>
+          </div>
+        </div>
+        <label class="details-field special-card-field">
+          <span>Carte spéciale</span>
+          <select name="system.specialCard">
+            {{#each specialCardChoices}}
+              <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+          </select>
+        </label>
+        <label class="details-field">
+          <span>Équipement et notes</span>
+          <textarea name="system.equipment" rows="7" placeholder="Objets, munitions, blessures décrites…">{{system.equipment}}</textarea>
+        </label>
+      </section>
     </div>
   </div>
 </form>

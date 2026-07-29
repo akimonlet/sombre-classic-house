@@ -60,6 +60,7 @@ export class SombreActorSheet extends ActorSheet {
 
   async getData(options = {}) {
     const context = await super.getData(options);
+    this._activeTab ??= "main";
     const system = this.actor.system;
     const spirit = system.resources.spirit.value;
     const body = system.resources.body.value;
@@ -92,6 +93,8 @@ export class SombreActorSheet extends ActorSheet {
       system,
       editable: this.isEditable,
       isGM: game.user.isGM,
+      mainTabActive: this._activeTab === "main",
+      detailsTabActive: this._activeTab === "details",
       personalityChoices: choices(PERSONALITIES, system.personality),
       personalityLabel: personality.join(" → "),
       personalityRevealed: game.user.isGM || system.personalityRandomUsed,
@@ -126,6 +129,7 @@ export class SombreActorSheet extends ActorSheet {
   activateListeners(html) {
     super.activateListeners(html);
     html.find("[data-personality-help]").on("click", this._onPersonalityHelp.bind(this));
+    html.find("[data-sheet-tab]").on("click", this._onChangeSheetTab.bind(this));
 
     if (!this.isEditable) return;
 
@@ -136,6 +140,21 @@ export class SombreActorSheet extends ActorSheet {
     html.find("[data-random-name]").on("click", this._onRandomName.bind(this));
     html.find("[data-random-profession]").on("click", this._onRandomProfession.bind(this));
     html.find("[data-lock-random]").on("click", this._onToggleRandomLock.bind(this));
+  }
+
+  _onChangeSheetTab(event) {
+    event.preventDefault();
+    const tabName = event.currentTarget.dataset.sheetTab;
+    if (!["main", "details"].includes(tabName)) return;
+
+    this._activeTab = tabName;
+    const form = event.currentTarget.closest("form");
+    form.querySelectorAll("[data-sheet-tab]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.sheetTab === tabName);
+    });
+    form.querySelectorAll("[data-sheet-tab-content]").forEach((content) => {
+      content.hidden = content.dataset.sheetTabContent !== tabName;
+    });
   }
 
   async _onSetResource(event) {

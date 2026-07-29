@@ -14,6 +14,8 @@
 .sombre-sheet {
   height: 100%;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .sombre-sheet input,
@@ -77,7 +79,7 @@
 
 .name-field {
   display: grid;
-  grid-template-columns: minmax(240px, 1fr) auto;
+  grid-template-columns: minmax(240px, 1fr) auto 30px;
   align-items: end;
 }
 
@@ -89,6 +91,13 @@
 .field-with-action > button {
   flex: 0 0 auto;
   width: auto;
+}
+
+.field-with-action > .random-lock,
+.profession-input > .random-lock {
+  width: 30px;
+  min-width: 30px;
+  padding: 3px;
 }
 
 .label-with-action {
@@ -127,7 +136,7 @@
 
 .profession-input {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 34px;
+  grid-template-columns: minmax(0, 1fr) 34px 30px;
 }
 
 .profession-input button {
@@ -136,10 +145,43 @@
   padding: 4px;
 }
 
+.profession-input .random-lock {
+  width: 30px;
+  min-width: 30px;
+  padding: 3px;
+}
+
+.sheet-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 8px 18px 0;
+  background: #181713;
+}
+
+.sheet-tabs button {
+  min-height: 34px;
+  color: #bcae8d;
+  background: #29261f;
+  border-bottom: 0;
+}
+
+.sheet-tabs button.active {
+  color: #fff1d0;
+  background: #8e241d;
+  border-color: #a88e5f;
+}
+
 .sheet-scroll {
-  height: calc(100% - 153px);
+  flex: 1;
+  min-height: 0;
+  height: auto;
   padding: 16px 18px 24px;
   overflow-y: auto;
+}
+
+.sheet-tab-content[hidden] {
+  display: none;
 }
 
 .sheet-card,
@@ -179,7 +221,7 @@
   padding: 5px 8px;
 }
 
-.heading-actions .random-lock.active {
+.random-lock.active {
   color: #fff1d0;
   background: #98271f;
   border-color: #c84a3f;
@@ -427,13 +469,36 @@
   text-transform: uppercase;
 }
 
-.notes-grid .sheet-card {
-  margin-bottom: 0;
+.details-layout {
+  width: 100%;
 }
 
-.notes-grid textarea {
+.details-layout .sheet-card {
+  margin-bottom: 14px;
+}
+
+.details-field {
+  display: grid;
+  gap: 6px;
+  margin-top: 13px;
+  font-size: 13px;
+}
+
+.details-field textarea,
+.details-field select {
   width: 100%;
   resize: vertical;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.details-field textarea[name="system.positiveLink"] {
+  min-height: 74px;
+  font-weight: 700;
+}
+
+.special-card-field {
+  max-width: 360px;
 }
 
 .sombre-roll {
