@@ -2,6 +2,7 @@ import { SombreVictimData } from "./module/data-models.mjs";
 import { SombreActorSheet } from "./module/actor-sheet.mjs";
 import { createPregensOnce, registerPregenSetting } from "./module/pregens.mjs";
 import { registerTokenNameHooks } from "./module/token-names.mjs";
+import { registerTraitDashboard } from "./module/trait-dashboard.mjs";
 
 Hooks.once("init", () => {
   console.log("Sombre — Scénarios | Initialisation");
@@ -26,6 +27,7 @@ Hooks.once("init", () => {
 
   registerPregenSetting();
   registerTokenNameHooks();
+  registerTraitDashboard();
 });
 
 Hooks.once("ready", createPregensOnce);

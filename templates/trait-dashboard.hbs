@@ -1,0 +1,46 @@
+<div class="trait-dashboard-layout">
+  <header class="trait-dashboard-controls">
+    <label>
+      <span>Partie / dossier</span>
+      <select data-trait-folder>
+        {{#each folderChoices}}
+          <option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </label>
+    <label class="trait-subfolders">
+      <input type="checkbox" data-trait-subfolders {{checked includeSubfolders}}>
+      Inclure les sous-dossiers
+    </label>
+    <button type="button" data-refresh-traits title="Rafraîchir"><i class="fa-solid fa-rotate"></i></button>
+  </header>
+
+  <div class="trait-dashboard-summary">
+    <strong>{{actorCount}}</strong> personnage(s)
+    <span>Cliquer sur un Trait pour afficher son rappel.</span>
+  </div>
+
+  {{#if actors.length}}
+    <div class="trait-dashboard-table">
+      <div class="trait-dashboard-row trait-dashboard-head">
+        <span>Personnage</span><span>Avantage</span><span>Désavantage</span>
+      </div>
+      {{#each actors}}
+        <div class="trait-dashboard-row">
+          <button type="button" class="trait-actor" data-open-trait-actor="{{id}}" title="Ouvrir la fiche de {{name}}">
+            <img src="{{img}}" alt="">
+            <span><strong>{{name}}</strong>{{#if playerName}}<small>{{playerName}}</small>{{/if}}<em>{{folderName}}</em></span>
+          </button>
+          {{#if advantage}}
+            <button type="button" class="trait-chip advantage" data-show-trait="advantage" data-actor-id="{{id}}">{{advantage}}</button>
+          {{else}}<span class="trait-empty">—</span>{{/if}}
+          {{#if disadvantage}}
+            <button type="button" class="trait-chip disadvantage" data-show-trait="disadvantage" data-actor-id="{{id}}">{{disadvantage}}</button>
+          {{else}}<span class="trait-empty">—</span>{{/if}}
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="trait-dashboard-empty"><i class="fa-solid fa-folder-open"></i><p>Aucun personnage dans ce dossier.</p></div>
+  {{/if}}
+</div>
