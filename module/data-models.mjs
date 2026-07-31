@@ -1,20 +1,20 @@
 const fields = foundry.data.fields;
 
-const resourceField = (initial, max) => new fields.SchemaField({
+const resourceField = (initial, max, { minMax = max, maxLimit = max } = {}) => new fields.SchemaField({
   value: new fields.NumberField({
     required: true,
     nullable: false,
     integer: true,
     min: 0,
-    max,
+    max: maxLimit,
     initial
   }),
   max: new fields.NumberField({
     required: true,
     nullable: false,
     integer: true,
-    min: max,
-    max,
+    min: minMax,
+    max: maxLimit,
     initial: max
   })
 });
@@ -23,6 +23,7 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       scenarioId: new fields.StringField({ required: true, nullable: false, initial: "house" }),
+      isAntagonist: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       playerName: new fields.StringField({ required: true, nullable: false, initial: "" }),
       profession: new fields.StringField({ required: true, nullable: false, initial: "" }),
       nameRandomLocked: new fields.BooleanField({ required: true, nullable: false, initial: false }),
@@ -51,7 +52,7 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
       traitsRandomLocked: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       adrenalinePending: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       resources: new fields.SchemaField({
-        body: resourceField(12, 12),
+        body: resourceField(12, 12, { minMax: 1, maxLimit: 30 }),
         spirit: resourceField(10, 12),
         adrenaline: resourceField(0, 3)
       }),

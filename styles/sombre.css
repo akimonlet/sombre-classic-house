@@ -411,6 +411,53 @@
   grid-column: 1 / -1;
 }
 
+.antagonist-config {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  color: #efe4c7;
+  background: #28251f;
+  border-left: 5px solid #8e241d;
+}
+
+.antagonist-config > label:first-child {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.antagonist-config input[type="checkbox"] {
+  width: auto;
+}
+
+.antagonist-config strong,
+.antagonist-config small {
+  display: block;
+}
+
+.antagonist-config small {
+  margin-top: 2px;
+  color: #c7b995;
+}
+
+.antagonist-body-max {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.antagonist-body-max input {
+  width: 68px;
+}
+
+.resource-grid.antagonist-resources .resource-card {
+  grid-column: 1 / -1;
+}
+
 .resource-help {
   margin: 8px 0 0;
   color: #554a39;
@@ -455,6 +502,10 @@
 
 .gauge.compact {
   grid-template-columns: repeat(4, minmax(42px, 1fr));
+}
+
+.gauge.body-gauge {
+  grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
 }
 
 .gauge button {

@@ -2,7 +2,7 @@
   "id": "sombre-classic-house",
   "title": "Sombre — Scénarios",
   "description": "Système personnel pour jouer House of the Rising Dead, Ubiquité et Deep Space Gore avec une fiche Sombre Classic.",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "compatibility": {
     "minimum": 12,
     "verified": 12,
@@ -10,7 +10,7 @@
   },
   "url": "https://github.com/akimonlet/sombre-classic-house",
   "manifest": "https://raw.githubusercontent.com/akimonlet/sombre-classic-house/main/system.json",
-  "download": "https://github.com/akimonlet/sombre-classic-house/releases/download/v0.4.3/sombre-classic-house-v0.4.3.zip",
+  "download": "https://github.com/akimonlet/sombre-classic-house/releases/download/v0.4.4/sombre-classic-house-v0.4.4.zip",
   "authors": [
     {
       "name": "akimine"

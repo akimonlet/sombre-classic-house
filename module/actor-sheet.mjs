@@ -71,6 +71,7 @@ export class SombreActorSheet extends ActorSheet {
     const isHouse = system.scenarioId === "house";
     const spirit = system.resources.spirit.value;
     const body = system.resources.body.value;
+    const isAntagonist = Boolean(system.isAntagonist);
     const personality = PERSONALITIES[system.personality] ?? PERSONALITIES[0];
     const phaseIndex = spirit >= 9 ? 0 : spirit >= 5 ? 1 : 2;
     const unlockedAdrenaline = adrenalineUnlocked(body);
@@ -101,6 +102,7 @@ export class SombreActorSheet extends ActorSheet {
       editable: this.isEditable,
       scenarioLabel,
       isHouse,
+      isAntagonist,
       canViewSecret: game.user.isGM || this.actor.isOwner,
       hasSecret: Boolean(system.secret),
       isSpecialAbility: system.secretKind === "ability",
@@ -171,7 +173,7 @@ export class SombreActorSheet extends ActorSheet {
       spiritGauge: gauge(spirit, system.resources.spirit.max),
       adrenalineGauge,
       adrenalineUnlocked: unlockedAdrenaline,
-      bodyState: bodyState(body),
+      bodyState: isAntagonist ? "Antagoniste" : bodyState(body),
       spiritState: spiritState(spirit)
     };
   }
@@ -184,6 +186,8 @@ export class SombreActorSheet extends ActorSheet {
     if (!this.isEditable) return;
 
     html.find("[data-resource][data-value]").on("click", this._onSetResource.bind(this));
+    html.find("[data-antagonist-toggle]").on("change", this._onToggleAntagonist.bind(this));
+    html.find("[data-antagonist-body-max]").on("change", this._onSetAntagonistBodyMax.bind(this));
     html.find("[data-roll]").on("click", this._onRoll.bind(this));
     html.find("[data-random-personality]").on("click", this._onRandomPersonality.bind(this));
     html.find("[data-random-trait]").on("click", this._onRandomTrait.bind(this));
@@ -231,6 +235,33 @@ export class SombreActorSheet extends ActorSheet {
     }
 
     await this.actor.update(update);
+  }
+
+  async _onToggleAntagonist(event) {
+    event.preventDefault();
+    if (!game.user.isGM) return;
+
+    const enabled = event.currentTarget.checked;
+    const update = {
+      "system.isAntagonist": enabled,
+      "system.adrenalinePending": false
+    };
+    if (!enabled) {
+      update["system.resources.body.max"] = 12;
+      update["system.resources.body.value"] = Math.min(12, Number(this.actor.system.resources.body.value));
+    }
+    await this.actor.update(update);
+  }
+
+  async _onSetAntagonistBodyMax(event) {
+    event.preventDefault();
+    if (!game.user.isGM || !this.actor.system.isAntagonist) return;
+
+    const maximum = Math.max(12, Math.min(30, Number(event.currentTarget.value) || 12));
+    await this.actor.update({
+      "system.resources.body.max": maximum,
+      "system.resources.body.value": maximum
+    });
   }
 
   async _onRandomPersonality(event) {
@@ -367,7 +398,7 @@ export class SombreActorSheet extends ActorSheet {
     }
 
     const ability = event.currentTarget.dataset.ability;
-    const usesAdrenaline = ability === "body" && Boolean(this.actor.system.adrenalinePending);
+    const usesAdrenaline = ability === "body" && !this.actor.system.isAntagonist && Boolean(this.actor.system.adrenalinePending);
     const target = usesAdrenaline ? 12 : this.actor.system.resources[ability].value;
     const label = ability === "body" ? "Corps" : "Esprit";
 
@@ -377,7 +408,8 @@ export class SombreActorSheet extends ActorSheet {
 
     const d20Roll = await new Roll("1d20").evaluate();
     const d20 = d20Roll.total;
-    const success = d20 <= target;
+    const success = d20 !== 20 && d20 <= target;
+    const resultLabel = d20 === 20 ? "échec critique" : success ? "réussite" : "échec";
     const adrenalineDetail = usesAdrenaline ? " · Adrénaline" : "";
 
     if (kind === "attack") {
@@ -386,7 +418,7 @@ export class SombreActorSheet extends ActorSheet {
       let outcome;
 
       if (!success) {
-        outcome = `<strong>échec</strong>${adrenalineDetail} · d6 ${d6} ignoré · aucun dommage`;
+        outcome = `<strong>${resultLabel}</strong>${adrenalineDetail} · d6 ${d6} ignoré · aucun dommage`;
       } else if (d6 <= 4) {
         outcome = `<strong>réussite</strong>${adrenalineDetail} · d6 ${d6}<strong class="sombre-damage">3 Blessures</strong><small>dommages fixes</small>`;
       } else {
@@ -412,7 +444,7 @@ export class SombreActorSheet extends ActorSheet {
     const flavor = [
       `<strong>${this.actor.name}</strong> — jet d’${label}`,
       `<span class="sombre-roll ${success ? "success" : "failure"}">`,
-      `${d20} sous ${target} : <strong>${success ? "réussite" : "échec"}</strong>${adrenalineDetail}`,
+      `${d20} sous ${target} : <strong>${resultLabel}</strong>${adrenalineDetail}`,
       "</span>"
     ].join(" ");
 

@@ -176,7 +176,22 @@
       {{#if isHouse}}<p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>{{/if}}
       </section>
 
-      <div class="resource-grid">
+      {{#if isGM}}
+        <section class="antagonist-config">
+          <label>
+            <input type="checkbox" data-antagonist-toggle {{checked isAntagonist}}>
+            <span><strong>Mode Antagoniste</strong><small>Autorise un Corps supérieur à 12 et désactive l’Adrénaline.</small></span>
+          </label>
+          {{#if isAntagonist}}
+            <label class="antagonist-body-max">
+              <span>Corps maximal</span>
+              <input type="number" min="12" max="30" step="1" value="{{system.resources.body.max}}" data-antagonist-body-max>
+            </label>
+          {{/if}}
+        </section>
+      {{/if}}
+
+      <div class="resource-grid {{#if isAntagonist}}antagonist-resources{{/if}}">
       <section class="resource-card spirit">
         <div class="resource-title">
           <button type="button" data-roll="test" data-ability="spirit"><i class="fa-solid fa-dice-d20"></i> ESPRIT</button>
@@ -196,14 +211,14 @@
           <strong>{{system.resources.body.value}}</strong>
           <span>{{bodyState}}</span>
         </div>
-        <div class="gauge">
+        <div class="gauge body-gauge">
           {{#each bodyGauge}}
             <button type="button" class="{{#if active}}active{{/if}} {{#if filled}}filled{{/if}}" data-resource="body" data-value="{{level}}" title="Corps {{level}}">{{level}}</button>
           {{/each}}
         </div>
       </section>
 
-      <section class="resource-card adrenaline">
+      {{#unless isAntagonist}}<section class="resource-card adrenaline">
         <div class="resource-title">
           <span>ADRÉNALINE</span>
           <strong>{{system.resources.adrenaline.value}}</strong>
@@ -222,7 +237,7 @@
                     {{#if disabled}}disabled{{/if}}>{{level}}</button>
           {{/each}}
         </div>
-      </section>
+      </section>{{/unless}}
       </div>
 
       <section class="dice-strip">
