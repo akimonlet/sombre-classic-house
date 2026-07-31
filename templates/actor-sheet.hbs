@@ -258,6 +258,33 @@
           <textarea name="system.equipment" rows="7" placeholder="Objets, munitions, blessures décrites…">{{system.equipment}}</textarea>
         </label>
       </section>
+
+      {{#if canViewSecret}}{{#if hasSecret}}
+        <section class="sheet-card scenario-secret-card {{#if system.specialUsed}}used{{/if}}">
+          <div class="section-heading">
+            <div>
+              <small>Information personnelle</small>
+              <h2>{{#if isSpecialAbility}}Capacité spéciale{{else}}Secret{{/if}}</h2>
+            </div>
+            <button type="button" data-reveal-secret><i class="fa-solid fa-comment"></i> Révéler au chat</button>
+          </div>
+          <p>{{system.secret}}</p>
+          {{#if isSpecialAbility}}
+            <button type="button" class="special-use" data-use-special>
+              <i class="fa-solid {{#if system.specialUsed}}fa-square-check{{else}}fa-square{{/if}}"></i>
+              {{#if system.specialUsed}}Capacité utilisée{{else}}Capacité disponible{{/if}}
+            </button>
+          {{/if}}
+        </section>
+      {{/if}}{{/if}}
+
+      {{#if isGM}}
+        <section class="sheet-card scenario-gm-card">
+          <div class="section-heading"><div><small>MJ uniquement</small><h2>Suivi du scénario</h2></div></div>
+          <label class="scenario-infected"><input name="system.infected" type="checkbox" {{checked system.infected}}> Infecté</label>
+          <textarea name="system.gmNotes" rows="5" placeholder="Notes de maîtrise…">{{system.gmNotes}}</textarea>
+        </section>
+      {{/if}}
     </div>
   </div>
 </form>

@@ -52,40 +52,12 @@ export class SombreVictimData extends foundry.abstract.TypeDataModel {
         adrenaline: resourceField(0, 3)
       }),
       background: new fields.StringField({ required: true, nullable: false, initial: "" }),
-      equipment: new fields.StringField({ required: true, nullable: false, initial: "" })
-    };
-  }
-}
-
-export class SombreZeroData extends foundry.abstract.TypeDataModel {
-  static defineSchema() {
-    return {
-      scenarioId: new fields.StringField({ required: true, nullable: false, initial: "deep-space-gore" }),
-      playerName: new fields.StringField({ required: true, nullable: false, initial: "" }),
-      role: new fields.StringField({ required: true, nullable: false, initial: "" }),
-      level: new fields.NumberField({
-        required: true,
-        nullable: false,
-        integer: true,
-        min: 1,
-        max: 5,
-        initial: 3
-      }),
-      health: new fields.NumberField({
-        required: true,
-        nullable: false,
-        integer: true,
-        min: 0,
-        max: 3,
-        initial: 0
-      }),
-      weapon: new fields.StringField({ required: true, nullable: false, initial: "" }),
-      traits: new fields.StringField({ required: true, nullable: false, initial: "" }),
+      equipment: new fields.StringField({ required: true, nullable: false, initial: "" }),
       secret: new fields.StringField({ required: true, nullable: false, initial: "" }),
       secretKind: new fields.StringField({ required: true, nullable: false, initial: "" }),
       specialUsed: new fields.BooleanField({ required: true, nullable: false, initial: false }),
       infected: new fields.BooleanField({ required: true, nullable: false, initial: false }),
-      notes: new fields.StringField({ required: true, nullable: false, initial: "" })
+      gmNotes: new fields.StringField({ required: true, nullable: false, initial: "" })
     };
   }
 }

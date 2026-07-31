@@ -100,61 +100,71 @@ const DEEP_SPACE_GORE_PJ = [
   {
     id: "deep-space-gore-moreau",
     name: "Moreau",
-    role: "Pilote blonde",
-    level: 3,
-    health: 0,
-    weapon: "Clé anglaise",
-    traits: "Tir",
-    notes: "Cinquième membre du cast : à écarter en priorité si la partie n’a que quatre joueurs."
+    profession: "Pilote du Déméter",
+    personality: 7,
+    advantage: "Tir",
+    disadvantage: "",
+    equipment: "Clé anglaise.",
+    background: "Pilote blonde, disciplinée et efficace sous pression.",
+    gmNotes: "Cinquième membre du cast : à écarter en priorité si la partie n’a que quatre joueurs."
   },
   {
     id: "deep-space-gore-wong",
     name: "Wong",
-    role: "Médecin asiatique",
-    level: 3,
-    health: 0,
-    weapon: "Scalpel",
-    traits: "",
+    profession: "Médecin du Déméter",
+    personality: 16,
+    advantage: "",
+    disadvantage: "",
+    equipment: "Scalpel.",
+    background: "Médecin asiatique méthodique, responsable de la santé de l’équipage.",
     secretKind: "ability",
     secret: "Ma trousse d’urgence est restée au bloc médical. Une fois récupérée, sa dose de nanites peut soigner 1 Blessure, une seule fois.",
-    notes: "La trousse peut soigner Wong lui-même. Elle ne décontamine pas et ne réanime pas."
+    gmNotes: "La trousse peut soigner Wong lui-même. Elle ne décontamine pas et ne réanime pas."
   },
   {
     id: "deep-space-gore-grimm",
     name: "Grimm",
-    role: "Xénobiologiste noir",
-    level: 3,
-    health: 1,
-    weapon: "Hache d’incendie",
-    traits: "Invalide",
+    profession: "Xénobiologiste",
+    personality: 12,
+    advantage: "",
+    disadvantage: "Invalide",
+    equipment: "Hache d’incendie.",
+    background: "Xénobiologiste noir blessé lors de l’attaque du spécimen alien.",
     secretKind: "secret",
     secret: "Le Crabe m’a infecté. J’espère que la stase suspendra la contamination jusqu’à ce qu’on puisse me soigner sur Titan.",
     infected: true,
-    notes: "La stase ne bloque pas la contamination. Grimm reste capable de marcher, agir et se battre."
+    resources: {
+      body: { value: 8, max: 12 },
+      spirit: { value: 12, max: 12 },
+      adrenaline: { value: 0, max: 3 }
+    },
+    gmNotes: "La stase ne bloque pas la contamination. Grimm reste capable de marcher, agir et se battre."
   },
   {
     id: "deep-space-gore-roach",
     name: "Roach",
-    role: "Technicien blanc",
-    level: 3,
-    health: 0,
-    weapon: "Torche à plasma",
-    traits: "",
+    profession: "Technicien du Déméter",
+    personality: 20,
+    advantage: "",
+    disadvantage: "",
+    equipment: "Torche à plasma : arme de contact, flux thermique de 20 cm, batterie pleine, n’éclaire pas.",
+    background: "Technicien blanc prudent, chargé de maintenir les systèmes du Déméter.",
     secretKind: "ability",
     secret: "Une fois dans la partie, je peux condamner une porte coulissante fermée avec ma torche à plasma : elle ne pourra plus s’ouvrir.",
-    notes: "La torche est une arme de contact, n’éclaire pas et ne demande pas d’appui en microgravité."
+    gmNotes: "La torche ne demande pas d’appui en microgravité. La capacité ne fonctionne qu’une fois."
   },
   {
     id: "deep-space-gore-vasquez",
     name: "Vasquez",
-    role: "Agronome hispanique",
-    level: 3,
-    health: 0,
-    weapon: "Aucune au départ",
-    traits: "Tir",
+    profession: "Agronome du Déméter",
+    personality: 21,
+    advantage: "Tir",
+    disadvantage: "",
+    equipment: "Aucune arme au départ.",
+    background: "Agronome hispanique rebelle, responsable de la serre hydroponique.",
     secretKind: "secret",
     secret: "J’ai introduit un Glock en contrebande et l’ai enterré dans l’un des bacs hydroponiques de la serre.",
-    notes: "Le Glock est dans le bac le plus éloigné de la porte, possède assez de munitions et ignore Carapace."
+    gmNotes: "Le Glock est dans le bac le plus éloigné de la porte, possède assez de munitions et ignore Carapace."
   }
 ];
 
@@ -162,24 +172,36 @@ const DEEP_SPACE_GORE_ANTAGONISTS = [
   {
     id: "deep-space-gore-hayes",
     name: "Hayes",
-    role: "Hybride — capitaine du Déméter",
-    level: 3,
-    health: 0,
-    weapon: "Pattes acérées",
-    traits: "Carapace",
+    profession: "Hybride — capitaine du Déméter",
+    personality: 2,
+    advantage: "",
+    disadvantage: "",
+    equipment: "Pattes acérées. Carapace : chaque attaque reçue ne cause que 1 Blessure ; le Glock annule cette protection.",
+    background: "Hayes, capitaine du Déméter, contaminé et métamorphosé en Hybride.",
     infected: true,
-    notes: "Carapace réduit chaque attaque reçue à 1 Blessure. Les balles du Glock l’annulent. Toute personne blessée par Hayes est infectée."
+    resources: {
+      body: { value: 10, max: 12 },
+      spirit: { value: 0, max: 12 },
+      adrenaline: { value: 0, max: 3 }
+    },
+    gmNotes: "Adaptation Classic : Corps 10. Toute personne blessée par Hayes est infectée."
   },
   {
     id: "deep-space-gore-crabe",
     name: "Le Crabe",
-    role: "Xénomorphe",
-    level: 4,
-    health: 0,
-    weapon: "Pattes acérées",
-    traits: "Carapace · Ténèbres",
+    profession: "Xénomorphe",
+    personality: 2,
+    advantage: "",
+    disadvantage: "",
+    equipment: "Pattes acérées. Carapace : 1 Blessure par attaque, sauf Glock. Ténèbres : indécelable dans l’obscurité.",
+    background: "Spécimen extraterrestre non répertorié récupéré dans l’espace.",
     infected: true,
-    notes: "Carapace réduit chaque attaque à 1 Blessure, sauf les balles du Glock. Ténèbres le rend indécelable, même avec vision nocturne, infrarouge ou thermique."
+    resources: {
+      body: { value: 12, max: 12 },
+      spirit: { value: 0, max: 12 },
+      adrenaline: { value: 0, max: 3 }
+    },
+    gmNotes: "Adaptation Classic : Corps 12. Ténèbres le rend indécelable même avec vision nocturne, infrarouge ou thermique."
   }
 ];
 
@@ -214,34 +236,12 @@ const classicActorData = (pregen, folderId, scenarioId = "house") => ({
     adrenalinePending: false,
     background: pregen.background,
     equipment: pregen.equipment ?? "",
-    ...(pregen.resources ? { resources: pregen.resources } : {})
-  }
-});
-
-const zeroActorData = (pregen, folderId) => ({
-  name: pregen.name,
-  type: "zero",
-  img: "icons/svg/mystery-man.svg",
-  folder: folderId,
-  flags: {
-    [SYSTEM_ID]: {
-      pregenId: pregen.id,
-      scenarioId: "deep-space-gore"
-    }
-  },
-  system: {
-    scenarioId: "deep-space-gore",
-    playerName: "",
-    role: pregen.role,
-    level: pregen.level,
-    health: pregen.health,
-    weapon: pregen.weapon,
-    traits: pregen.traits,
     secret: pregen.secret ?? "",
     secretKind: pregen.secretKind ?? "",
     specialUsed: false,
     infected: pregen.infected ?? false,
-    notes: pregen.notes ?? ""
+    gmNotes: pregen.gmNotes ?? "",
+    ...(pregen.resources ? { resources: pregen.resources } : {})
   }
 });
 
@@ -304,8 +304,8 @@ export const createPregensOnce = async () => {
   const groups = [
     { pregens: HOUSE_PREGENS, folder: houseFolder, actorData: (pregen) => classicActorData(pregen, houseFolder.id, "house") },
     { pregens: UBIQUITE_PREGENS, folder: ubiquiteFolder, actorData: (pregen) => classicActorData(pregen, ubiquiteFolder.id, "ubiquite") },
-    { pregens: DEEP_SPACE_GORE_PJ, folder: deepSpacePjFolder, actorData: (pregen) => zeroActorData(pregen, deepSpacePjFolder.id) },
-    { pregens: DEEP_SPACE_GORE_ANTAGONISTS, folder: deepSpaceAntagonistFolder, actorData: (pregen) => zeroActorData(pregen, deepSpaceAntagonistFolder.id) }
+    { pregens: DEEP_SPACE_GORE_PJ, folder: deepSpacePjFolder, actorData: (pregen) => classicActorData(pregen, deepSpacePjFolder.id, "deep-space-gore") },
+    { pregens: DEEP_SPACE_GORE_ANTAGONISTS, folder: deepSpaceAntagonistFolder, actorData: (pregen) => classicActorData(pregen, deepSpaceAntagonistFolder.id, "deep-space-gore") }
   ];
 
   let createdCount = 0;

@@ -64,7 +64,8 @@ export class SombreActorSheet extends ActorSheet {
     const system = this.actor.system;
     const scenarioLabels = {
       house: "Sombre Classic · House of the Rising Dead",
-      ubiquite: "Sombre Classic · Ubiquité"
+      ubiquite: "Sombre Classic · Ubiquité",
+      "deep-space-gore": "Sombre Classic · Deep Space Gore"
     };
     const scenarioLabel = scenarioLabels[system.scenarioId] ?? "Sombre Classic";
     const isHouse = system.scenarioId === "house";
@@ -100,6 +101,9 @@ export class SombreActorSheet extends ActorSheet {
       editable: this.isEditable,
       scenarioLabel,
       isHouse,
+      canViewSecret: game.user.isGM || this.actor.isOwner,
+      hasSecret: Boolean(system.secret),
+      isSpecialAbility: system.secretKind === "ability",
       isGM: game.user.isGM,
       mainTabActive: this._activeTab === "main",
       detailsTabActive: this._activeTab === "details",
@@ -148,6 +152,8 @@ export class SombreActorSheet extends ActorSheet {
     html.find("[data-random-name]").on("click", this._onRandomName.bind(this));
     html.find("[data-random-profession]").on("click", this._onRandomProfession.bind(this));
     html.find("[data-lock-random]").on("click", this._onToggleRandomLock.bind(this));
+    html.find("[data-reveal-secret]").on("click", this._onRevealSecret.bind(this));
+    html.find("[data-use-special]").on("click", this._onToggleSpecial.bind(this));
   }
 
   _onChangeSheetTab(event) {
@@ -283,6 +289,20 @@ export class SombreActorSheet extends ActorSheet {
     card.querySelectorAll("[data-personality-guide]").forEach((guide) => {
       guide.hidden = guide.dataset.personalityGuide !== selectedPhase;
     });
+  }
+
+  async _onRevealSecret(event) {
+    event.preventDefault();
+    if (!this.actor.system.secret) return;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: `<div class="sombre-secret-chat"><strong>${this.actor.name}</strong><p>${foundry.utils.escapeHTML(this.actor.system.secret)}</p></div>`
+    });
+  }
+
+  async _onToggleSpecial(event) {
+    event.preventDefault();
+    await this.actor.update({ "system.specialUsed": !this.actor.system.specialUsed });
   }
 
   async _onRoll(event) {

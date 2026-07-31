@@ -1,7 +1,7 @@
 # Sombre — Scénarios pour Foundry VTT 12
 
-Système personnel réunissant les fiches **Sombre Classic** et **Sombre Zéro** pour
-jouer *House of the Rising Dead*, *Ubiquité* et *Deep Space Gore*.
+Système personnel utilisant une fiche **Sombre Classic** commune pour jouer
+*House of the Rising Dead*, *Ubiquité* et une adaptation de *Deep Space Gore*.
 
 ## Installation manuelle
 
@@ -26,7 +26,7 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - cinq prétirés de *House* avec identité, Traits, liens et background ;
 - cinq copies verrouillées de X pour *Ubiquité* ;
 - les cinq membres d’équipage de *Deep Space Gore*, plus Hayes et le Crabe ;
-- fiche Sombre Zéro dédiée : Niveau au d6, états Indemne/Blessé/Mutilé/Mort et dommages en lecture directe ;
+- adaptation de *Deep Space Gore* aux règles Classic pour conserver le même système de jets durant la soirée ;
 - secrets personnels de *Deep Space Gore*, visibles uniquement par le propriétaire et le MJ, avec révélation au chat ;
 - suivi des capacités à usage unique de Wong et Roach ;
 - cadenas contrôlés par le MJ pour désactiver séparément les tirages de nom, profession, Personnalité et Traits ;

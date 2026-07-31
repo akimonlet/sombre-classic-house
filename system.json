@@ -1,7 +1,7 @@
 {
   "id": "sombre-classic-house",
   "title": "Sombre — Scénarios",
-  "description": "Système personnel pour jouer House of the Rising Dead, Ubiquité et Deep Space Gore avec les fiches Sombre Classic et Sombre Zéro.",
+  "description": "Système personnel pour jouer House of the Rising Dead, Ubiquité et Deep Space Gore avec une fiche Sombre Classic.",
   "version": "0.4.0",
   "compatibility": {
     "minimum": 12,
@@ -24,8 +24,7 @@
   ],
   "documentTypes": {
     "Actor": {
-      "victime": {},
-      "zero": {}
+      "victime": {}
     }
   },
   "socket": false,
