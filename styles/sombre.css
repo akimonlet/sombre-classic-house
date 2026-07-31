@@ -217,9 +217,22 @@
   gap: 6px;
 }
 
+.heading-actions > button,
+.trait-column-actions > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  height: 30px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
 .heading-actions .random-lock {
-  min-width: 32px;
-  padding: 5px 8px;
+  width: 30px;
+  min-width: 30px;
+  padding: 3px;
 }
 
 .random-lock.active {
@@ -371,8 +384,9 @@
 }
 
 .trait-column-actions .random-lock {
+  width: 28px;
   min-width: 28px;
-  padding-inline: 6px;
+  padding: 3px;
 }
 
 .traits-grid .locked-selection {
@@ -505,6 +519,10 @@
 }
 
 .gauge.body-gauge {
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+}
+
+.gauge.body-gauge.extended {
   grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
 }
 

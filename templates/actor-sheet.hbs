@@ -211,7 +211,7 @@
           <strong>{{system.resources.body.value}}</strong>
           <span>{{bodyState}}</span>
         </div>
-        <div class="gauge body-gauge">
+        <div class="gauge body-gauge {{#if isAntagonist}}extended{{/if}}">
           {{#each bodyGauge}}
             <button type="button" class="{{#if active}}active{{/if}} {{#if filled}}filled{{/if}}" data-resource="body" data-value="{{level}}" title="Corps {{level}}">{{level}}</button>
           {{/each}}
