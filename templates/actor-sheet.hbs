@@ -2,20 +2,20 @@
   <header class="sombre-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="">
     <div class="identity">
-      <p class="eyebrow">Sombre Classic · House of the Rising Dead</p>
+      <p class="eyebrow">{{scenarioLabel}}</p>
       <div class="field-with-action name-field">
         <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Nom du personnage">
-        <button type="button" data-random-name {{#unless canRandomizeName}}disabled{{/unless}}
+        {{#if isHouse}}<button type="button" data-random-name {{#unless canRandomizeName}}disabled{{/unless}}
                 title="{{#if canRandomizeName}}Proposer un nom texan au hasard{{else}}Tirage du nom verrouillé par le MJ{{/if}}">
           <i class="fa-solid fa-shuffle"></i> Nom
-        </button>
-        {{#if isGM}}
+        </button>{{/if}}
+        {{#if isHouse}}{{#if isGM}}
           <button type="button" class="random-lock {{#if nameRandomLocked}}active{{/if}}"
                   data-lock-random="name"
                   title="{{#if nameRandomLocked}}Déverrouiller le tirage du nom{{else}}Verrouiller le tirage du nom{{/if}}">
             <i class="fa-solid {{#if nameRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
           </button>
-        {{/if}}
+        {{/if}}{{/if}}
       </div>
       <div class="identity-fields">
         <label>
@@ -26,17 +26,17 @@
           <span>Profession</span>
           <span class="field-with-action profession-input">
             <input name="system.profession" type="text" value="{{system.profession}}" placeholder="Profession ordinaire">
-            <button type="button" data-random-profession {{#unless canRandomizeProfession}}disabled{{/unless}}
+            {{#if isHouse}}<button type="button" data-random-profession {{#unless canRandomizeProfession}}disabled{{/unless}}
                     title="{{#if canRandomizeProfession}}Proposer une profession au hasard{{else}}Tirage de la profession verrouillé par le MJ{{/if}}">
               <i class="fa-solid fa-shuffle"></i>
-            </button>
-            {{#if isGM}}
+            </button>{{/if}}
+            {{#if isHouse}}{{#if isGM}}
               <button type="button" class="random-lock {{#if professionRandomLocked}}active{{/if}}"
                       data-lock-random="profession"
                       title="{{#if professionRandomLocked}}Déverrouiller le tirage de la profession{{else}}Verrouiller le tirage de la profession{{/if}}">
                 <i class="fa-solid {{#if professionRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
               </button>
-            {{/if}}
+            {{/if}}{{/if}}
           </span>
         </label>
       </div>
@@ -115,7 +115,7 @@
       <section class="sheet-card traits-card">
       <div class="section-heading">
         <div>
-          <small>Profil House</small>
+          <small>Profil Classic</small>
           <h2>Traits</h2>
         </div>
         <div class="heading-actions">
@@ -161,7 +161,7 @@
           {{#if disadvantageHelp}}<small class="trait-help">{{disadvantageHelp}}</small>{{/if}}
         </label>
       </div>
-      <p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>
+      {{#if isHouse}}<p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>{{/if}}
       </section>
 
       <div class="resource-grid">
@@ -224,7 +224,7 @@
       <section class="sheet-card">
         <div class="section-heading">
           <div>
-            <small>Famille et amitiés</small>
+          <small>{{#if isHouse}}Famille et amitiés{{else}}Relations et passé{{/if}}</small>
             <h2>Liens</h2>
           </div>
         </div>
@@ -242,17 +242,17 @@
         <div class="section-heading">
           <div>
             <small>Survie</small>
-            <h2>Carte & équipement</h2>
+            <h2>{{#if isHouse}}Carte & équipement{{else}}Équipement{{/if}}</h2>
           </div>
         </div>
-        <label class="details-field special-card-field">
+        {{#if isHouse}}<label class="details-field special-card-field">
           <span>Carte spéciale</span>
           <select name="system.specialCard">
             {{#each specialCardChoices}}
               <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
             {{/each}}
           </select>
-        </label>
+        </label>{{/if}}
         <label class="details-field">
           <span>Équipement et notes</span>
           <textarea name="system.equipment" rows="7" placeholder="Objets, munitions, blessures décrites…">{{system.equipment}}</textarea>

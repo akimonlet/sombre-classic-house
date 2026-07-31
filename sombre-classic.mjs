@@ -1,12 +1,14 @@
-import { SombreVictimData } from "./module/data-models.mjs";
+import { SombreVictimData, SombreZeroData } from "./module/data-models.mjs";
 import { SombreActorSheet } from "./module/actor-sheet.mjs";
+import { SombreZeroActorSheet } from "./module/zero-actor-sheet.mjs";
 import { createPregensOnce, registerPregenSetting } from "./module/pregens.mjs";
 
 Hooks.once("init", () => {
-  console.log("Sombre Classic — House | Initialisation");
+  console.log("Sombre — Scénarios | Initialisation");
 
   CONFIG.Actor.dataModels = {
-    victime: SombreVictimData
+    victime: SombreVictimData,
+    zero: SombreZeroData
   };
 
   CONFIG.Actor.trackableAttributes = {
@@ -21,6 +23,13 @@ Hooks.once("init", () => {
     types: ["victime"],
     makeDefault: true,
     label: "Fiche Sombre Classic"
+  });
+
+  Actors.unregisterSheet("core", ActorSheet, { types: ["zero"] });
+  Actors.registerSheet("sombre-classic-house", SombreZeroActorSheet, {
+    types: ["zero"],
+    makeDefault: true,
+    label: "Fiche Sombre Zéro"
   });
 
   registerPregenSetting();

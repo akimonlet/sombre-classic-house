@@ -1,7 +1,7 @@
-# Sombre Classic — House pour Foundry VTT 12
+# Sombre — Scénarios pour Foundry VTT 12
 
-Mini-système personnel centré sur la fiche de personnage de **Sombre Classic** pour
-jouer *House of the Rising Dead*.
+Système personnel réunissant les fiches **Sombre Classic** et **Sombre Zéro** pour
+jouer *House of the Rising Dead*, *Ubiquité* et *Deep Space Gore*.
 
 ## Installation manuelle
 
@@ -10,8 +10,8 @@ jouer *House of the Rising Dead*.
    `FoundryVTT/Data/systems/`
 3. Redémarrer Foundry.
 4. Créer un monde en choisissant le système **Sombre Classic — House**.
-5. Au premier lancement, les cinq personnages sont créés dans le dossier
-   **Prétirés — House**.
+5. Au premier lancement, les dossiers **Sombre 01**, **Sombre 02** et
+   **Sombre 03** sont créés avec les prétirés correspondants.
 6. Attribuer chaque Actor à son joueur avec le menu des permissions.
 
 Le nom du dossier doit rester exactement `sombre-classic-house`.
@@ -23,7 +23,12 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - Avantages et Désavantages autorisés dans *House* ;
 - générateurs de nom et de profession adaptés au Texas de 1973 ;
 - lien positif et carte spéciale sur la fiche ;
-- cinq prétirés créés automatiquement avec identité, profession, Traits, Personnalité, lien positif et background ;
+- cinq prétirés de *House* avec identité, Traits, liens et background ;
+- cinq copies verrouillées de X pour *Ubiquité* ;
+- les cinq membres d’équipage de *Deep Space Gore*, plus Hayes et le Crabe ;
+- fiche Sombre Zéro dédiée : Niveau au d6, états Indemne/Blessé/Mutilé/Mort et dommages en lecture directe ;
+- secrets personnels de *Deep Space Gore*, visibles uniquement par le propriétaire et le MJ, avec révélation au chat ;
+- suivi des capacités à usage unique de Wong et Roach ;
 - cadenas contrôlés par le MJ pour désactiver séparément les tirages de nom, profession, Personnalité et Traits ;
 - onglet **Liens & notes** offrant toute la largeur de la fiche au lien positif, au background, à la carte spéciale et à l’équipement ;
 - relations des prétirés présentées intégralement, avec une ligne vide entre chaque personnage ;
@@ -41,4 +46,4 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - cible exclusivement Foundry VTT 12 ;
 - les aides des Traits synthétisent leurs effets décrits dans *Sombre 1*, pages 15 à 18 ;
 - les cartes spéciales sont consignées sur la fiche mais distribuées par le MJ ;
-- aucun plan ni texte du scénario n'est distribué.
+- aucun plan ni déroulé complet des scénarios n'est distribué.

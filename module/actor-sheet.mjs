@@ -62,6 +62,12 @@ export class SombreActorSheet extends ActorSheet {
     const context = await super.getData(options);
     this._activeTab ??= "main";
     const system = this.actor.system;
+    const scenarioLabels = {
+      house: "Sombre Classic · House of the Rising Dead",
+      ubiquite: "Sombre Classic · Ubiquité"
+    };
+    const scenarioLabel = scenarioLabels[system.scenarioId] ?? "Sombre Classic";
+    const isHouse = system.scenarioId === "house";
     const spirit = system.resources.spirit.value;
     const body = system.resources.body.value;
     const personality = PERSONALITIES[system.personality] ?? PERSONALITIES[0];
@@ -92,6 +98,8 @@ export class SombreActorSheet extends ActorSheet {
       actor: this.actor,
       system,
       editable: this.isEditable,
+      scenarioLabel,
+      isHouse,
       isGM: game.user.isGM,
       mainTabActive: this._activeTab === "main",
       detailsTabActive: this._activeTab === "details",

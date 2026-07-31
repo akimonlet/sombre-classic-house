@@ -1,0 +1,85 @@
+<form class="{{cssClass}} sombre-sheet zero-sheet" autocomplete="off">
+  <header class="sombre-header zero-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" alt="">
+    <div class="identity">
+      <p class="eyebrow">Sombre Zéro · Deep Space Gore</p>
+      <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Nom">
+      <div class="identity-fields">
+        <label>
+          <span>Joueur</span>
+          <input name="system.playerName" type="text" value="{{system.playerName}}" placeholder="Nom du joueur">
+        </label>
+        <label>
+          <span>Fonction</span>
+          <input name="system.role" type="text" value="{{system.role}}" placeholder="Rôle à bord">
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <div class="sheet-scroll zero-scroll">
+    <section class="sheet-card zero-status-card">
+      <div class="zero-level">
+        <small>Niveau</small>
+        {{#if isGM}}
+          <input name="system.level" type="number" min="1" max="5" value="{{system.level}}">
+        {{else}}
+          <strong>{{system.level}}</strong>
+        {{/if}}
+        <span>d6 ≤ {{system.level}}</span>
+      </div>
+      <div class="zero-health">
+        <div class="section-heading">
+          <div><small>État actuel</small><h2>{{healthLabel}}</h2></div>
+        </div>
+        <div class="zero-health-track">
+          {{#each healthChoices}}
+            <button type="button" data-zero-health="{{value}}" class="{{#if current}}current{{/if}} state-{{value}}">{{label}}</button>
+          {{/each}}
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet-card zero-loadout">
+      <label>
+        <span>Arme</span>
+        <input name="system.weapon" type="text" value="{{system.weapon}}" placeholder="Aucune">
+      </label>
+      <label>
+        <span>Traits</span>
+        <input name="system.traits" type="text" value="{{system.traits}}" placeholder="Aucun">
+      </label>
+      <p class="hint">Une attaque réussit sur un résultat inférieur ou égal au Niveau. Sans arme, elle ne cause aucune Blessure.</p>
+    </section>
+
+    <section class="dice-strip zero-dice-strip">
+      <span>Jets rapides</span>
+      <button type="button" data-zero-roll="action"><i class="fa-solid fa-dice-six"></i> Action (d6)</button>
+      <button type="button" data-zero-roll="attack"><i class="fa-solid fa-burst"></i> Attaque (d6)</button>
+    </section>
+
+    {{#if canViewSecret}}{{#if hasSecret}}
+      <section class="sheet-card zero-secret {{#if system.specialUsed}}used{{/if}}">
+        <div class="section-heading">
+          <div><small>Information personnelle</small><h2>{{#if isAbility}}Capacité spéciale{{else}}Secret{{/if}}</h2></div>
+          <button type="button" data-reveal-secret><i class="fa-solid fa-comment"></i> Révéler au chat</button>
+        </div>
+        <p>{{system.secret}}</p>
+        {{#if isAbility}}
+          <button type="button" class="special-use" data-use-special>
+            <i class="fa-solid {{#if system.specialUsed}}fa-square-check{{else}}fa-square{{/if}}"></i>
+            {{#if system.specialUsed}}Capacité utilisée{{else}}Capacité disponible{{/if}}
+          </button>
+        {{/if}}
+      </section>
+    {{/if}}{{/if}}
+
+    {{#if isGM}}
+      <section class="sheet-card zero-gm-notes">
+        <div class="section-heading"><div><small>MJ uniquement</small><h2>Suivi</h2></div></div>
+        <label class="zero-check"><input name="system.infected" type="checkbox" {{checked system.infected}}> Infecté</label>
+        <textarea name="system.notes" rows="4" placeholder="Notes de maîtrise…">{{system.notes}}</textarea>
+      </section>
+    {{/if}}
+  </div>
+</form>

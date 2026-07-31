@@ -1,8 +1,8 @@
 const SYSTEM_ID = "sombre-classic-house";
-const PREGENS_VERSION = "2";
-const FOLDER_NAME = "Prétirés — House";
+const PREGENS_VERSION = "4";
+const LEGACY_HOUSE_FOLDER = "Prétirés — House";
 
-const PREGENS = [
+const HOUSE_PREGENS = [
   {
     id: "calvin-brooks",
     name: "Calvin Brooks",
@@ -80,17 +80,122 @@ const PREGENS = [
   }
 ];
 
-const actorData = (pregen, folderId) => ({
+const UBIQUITE_PREGENS = Array.from({ length: 5 }, (_, index) => ({
+  id: `ubiquite-x-${index + 1}`,
+  name: `X ${index + 1}`,
+  profession: "Homme brutal",
+  personality: 2,
+  advantage: "Ambidextre",
+  disadvantage: "Amnésique",
+  equipment: "Un couteau Bowie ensanglanté. Aucun vêtement ni autre objet.",
+  background: "Homme blanc d’une trentaine d’années, brun au crâne rasé, bouc taillé, corps musclé et tatouages octogonaux rouges. Aucun souvenir.",
+  resources: {
+    body: { value: 12, max: 12 },
+    spirit: { value: 10, max: 12 },
+    adrenaline: { value: 0, max: 3 }
+  }
+}));
+
+const DEEP_SPACE_GORE_PJ = [
+  {
+    id: "deep-space-gore-moreau",
+    name: "Moreau",
+    role: "Pilote blonde",
+    level: 3,
+    health: 0,
+    weapon: "Clé anglaise",
+    traits: "Tir",
+    notes: "Cinquième membre du cast : à écarter en priorité si la partie n’a que quatre joueurs."
+  },
+  {
+    id: "deep-space-gore-wong",
+    name: "Wong",
+    role: "Médecin asiatique",
+    level: 3,
+    health: 0,
+    weapon: "Scalpel",
+    traits: "",
+    secretKind: "ability",
+    secret: "Ma trousse d’urgence est restée au bloc médical. Une fois récupérée, sa dose de nanites peut soigner 1 Blessure, une seule fois.",
+    notes: "La trousse peut soigner Wong lui-même. Elle ne décontamine pas et ne réanime pas."
+  },
+  {
+    id: "deep-space-gore-grimm",
+    name: "Grimm",
+    role: "Xénobiologiste noir",
+    level: 3,
+    health: 1,
+    weapon: "Hache d’incendie",
+    traits: "Invalide",
+    secretKind: "secret",
+    secret: "Le Crabe m’a infecté. J’espère que la stase suspendra la contamination jusqu’à ce qu’on puisse me soigner sur Titan.",
+    infected: true,
+    notes: "La stase ne bloque pas la contamination. Grimm reste capable de marcher, agir et se battre."
+  },
+  {
+    id: "deep-space-gore-roach",
+    name: "Roach",
+    role: "Technicien blanc",
+    level: 3,
+    health: 0,
+    weapon: "Torche à plasma",
+    traits: "",
+    secretKind: "ability",
+    secret: "Une fois dans la partie, je peux condamner une porte coulissante fermée avec ma torche à plasma : elle ne pourra plus s’ouvrir.",
+    notes: "La torche est une arme de contact, n’éclaire pas et ne demande pas d’appui en microgravité."
+  },
+  {
+    id: "deep-space-gore-vasquez",
+    name: "Vasquez",
+    role: "Agronome hispanique",
+    level: 3,
+    health: 0,
+    weapon: "Aucune au départ",
+    traits: "Tir",
+    secretKind: "secret",
+    secret: "J’ai introduit un Glock en contrebande et l’ai enterré dans l’un des bacs hydroponiques de la serre.",
+    notes: "Le Glock est dans le bac le plus éloigné de la porte, possède assez de munitions et ignore Carapace."
+  }
+];
+
+const DEEP_SPACE_GORE_ANTAGONISTS = [
+  {
+    id: "deep-space-gore-hayes",
+    name: "Hayes",
+    role: "Hybride — capitaine du Déméter",
+    level: 3,
+    health: 0,
+    weapon: "Pattes acérées",
+    traits: "Carapace",
+    infected: true,
+    notes: "Carapace réduit chaque attaque reçue à 1 Blessure. Les balles du Glock l’annulent. Toute personne blessée par Hayes est infectée."
+  },
+  {
+    id: "deep-space-gore-crabe",
+    name: "Le Crabe",
+    role: "Xénomorphe",
+    level: 4,
+    health: 0,
+    weapon: "Pattes acérées",
+    traits: "Carapace · Ténèbres",
+    infected: true,
+    notes: "Carapace réduit chaque attaque à 1 Blessure, sauf les balles du Glock. Ténèbres le rend indécelable, même avec vision nocturne, infrarouge ou thermique."
+  }
+];
+
+const classicActorData = (pregen, folderId, scenarioId = "house") => ({
   name: pregen.name,
   type: "victime",
   img: "icons/svg/mystery-man.svg",
   folder: folderId,
   flags: {
     [SYSTEM_ID]: {
-      pregenId: pregen.id
+      pregenId: pregen.id,
+      scenarioId
     }
   },
   system: {
+    scenarioId,
     playerName: "",
     profession: pregen.profession,
     nameRandomLocked: true,
@@ -108,7 +213,35 @@ const actorData = (pregen, folderId) => ({
     traitsRandomLocked: true,
     adrenalinePending: false,
     background: pregen.background,
-    equipment: ""
+    equipment: pregen.equipment ?? "",
+    ...(pregen.resources ? { resources: pregen.resources } : {})
+  }
+});
+
+const zeroActorData = (pregen, folderId) => ({
+  name: pregen.name,
+  type: "zero",
+  img: "icons/svg/mystery-man.svg",
+  folder: folderId,
+  flags: {
+    [SYSTEM_ID]: {
+      pregenId: pregen.id,
+      scenarioId: "deep-space-gore"
+    }
+  },
+  system: {
+    scenarioId: "deep-space-gore",
+    playerName: "",
+    role: pregen.role,
+    level: pregen.level,
+    health: pregen.health,
+    weapon: pregen.weapon,
+    traits: pregen.traits,
+    secret: pregen.secret ?? "",
+    secretKind: pregen.secretKind ?? "",
+    specialUsed: false,
+    infected: pregen.infected ?? false,
+    notes: pregen.notes ?? ""
   }
 });
 
@@ -126,31 +259,72 @@ export const createPregensOnce = async () => {
   if (!game.user.isGM) return;
   if (game.settings.get(SYSTEM_ID, "pregensVersion") === PREGENS_VERSION) return;
 
-  let folder = game.folders.find((entry) => entry.type === "Actor" && entry.name === FOLDER_NAME);
-  if (!folder) {
-    folder = await Folder.create({
-      name: FOLDER_NAME,
-      type: "Actor"
-    });
+  const parentId = (entry) => entry.folder?.id ?? entry.folder ?? null;
+  const ensureFolder = async (name, parent = null) => {
+    const expectedParent = parent?.id ?? null;
+    let folder = game.folders.find((entry) => (
+      entry.type === "Actor"
+      && entry.name === name
+      && parentId(entry) === expectedParent
+    ));
+    if (!folder) {
+      folder = await Folder.create({ name, type: "Actor", folder: expectedParent });
+    }
+    return folder;
+  };
+
+  const sombre01 = await ensureFolder("Sombre 01");
+  const sombre02 = await ensureFolder("Sombre 02");
+  const sombre03 = await ensureFolder("Sombre 03");
+
+  let houseFolder = game.folders.find((entry) => (
+    entry.type === "Actor"
+    && [LEGACY_HOUSE_FOLDER, "House of the Rising Dead"].includes(entry.name)
+  ));
+  if (houseFolder) {
+    const update = {};
+    if (houseFolder.name !== "House of the Rising Dead") update.name = "House of the Rising Dead";
+    if (parentId(houseFolder) !== sombre01.id) update.folder = sombre01.id;
+    if (Object.keys(update).length) await houseFolder.update(update);
+  } else {
+    houseFolder = await ensureFolder("House of the Rising Dead", sombre01);
   }
+
+  const ubiquiteFolder = await ensureFolder("Ubiquité", sombre02);
+  const deepSpaceFolder = await ensureFolder("Deep Space Gore", sombre03);
+  const deepSpacePjFolder = await ensureFolder("Prétirés", deepSpaceFolder);
+  const deepSpaceAntagonistFolder = await ensureFolder("Antagonistes", deepSpaceFolder);
 
   const existingById = new Map(
     game.actors
       .map((actor) => [actor.getFlag(SYSTEM_ID, "pregenId"), actor])
       .filter(([id]) => Boolean(id))
   );
-  const missing = PREGENS.filter((pregen) => !existingById.has(pregen.id));
 
-  if (missing.length) {
-    await Actor.createDocuments(missing.map((pregen) => actorData(pregen, folder.id)));
-    ui.notifications.info(`${missing.length} prétiré${missing.length > 1 ? "s" : ""} ajouté${missing.length > 1 ? "s" : ""} dans « ${FOLDER_NAME} ».`);
+  const groups = [
+    { pregens: HOUSE_PREGENS, folder: houseFolder, actorData: (pregen) => classicActorData(pregen, houseFolder.id, "house") },
+    { pregens: UBIQUITE_PREGENS, folder: ubiquiteFolder, actorData: (pregen) => classicActorData(pregen, ubiquiteFolder.id, "ubiquite") },
+    { pregens: DEEP_SPACE_GORE_PJ, folder: deepSpacePjFolder, actorData: (pregen) => zeroActorData(pregen, deepSpacePjFolder.id) },
+    { pregens: DEEP_SPACE_GORE_ANTAGONISTS, folder: deepSpaceAntagonistFolder, actorData: (pregen) => zeroActorData(pregen, deepSpaceAntagonistFolder.id) }
+  ];
+
+  let createdCount = 0;
+  for (const group of groups) {
+    const missing = group.pregens.filter((pregen) => !existingById.has(pregen.id));
+    if (!missing.length) continue;
+    await Actor.createDocuments(missing.map(group.actorData));
+    createdCount += missing.length;
   }
 
-  const existing = PREGENS.filter((pregen) => existingById.has(pregen.id));
-  if (existing.length) {
-    await Promise.all(existing.map((pregen) => (
-      existingById.get(pregen.id).update({ "system.positiveLink": pregen.positiveLink })
-    )));
+  const existingHouse = HOUSE_PREGENS.filter((pregen) => existingById.has(pregen.id));
+  await Promise.all(existingHouse.map((pregen) => existingById.get(pregen.id).update({
+    folder: houseFolder.id,
+    "system.scenarioId": "house",
+    "system.positiveLink": pregen.positiveLink
+  })));
+
+  if (createdCount) {
+    ui.notifications.info(`${createdCount} acteur${createdCount > 1 ? "s" : ""} de scénario ajouté${createdCount > 1 ? "s" : ""}.`);
   }
 
   await game.settings.set(SYSTEM_ID, "pregensVersion", PREGENS_VERSION);
