@@ -119,6 +119,7 @@
 
 .identity-fields label,
 .traits-grid label,
+.traits-grid .trait-column,
 .notes-grid label {
   display: grid;
   gap: 5px;
@@ -349,6 +350,29 @@
 
 .traits-grid {
   margin-top: 10px;
+}
+
+.trait-column-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.trait-column-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trait-column-actions button {
+  min-height: 24px;
+  padding: 2px 7px;
+}
+
+.trait-column-actions .random-lock {
+  min-width: 28px;
+  padding-inline: 6px;
 }
 
 .traits-grid .locked-selection {

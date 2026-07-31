@@ -118,24 +118,23 @@
           <small>Profil Classic</small>
           <h2>Traits</h2>
         </div>
-        <div class="heading-actions">
-          <button type="button" data-random-traits {{#unless canRandomizeTraits}}disabled{{/unless}}
-                  title="{{#if canRandomizeTraits}}Tirer une paire de Traits au hasard{{else}}{{#if traitsRandomLocked}}Tirage verrouillé par le MJ{{else}}Tirage aléatoire déjà utilisé{{/if}}{{/if}}">
-            <i class="fa-solid fa-shuffle"></i>
-            {{#if canRandomizeTraits}}Paire aléatoire{{else}}{{#if traitsRandomLocked}}Verrouillé{{else}}Hasard utilisé{{/if}}{{/if}}
-          </button>
-          {{#if isGM}}
-            <button type="button" class="random-lock {{#if traitsRandomLocked}}active{{/if}}"
-                    data-lock-random="traits"
-                    title="{{#if traitsRandomLocked}}Déverrouiller le tirage pour les joueurs{{else}}Verrouiller le tirage pour les joueurs{{/if}}">
-              <i class="fa-solid {{#if traitsRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
-            </button>
-          {{/if}}
-        </div>
       </div>
       <div class="traits-grid">
-        <label>
-          <span>Avantage</span>
+        <div class="trait-column">
+          <div class="trait-column-heading">
+            <span>Avantage</span>
+            <div class="trait-column-actions">
+              <button type="button" data-random-trait="advantage" {{#unless canRandomizeAdvantage}}disabled{{/unless}} title="{{advantageRandomTitle}}">
+                <i class="fa-solid fa-shuffle"></i> {{advantageRandomStatus}}
+              </button>
+              {{#if isGM}}
+                <button type="button" class="random-lock {{#if advantageRandomLocked}}active{{/if}}" data-lock-random="advantage"
+                        title="{{#if advantageRandomLocked}}Déverrouiller le tirage d’Avantage{{else}}Verrouiller le tirage d’Avantage{{/if}}">
+                  <i class="fa-solid {{#if advantageRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+                </button>
+              {{/if}}
+            </div>
+          </div>
           {{#if isGM}}
             <select name="system.advantage">
               {{#each advantageChoices}}
@@ -146,9 +145,22 @@
             <div class="locked-selection">{{#if system.advantage}}{{system.advantage}}{{else}}À tirer au hasard{{/if}}</div>
           {{/if}}
           {{#if advantageHelp}}<small class="trait-help">{{advantageHelp}}</small>{{/if}}
-        </label>
-        <label>
-          <span>Désavantage</span>
+        </div>
+        <div class="trait-column">
+          <div class="trait-column-heading">
+            <span>Désavantage</span>
+            <div class="trait-column-actions">
+              <button type="button" data-random-trait="disadvantage" {{#unless canRandomizeDisadvantage}}disabled{{/unless}} title="{{disadvantageRandomTitle}}">
+                <i class="fa-solid fa-shuffle"></i> {{disadvantageRandomStatus}}
+              </button>
+              {{#if isGM}}
+                <button type="button" class="random-lock {{#if disadvantageRandomLocked}}active{{/if}}" data-lock-random="disadvantage"
+                        title="{{#if disadvantageRandomLocked}}Déverrouiller le tirage de Désavantage{{else}}Verrouiller le tirage de Désavantage{{/if}}">
+                  <i class="fa-solid {{#if disadvantageRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+                </button>
+              {{/if}}
+            </div>
+          </div>
           {{#if isGM}}
             <select name="system.disadvantage">
               {{#each disadvantageChoices}}
@@ -159,7 +171,7 @@
             <div class="locked-selection">{{#if system.disadvantage}}{{system.disadvantage}}{{else}}À tirer au hasard{{/if}}</div>
           {{/if}}
           {{#if disadvantageHelp}}<small class="trait-help">{{disadvantageHelp}}</small>{{/if}}
-        </label>
+        </div>
       </div>
       {{#if isHouse}}<p class="hint">Les Traits incompatibles avec House ne sont pas proposés.</p>{{/if}}
       </section>
