@@ -15,16 +15,24 @@ const tokenNameFor = (actorName, playerName) => {
 
 const updatePlacedTokens = async (actor, tokenName) => {
   if (!game.user.isGM) return;
+  const always = CONST.TOKEN_DISPLAY_MODES.ALWAYS;
 
   for (const scene of game.scenes) {
     const updates = scene.tokens
-      .filter((token) => token.actorId === actor.id && token.name !== tokenName)
-      .map((token) => ({ _id: token.id, name: tokenName }));
+      .filter((token) => (
+        token.actorId === actor.id
+        && (token.name !== tokenName || token.displayName !== always)
+      ))
+      .map((token) => ({ _id: token.id, name: tokenName, displayName: always }));
     if (updates.length) await scene.updateEmbeddedDocuments("Token", updates);
   }
 };
 
 export const registerTokenNameHooks = () => {
+  Hooks.on("preCreateActor", (actor) => {
+    actor.updateSource({ "prototypeToken.displayName": CONST.TOKEN_DISPLAY_MODES.ALWAYS });
+  });
+
   Hooks.on("preUpdateActor", (actor, changes) => {
     const actorNameChanged = hasChanged(changes, "name");
     const playerNameChanged = hasChanged(changes, "system.playerName");
@@ -35,6 +43,7 @@ export const registerTokenNameHooks = () => {
       ? changedValue(changes, "system.playerName")
       : actor.system.playerName;
     foundry.utils.setProperty(changes, "prototypeToken.name", tokenNameFor(actorName, playerName));
+    foundry.utils.setProperty(changes, "prototypeToken.displayName", CONST.TOKEN_DISPLAY_MODES.ALWAYS);
   });
 
   Hooks.on("updateActor", async (actor, changes) => {
@@ -48,11 +57,13 @@ export const registerTokenNameHooks = () => {
   Hooks.once("ready", async () => {
     if (!game.user.isGM) return;
     for (const actor of game.actors) {
-      if (!String(actor.system.playerName ?? "").trim()) continue;
       const tokenName = tokenNameFor(actor.name, actor.system.playerName);
-      if (actor.prototypeToken.name !== tokenName) {
-        await actor.update({ "prototypeToken.name": tokenName });
+      const update = {};
+      if (actor.prototypeToken.name !== tokenName) update["prototypeToken.name"] = tokenName;
+      if (actor.prototypeToken.displayName !== CONST.TOKEN_DISPLAY_MODES.ALWAYS) {
+        update["prototypeToken.displayName"] = CONST.TOKEN_DISPLAY_MODES.ALWAYS;
       }
+      if (Object.keys(update).length) await actor.update(update);
       await updatePlacedTokens(actor, tokenName);
     }
   });
