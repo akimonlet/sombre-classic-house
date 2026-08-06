@@ -1,5 +1,5 @@
 const SYSTEM_ID = "sombre-classic-house";
-const PREGENS_VERSION = "6";
+const PREGENS_VERSION = "7";
 const LEGACY_HOUSE_FOLDER = "Prétirés — House";
 
 const HOUSE_PREGENS = [
@@ -224,13 +224,13 @@ const AUCUN_ACCORD_PJ = [
   },
   {
     id: "aucun-accord-plombier",
-    name: "Karim",
+    name: "Laurent",
     profession: "Plombier-chauffagiste",
     personality: 21,
     advantage: "Fort",
     disadvantage: "Maladroit",
     equipment: "Lampe frontale et quelques outils de poche. La caisse à outils complète est restée dans le local technique.",
-    background: "Technicien indépendant expérimenté, Karim intervient aujourd’hui sur une climatisation défaillante.",
+    background: "Technicien indépendant expérimenté, Laurent intervient aujourd’hui sur une climatisation défaillante.",
     resources: {
       body: { value: 12, max: 12 },
       spirit: { value: 10, max: 12 },
@@ -240,13 +240,13 @@ const AUCUN_ACCORD_PJ = [
   },
   {
     id: "aucun-accord-avocate",
-    name: "Claire",
+    name: "Marion",
     profession: "Avocate",
     personality: 17,
     advantage: "Lucidité",
     disadvantage: "Code de conduite",
     equipment: "Téléphone, dossier de succession, mandat professionnel et nécessaire de prise de notes.",
-    background: "Avocate rigoureuse, Claire doit aujourd’hui inventorier le contenu d’un coffre dans le cadre d’une succession.",
+    background: "Avocate rigoureuse, Marion doit aujourd’hui inventorier le contenu d’un coffre dans le cadre d’une succession.",
     resources: {
       body: { value: 8, max: 12 },
       spirit: { value: 12, max: 12 },
@@ -274,13 +274,13 @@ const AUCUN_ACCORD_PJ = [
   },
   {
     id: "aucun-accord-securite",
-    name: "Malik",
+    name: "David",
     profession: "Agent de sécurité bancaire",
     personality: 7,
     advantage: "Vigilant",
     disadvantage: "Code de conduite",
     equipment: "Radio, lampe et badge de sécurité. Il n’est pas armé.",
-    background: "Agent de sécurité consciencieux, Malik commence son service par les contrôles ordinaires des accès et des caméras.",
+    background: "Agent de sécurité consciencieux, David commence son service par les contrôles ordinaires des accès et des caméras.",
     resources: {
       body: { value: 10, max: 12 },
       spirit: { value: 12, max: 12 },
