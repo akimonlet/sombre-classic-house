@@ -1,5 +1,5 @@
 const SYSTEM_ID = "sombre-classic-house";
-const PREGENS_VERSION = "5";
+const PREGENS_VERSION = "6";
 const LEGACY_HOUSE_FOLDER = "Prétirés — House";
 
 const HOUSE_PREGENS = [
@@ -208,85 +208,85 @@ const DEEP_SPACE_GORE_ANTAGONISTS = [
 const AUCUN_ACCORD_PJ = [
   {
     id: "aucun-accord-cadre",
-    name: "Le cadre supérieur",
+    name: "Thomas",
     profession: "Cadre supérieur de la banque",
     personality: 17,
     advantage: "Notable",
     disadvantage: "Code de conduite",
-    equipment: "Téléphone professionnel, badge de cadre et codes d’accès de l’agence.",
-    background: "Responsable du personnel et des opérations sensibles, il commence dans son bureau pendant un entretien d’embauche.",
+    equipment: "Téléphone professionnel, badge de cadre et codes d’accès professionnels.",
+    background: "Cadre supérieur méthodique, Thomas commence sa journée par un entretien d’embauche dans son bureau.",
     resources: {
       body: { value: 8, max: 12 },
       spirit: { value: 12, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Delcourt lui ordonne de bloquer tout accès au coffre 317. Il peut autoriser l’ouverture du coffre avec l’avocate."
+    gmNotes: ""
   },
   {
     id: "aucun-accord-plombier",
-    name: "Le plombier-chauffagiste",
+    name: "Karim",
     profession: "Plombier-chauffagiste",
     personality: 21,
     advantage: "Fort",
     disadvantage: "Maladroit",
     equipment: "Lampe frontale et quelques outils de poche. La caisse à outils complète est restée dans le local technique.",
-    background: "Technicien indépendant venu réparer la climatisation, il commence caché dans le faux plafond au-dessus du hall.",
+    background: "Technicien indépendant expérimenté, Karim intervient aujourd’hui sur une climatisation défaillante.",
     resources: {
       body: { value: 12, max: 12 },
       spirit: { value: 10, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Personne ne connaît sa présence. Il a découvert une grille démontée et le câble d’une caméra sectionné."
+    gmNotes: ""
   },
   {
     id: "aucun-accord-avocate",
-    name: "L’avocate",
+    name: "Claire",
     profession: "Avocate",
     personality: 17,
     advantage: "Lucidité",
     disadvantage: "Code de conduite",
-    equipment: "Téléphone, dossier de succession, clé et message trouvés dans le coffre 316.",
-    background: "Chargée de la succession d’Henri Beaumont, elle commence enfermée dans la salle de consultation du sous-sol.",
+    equipment: "Téléphone, dossier de succession, mandat professionnel et nécessaire de prise de notes.",
+    background: "Avocate rigoureuse, Claire doit aujourd’hui inventorier le contenu d’un coffre dans le cadre d’une succession.",
     resources: {
       body: { value: 8, max: 12 },
       spirit: { value: 12, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    secretKind: "secret",
-    secret: "Le message de Beaumont affirme que le coffre 317 contient des preuves impliquant Delcourt et le commissaire Morel.",
-    gmNotes: "Sa clé et l’autorisation du cadre permettent d’accéder au contenu du coffre 317."
+    secretKind: "",
+    secret: "",
+    gmNotes: ""
   },
   {
     id: "aucun-accord-entretien",
-    name: "L’agent d’entretien",
+    name: "Sonia",
     profession: "Agent d’entretien",
     personality: 21,
     advantage: "Vigilant",
     disadvantage: "Chétif",
     equipment: "Trousseau de service, chariot, produits ménagers, cutter et petits outils.",
-    background: "Il connaît les portes secondaires et commence enfermé dans les vestiaires après avoir découvert un sac suspect.",
+    background: "Agente d’entretien attentive et débrouillarde, Sonia connaît parfaitement les habitudes et les défauts du bâtiment.",
     resources: {
       body: { value: 10, max: 12 },
       spirit: { value: 12, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Son trousseau ouvre l’escalier de service et la sortie de livraison."
+    gmNotes: ""
   },
   {
     id: "aucun-accord-securite",
-    name: "L’agent de sécurité",
+    name: "Malik",
     profession: "Agent de sécurité bancaire",
     personality: 7,
     advantage: "Vigilant",
     disadvantage: "Code de conduite",
     equipment: "Radio, lampe et badge de sécurité. Il n’est pas armé.",
-    background: "Responsable des caméras et des portes électroniques, il commence dans le poste de sécurité du sous-sol.",
+    background: "Agent de sécurité consciencieux, Malik commence son service par les contrôles ordinaires des accès et des caméras.",
     resources: {
       body: { value: 10, max: 12 },
       spirit: { value: 12, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Au début du braquage, il peut verrouiller une seule zone : le hall, le sous-sol ou l’escalier de service."
+    gmNotes: ""
   }
 ];
 
@@ -299,13 +299,13 @@ const AUCUN_ACCORD_BRAQUEURS = [
     advantage: "Chef",
     disadvantage: "Ennemi mortel",
     equipment: "Pistolet, chargeur de rechange, cagoule et radio.",
-    background: "Chef calme et méthodique. Lui seul sait que le véritable objectif du braquage est le contenu du coffre 317.",
+    background: "Chef calme, méthodique et autoritaire, Victor garde toujours une partie de son plan pour lui.",
     resources: {
       body: { value: 12, max: 12 },
       spirit: { value: 10, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Il veut conserver les otages en vie, récupérer le 317 et négocier une sortie. Morel prévoit de le faire tuer."
+    gmNotes: ""
   },
   {
     id: "aucun-accord-nadia",
@@ -315,13 +315,13 @@ const AUCUN_ACCORD_BRAQUEURS = [
     advantage: "Tir",
     disadvantage: "Panique",
     equipment: "Pistolet, cagoule, colliers de serrage et sac à billets.",
-    background: "Venue pour l’argent, Nadia regrette rapidement l’opération lorsque les négociations échouent.",
+    background: "Nadia paraît déterminée, mais supporte mal les situations qu’elle ne contrôle plus.",
     resources: {
       body: { value: 10, max: 12 },
       spirit: { value: 12, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Elle peut aider les otages ou se retourner contre Rémi si elle croit encore pouvoir survivre."
+    gmNotes: ""
   },
   {
     id: "aucun-accord-remi",
@@ -331,13 +331,13 @@ const AUCUN_ACCORD_BRAQUEURS = [
     advantage: "Fort",
     disadvantage: "Écervelé",
     equipment: "Fusil à canon scié, pistolet, cagoule et munitions.",
-    background: "Venu pour l’argent, Rémi refuse de repartir les mains vides et veut forcer la police à céder par la violence.",
+    background: "Rémi est brutal, impatient et convaincu que la violence résout tous les problèmes.",
     resources: {
       body: { value: 12, max: 12 },
       spirit: { value: 8, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Il exécute le premier otage à 30 minutes et devient ensuite presque impossible à raisonner."
+    gmNotes: ""
   },
   {
     id: "aucun-accord-lucas",
@@ -347,13 +347,13 @@ const AUCUN_ACCORD_BRAQUEURS = [
     advantage: "Lascar",
     disadvantage: "Chétif",
     equipment: "Pistolet, outils d’effraction, perceuse compacte, cagoule et radio.",
-    background: "Spécialiste des coffres venu pour l’argent. Victor lui impose de privilégier le coffre 317 sans lui en expliquer la raison.",
+    background: "Technicien prudent et discret, Lucas maîtrise les serrures, les alarmes et les outils d’effraction.",
     resources: {
       body: { value: 10, max: 12 },
       spirit: { value: 12, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
-    gmNotes: "Il quitte le hall vers 25 minutes pour trouver la chambre forte et l’avocate."
+    gmNotes: ""
   }
 ];
 
@@ -484,6 +484,29 @@ export const createPregensOnce = async () => {
     "system.scenarioId": "house",
     "system.positiveLink": pregen.positiveLink
   })));
+
+  const updateAucunAccordActor = (pregen, folder) => existingById.get(pregen.id).update({
+    name: pregen.name,
+    folder: folder.id,
+    "system.scenarioId": "aucun-accord",
+    "system.profession": pregen.profession,
+    "system.personality": pregen.personality,
+    "system.advantage": pregen.advantage,
+    "system.disadvantage": pregen.disadvantage,
+    "system.background": pregen.background,
+    "system.equipment": pregen.equipment ?? "",
+    "system.secret": "",
+    "system.secretKind": "",
+    "system.gmNotes": "",
+    ...(pregen.resources ? { "system.resources": pregen.resources } : {})
+  });
+
+  const existingAucunAccordPj = AUCUN_ACCORD_PJ.filter((pregen) => existingById.has(pregen.id));
+  const existingAucunAccordBraqueurs = AUCUN_ACCORD_BRAQUEURS.filter((pregen) => existingById.has(pregen.id));
+  await Promise.all([
+    ...existingAucunAccordPj.map((pregen) => updateAucunAccordActor(pregen, aucunAccordPjFolder)),
+    ...existingAucunAccordBraqueurs.map((pregen) => updateAucunAccordActor(pregen, aucunAccordBraqueursFolder))
+  ]);
 
   if (createdCount) {
     ui.notifications.info(`${createdCount} acteur${createdCount > 1 ? "s" : ""} de scénario ajouté${createdCount > 1 ? "s" : ""}.`);
