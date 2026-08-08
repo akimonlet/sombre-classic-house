@@ -67,10 +67,10 @@
             {{#if canRandomizePersonality}}Hasard{{else}}{{#if personalityRandomLocked}}Verrouillé{{else}}Hasard utilisé{{/if}}{{/if}}
           </button>
           {{#if isGM}}
-            <button type="button" class="random-lock {{#if personalityRandomLocked}}active{{/if}}"
+            <button type="button" class="random-lock {{#if personalityChoiceUnavailable}}active{{/if}}"
                     data-lock-random="personality"
-                    title="{{#if personalityRandomLocked}}Déverrouiller le tirage pour les joueurs{{else}}Verrouiller le tirage pour les joueurs{{/if}}">
-              <i class="fa-solid {{#if personalityRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+                    title="{{#if personalityRandomLocked}}Ouvrir un choix pour le joueur{{else}}{{#if system.personalityRandomUsed}}Réautoriser un choix pour le joueur{{else}}Verrouiller le choix du joueur{{/if}}{{/if}}">
+              <i class="fa-solid {{#if personalityChoiceUnavailable}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
             </button>
           {{/if}}
         </div>
@@ -81,11 +81,16 @@
             <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
           {{/each}}
         </select>
+      {{else}}{{#if canChoosePersonality}}
+        <select data-player-choice="personality">
+          <option value="" selected disabled>Choisir une Personnalité (une seule fois)</option>
+          {{#each playerPersonalityChoices}}<option value="{{value}}">{{label}}</option>{{/each}}
+        </select>
       {{else}}
         <div class="locked-selection">
           {{#if personalityRevealed}}{{personalityLabel}}{{else}}À tirer au hasard{{/if}}
         </div>
-      {{/if}}
+      {{/if}}{{/if}}
       {{#if personalityRevealed}}
         <div class="personality-phases">
           {{#each personalityPhases}}
@@ -128,9 +133,9 @@
                 <i class="fa-solid fa-shuffle"></i> {{advantageRandomStatus}}
               </button>
               {{#if isGM}}
-                <button type="button" class="random-lock {{#if advantageRandomLocked}}active{{/if}}" data-lock-random="advantage"
-                        title="{{#if advantageRandomLocked}}Déverrouiller le tirage d’Avantage{{else}}Verrouiller le tirage d’Avantage{{/if}}">
-                  <i class="fa-solid {{#if advantageRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+                <button type="button" class="random-lock {{#if advantageChoiceUnavailable}}active{{/if}}" data-lock-random="advantage"
+                        title="{{#if advantageRandomLocked}}Ouvrir un choix d’Avantage{{else}}{{#if system.advantageRandomUsed}}Réautoriser un choix d’Avantage{{else}}Verrouiller le choix d’Avantage{{/if}}{{/if}}">
+                  <i class="fa-solid {{#if advantageChoiceUnavailable}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
                 </button>
               {{/if}}
             </div>
@@ -141,9 +146,14 @@
                 <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
               {{/each}}
             </select>
+          {{else}}{{#if canChooseAdvantage}}
+            <select data-player-choice="advantage">
+              <option value="" selected disabled>Choisir un Avantage (une seule fois)</option>
+              {{#each playerAdvantageChoices}}<option value="{{value}}">{{label}}</option>{{/each}}
+            </select>
           {{else}}
             <div class="locked-selection">{{#if system.advantage}}{{system.advantage}}{{else}}À tirer au hasard{{/if}}</div>
-          {{/if}}
+          {{/if}}{{/if}}
           {{#if advantageHelp}}<small class="trait-help">{{advantageHelp}}</small>{{/if}}
         </div>
         <div class="trait-column">
@@ -154,9 +164,9 @@
                 <i class="fa-solid fa-shuffle"></i> {{disadvantageRandomStatus}}
               </button>
               {{#if isGM}}
-                <button type="button" class="random-lock {{#if disadvantageRandomLocked}}active{{/if}}" data-lock-random="disadvantage"
-                        title="{{#if disadvantageRandomLocked}}Déverrouiller le tirage de Désavantage{{else}}Verrouiller le tirage de Désavantage{{/if}}">
-                  <i class="fa-solid {{#if disadvantageRandomLocked}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
+                <button type="button" class="random-lock {{#if disadvantageChoiceUnavailable}}active{{/if}}" data-lock-random="disadvantage"
+                        title="{{#if disadvantageRandomLocked}}Ouvrir un choix de Désavantage{{else}}{{#if system.disadvantageRandomUsed}}Réautoriser un choix de Désavantage{{else}}Verrouiller le choix de Désavantage{{/if}}{{/if}}">
+                  <i class="fa-solid {{#if disadvantageChoiceUnavailable}}fa-lock{{else}}fa-lock-open{{/if}}"></i>
                 </button>
               {{/if}}
             </div>
@@ -167,9 +177,14 @@
                 <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
               {{/each}}
             </select>
+          {{else}}{{#if canChooseDisadvantage}}
+            <select data-player-choice="disadvantage">
+              <option value="" selected disabled>Choisir un Désavantage (une seule fois)</option>
+              {{#each playerDisadvantageChoices}}<option value="{{value}}">{{label}}</option>{{/each}}
+            </select>
           {{else}}
             <div class="locked-selection">{{#if system.disadvantage}}{{system.disadvantage}}{{else}}À tirer au hasard{{/if}}</div>
-          {{/if}}
+          {{/if}}{{/if}}
           {{#if disadvantageHelp}}<small class="trait-help">{{disadvantageHelp}}</small>{{/if}}
         </div>
       </div>

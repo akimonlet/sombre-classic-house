@@ -192,6 +192,43 @@ const refreshDashboard = () => {
   if (dashboard.rendered) dashboard.render(false);
 };
 
+const openAllCharacterChoices = async () => {
+  const actors = game.actors.filter((actor) => actor.type === "victime" && !actor.system.isAntagonist);
+  if (!actors.length) {
+    ui.notifications.warn("Aucune fiche de joueur à ouvrir.");
+    return;
+  }
+
+  await Promise.all(actors.map((actor) => actor.update({
+    "system.personalityRandomLocked": false,
+    "system.personalityRandomUsed": false,
+    "system.advantageRandomLocked": false,
+    "system.advantageRandomUsed": false,
+    "system.disadvantageRandomLocked": false,
+    "system.disadvantageRandomUsed": false
+  })));
+  ui.notifications.info(`Choix ouverts une fois pour ${actors.length} fiche${actors.length > 1 ? "s" : ""}.`);
+};
+
+const confirmOpenAllCharacterChoices = () => {
+  new Dialog({
+    title: "Ouvrir les choix des joueurs",
+    content: "<p>Chaque joueur pourra choisir ou tirer <strong>une fois</strong> sa Personnalité, son Avantage et son Désavantage. Les choix actuels pourront être remplacés.</p>",
+    buttons: {
+      open: {
+        icon: '<i class="fa-solid fa-lock-open"></i>',
+        label: "Ouvrir pour toutes les fiches",
+        callback: openAllCharacterChoices
+      },
+      cancel: {
+        icon: '<i class="fa-solid fa-xmark"></i>',
+        label: "Annuler"
+      }
+    },
+    default: "cancel"
+  }).render(true);
+};
+
 export const registerTraitDashboard = () => {
   game.settings.register(SYSTEM_ID, "traitDashboardFolder", {
     scope: "client",
@@ -207,12 +244,19 @@ export const registerTraitDashboard = () => {
   });
 
   Hooks.on("renderActorDirectory", (_app, html) => {
-    if (!game.user.isGM || html.find("[data-open-trait-dashboard]").length) return;
-    const button = $('<button type="button" data-open-trait-dashboard><i class="fa-solid fa-list-check"></i> Récap Traits</button>');
-    button.on("click", () => dashboard.render(true));
+    if (!game.user.isGM) return;
     const actions = html.find(".directory-header .header-actions");
-    if (actions.length) actions.append(button);
-    else html.find(".directory-header").append(button);
+    const target = actions.length ? actions : html.find(".directory-header");
+    if (!html.find("[data-open-trait-dashboard]").length) {
+      const dashboardButton = $('<button type="button" data-open-trait-dashboard><i class="fa-solid fa-list-check"></i> Récap Traits</button>');
+      dashboardButton.on("click", () => dashboard.render(true));
+      target.append(dashboardButton);
+    }
+    if (!html.find("[data-open-character-choices]").length) {
+      const choicesButton = $('<button type="button" data-open-character-choices title="Autoriser un choix unique sur toutes les fiches"><i class="fa-solid fa-lock-open"></i> Choix joueurs</button>');
+      choicesButton.on("click", confirmOpenAllCharacterChoices);
+      target.append(choicesButton);
+    }
   });
 
   for (const hook of ["createActor", "updateActor", "deleteActor", "createFolder", "updateFolder", "deleteFolder"]) {

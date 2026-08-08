@@ -115,49 +115,50 @@ export class SombreActorSheet extends ActorSheet {
       personalityRandomLocked: Boolean(system.personalityRandomLocked),
       advantageRandomLocked: Boolean(system.advantageRandomLocked),
       disadvantageRandomLocked: Boolean(system.disadvantageRandomLocked),
+      personalityChoiceUnavailable: Boolean(system.personalityRandomLocked || system.personalityRandomUsed),
+      advantageChoiceUnavailable: Boolean(system.advantageRandomLocked || system.advantageRandomUsed),
+      disadvantageChoiceUnavailable: Boolean(system.disadvantageRandomLocked || system.disadvantageRandomUsed),
+      canChoosePersonality: !game.user.isGM && !system.personalityRandomUsed && !system.personalityRandomLocked,
+      canChooseAdvantage: !game.user.isGM && !system.advantageRandomUsed && !system.advantageRandomLocked,
+      canChooseDisadvantage: !game.user.isGM && !system.disadvantageRandomUsed && !system.disadvantageRandomLocked,
       nameRandomLocked: Boolean(system.nameRandomLocked),
       professionRandomLocked: Boolean(system.professionRandomLocked),
       canRandomizeName: game.user.isGM || !system.nameRandomLocked,
       canRandomizeProfession: game.user.isGM || !system.professionRandomLocked,
       canRandomizePersonality: game.user.isGM || (!system.personalityRandomUsed && !system.personalityRandomLocked),
-      canRandomizeAdvantage: game.user.isGM || (!system.advantage && !system.advantageRandomUsed && !system.advantageRandomLocked),
-      canRandomizeDisadvantage: game.user.isGM || (!system.disadvantage && !system.disadvantageRandomUsed && !system.disadvantageRandomLocked),
+      canRandomizeAdvantage: game.user.isGM || (!system.advantageRandomUsed && !system.advantageRandomLocked),
+      canRandomizeDisadvantage: game.user.isGM || (!system.disadvantageRandomUsed && !system.disadvantageRandomLocked),
       advantageRandomStatus: game.user.isGM
         ? "Aléatoire"
         : system.advantageRandomLocked
           ? "Verrouillé"
           : system.advantageRandomUsed
             ? "Hasard utilisé"
-            : system.advantage
-              ? "Déjà défini"
-              : "Aléatoire",
+            : "Aléatoire",
       disadvantageRandomStatus: game.user.isGM
         ? "Aléatoire"
         : system.disadvantageRandomLocked
           ? "Verrouillé"
           : system.disadvantageRandomUsed
             ? "Hasard utilisé"
-            : system.disadvantage
-              ? "Déjà défini"
-              : "Aléatoire",
+            : "Aléatoire",
       advantageRandomTitle: game.user.isGM
         ? "Tirer un nouvel Avantage au hasard"
         : system.advantageRandomLocked
           ? "Tirage d’Avantage verrouillé par le MJ"
           : system.advantageRandomUsed
             ? "Tirage aléatoire d’Avantage déjà utilisé"
-            : system.advantage
-              ? "Un Avantage est déjà défini"
-              : "Tirer un Avantage au hasard",
+            : "Tirer un Avantage au hasard",
       disadvantageRandomTitle: game.user.isGM
         ? "Tirer un nouveau Désavantage au hasard"
         : system.disadvantageRandomLocked
           ? "Tirage de Désavantage verrouillé par le MJ"
           : system.disadvantageRandomUsed
             ? "Tirage aléatoire de Désavantage déjà utilisé"
-            : system.disadvantage
-              ? "Un Désavantage est déjà défini"
-              : "Tirer un Désavantage au hasard",
+            : "Tirer un Désavantage au hasard",
+      playerPersonalityChoices: PERSONALITIES.map((labels, index) => ({ value: String(index), label: labels.join(" → ") })),
+      playerAdvantageChoices: ADVANTAGES.map((label) => ({ value: label, label })),
+      playerDisadvantageChoices: DISADVANTAGES.map((label) => ({ value: label, label })),
       personalityPhases: personality.map((label, index) => ({
         number: index + 1,
         label,
@@ -194,6 +195,7 @@ export class SombreActorSheet extends ActorSheet {
     html.find("[data-random-name]").on("click", this._onRandomName.bind(this));
     html.find("[data-random-profession]").on("click", this._onRandomProfession.bind(this));
     html.find("[data-lock-random]").on("click", this._onToggleRandomLock.bind(this));
+    html.find("[data-player-choice]").on("change", this._onPlayerChoice.bind(this));
     html.find("[data-reveal-secret]").on("click", this._onRevealSecret.bind(this));
     html.find("[data-use-special]").on("click", this._onToggleSpecial.bind(this));
   }
@@ -302,11 +304,6 @@ export class SombreActorSheet extends ActorSheet {
       ui.notifications.warn(`Le tirage aléatoire d’${config.label} a déjà été utilisé.`);
       return;
     }
-    if (!game.user.isGM && this.actor.system[kind]) {
-      ui.notifications.warn(`Un ${config.label} est déjà défini sur cette fiche.`);
-      return;
-    }
-
     const update = {
       [`system.${kind}`]: config.values[Math.floor(Math.random() * config.values.length)]
     };
@@ -320,18 +317,64 @@ export class SombreActorSheet extends ActorSheet {
 
     const kind = event.currentTarget.dataset.lockRandom;
     const lockData = {
-      name: ["nameRandomLocked", "du nom"],
-      profession: ["professionRandomLocked", "de la profession"],
-      personality: ["personalityRandomLocked", "de la Personnalité"],
-      advantage: ["advantageRandomLocked", "de l’Avantage"],
-      disadvantage: ["disadvantageRandomLocked", "du Désavantage"]
+      name: ["nameRandomLocked", null, "du nom"],
+      profession: ["professionRandomLocked", null, "de la profession"],
+      personality: ["personalityRandomLocked", "personalityRandomUsed", "de la Personnalité"],
+      advantage: ["advantageRandomLocked", "advantageRandomUsed", "de l’Avantage"],
+      disadvantage: ["disadvantageRandomLocked", "disadvantageRandomUsed", "du Désavantage"]
     };
     if (!lockData[kind]) return;
 
-    const [field, label] = lockData[kind];
-    const locked = !Boolean(this.actor.system[field]);
-    await this.actor.update({ [`system.${field}`]: locked });
-    ui.notifications.info(`Tirage ${label} ${locked ? "verrouillé pour les joueurs" : "déverrouillé"}.`);
+    const [field, usedField, label] = lockData[kind];
+    const currentlyLocked = Boolean(this.actor.system[field]);
+    const alreadyUsed = usedField ? Boolean(this.actor.system[usedField]) : false;
+    const update = {};
+
+    if (currentlyLocked || alreadyUsed) {
+      update[`system.${field}`] = false;
+      if (usedField) update[`system.${usedField}`] = false;
+      await this.actor.update(update);
+      ui.notifications.info(`Choix ${label} ouvert : le joueur peut le modifier une fois.`);
+      return;
+    }
+
+    await this.actor.update({ [`system.${field}`]: true });
+    ui.notifications.info(`Choix ${label} verrouillé pour le joueur.`);
+  }
+
+  async _onPlayerChoice(event) {
+    event.preventDefault();
+    if (game.user.isGM) return;
+
+    const kind = event.currentTarget.dataset.playerChoice;
+    const choiceData = {
+      personality: { used: "personalityRandomUsed", locked: "personalityRandomLocked", values: PERSONALITIES, label: "Personnalité" },
+      advantage: { used: "advantageRandomUsed", locked: "advantageRandomLocked", values: ADVANTAGES, label: "Avantage" },
+      disadvantage: { used: "disadvantageRandomUsed", locked: "disadvantageRandomLocked", values: DISADVANTAGES, label: "Désavantage" }
+    };
+    const config = choiceData[kind];
+    if (!config) return;
+    if (this.actor.system[config.locked]) {
+      ui.notifications.warn(`Le choix de ${config.label} est verrouillé par le MJ.`);
+      return;
+    }
+    if (this.actor.system[config.used]) {
+      ui.notifications.warn(`Le choix de ${config.label} a déjà été utilisé.`);
+      return;
+    }
+
+    const rawValue = event.currentTarget.value;
+    const value = kind === "personality" ? Number(rawValue) : rawValue;
+    const valid = kind === "personality"
+      ? Number.isInteger(value) && value >= 0 && value < config.values.length
+      : config.values.includes(value);
+    if (!valid) return;
+
+    await this.actor.update({
+      [`system.${kind}`]: value,
+      [`system.${config.used}`]: true
+    });
+    ui.notifications.info(`${config.label} choisi. Le choix est maintenant verrouillé.`);
   }
 
   async _onRandomName(event) {

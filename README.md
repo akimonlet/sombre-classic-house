@@ -18,7 +18,8 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - 24 Personnalités avec leurs trois phases et leur guide de roleplay ;
 - Avantages et Désavantages avec leurs aides de lecture ;
 - générateurs de nom, profession, Personnalité et Traits ;
-- cadenas contrôlés par le MJ pour limiter les tirages aléatoires ;
+- choix ou tirage unique de la Personnalité, de l’Avantage et du Désavantage par chaque joueur ;
+- cadenas contrôlés par le MJ, avec réouverture individuelle ou globale des choix ;
 - Corps et Esprit réglables par clic ;
 - Adrénaline et phases de Personnalité automatisées ;
 - jets de Corps, d'Esprit, d'attaque et de dommages dans le chat ;
