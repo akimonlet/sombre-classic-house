@@ -8,7 +8,7 @@ const CHARACTERS = [
     name: "Ena",
     playerName: "Max",
     profession: "Pisteuse",
-    background: "Pisteuse envoyée chercher Nara, tu l’as vue prisonnière de trois membres de la Roche-Noire et dois rapporter leurs signes distinctifs.",
+    background: "Patiente et observatrice, Ena connaît les pistes, les traces et les chemins autour du territoire mieux que quiconque.",
     equipment: "Arc, trois flèches, couteau de pierre et fragment de parure d’un ravisseur."
   },
   {
@@ -16,7 +16,7 @@ const CHARACTERS = [
     name: "Orn",
     playerName: "Grelot",
     profession: "Tailleur de pierre",
-    background: "Artisan du clan chargé de trouver le meilleur silex et de préparer des armes fiables pour l’expédition.",
+    background: "Orn taille le silex et la pierre pour façonner les outils dont le clan se sert chaque jour.",
     equipment: "Pointes de sagaie et lame fine, dans l’état résultant de ton introduction."
   },
   {
@@ -24,7 +24,7 @@ const CHARACTERS = [
     name: "Kor",
     playerName: "Crevetolog",
     profession: "Chasseur",
-    background: "Chasseur parti relever les pièges avec Ina, tu dois rapporter les ressources nécessaires à l’expédition.",
+    background: "Kor est un chasseur endurant, habitué aux longues traques et aux dangers loin des abris.",
     equipment: "Lance, couteau de pierre ; viande, peau ou tendons récupérés pendant ton introduction."
   },
   {
@@ -32,12 +32,19 @@ const CHARACTERS = [
     name: "Sira",
     playerName: "Pikiou",
     profession: "Travailleuse des peaux et des fibres",
-    background: "Artisane chargée de rendre fiables les cordes, les sangles et le moyen prévu pour transporter Nara blessée.",
+    background: "Sira travaille les peaux et les fibres pour fabriquer vêtements, sacs, liens et objets indispensables au clan.",
     equipment: "Corde, peau de portage et sangles, dans l’état résultant de ton introduction."
   }
 ];
 
 const folderParentId = (folder) => folder?.folder?.id ?? folder?.folder ?? null;
+
+const PREVIOUS_BACKGROUNDS = {
+  ena: "Pisteuse envoyée chercher Nara, tu l’as vue prisonnière de trois membres de la Roche-Noire et dois rapporter leurs signes distinctifs.",
+  orn: "Artisan du clan chargé de trouver le meilleur silex et de préparer des armes fiables pour l’expédition.",
+  kor: "Chasseur parti relever les pièges avec Ina, tu dois rapporter les ressources nécessaires à l’expédition.",
+  sira: "Artisane chargée de rendre fiables les cordes, les sangles et le moyen prévu pour transporter Nara blessée."
+};
 
 const findActorFolder = (name, parentId = null) => game.folders.find((folder) => (
   folder.type === "Actor"
@@ -129,6 +136,20 @@ const createRocheNoireActors = async () => {
   ui.notifications.info(`Fiches créées dans ${ROOT_FOLDER_NAME} / ${SCENARIO_FOLDER_NAME} : ${created}.`);
 };
 
+const migrateRevealingBackgrounds = async () => {
+  if (!game.user.isGM) return;
+  const byId = new Map(CHARACTERS.map((character) => [character.id, character]));
+  const updates = game.actors
+    .map((actor) => {
+      const id = actor.getFlag(SYSTEM_ID, "rocheNoireId");
+      const character = byId.get(id);
+      if (!character || actor.system.background !== PREVIOUS_BACKGROUNDS[id]) return null;
+      return actor.update({ "system.background": character.background });
+    })
+    .filter(Boolean);
+  if (updates.length) await Promise.all(updates);
+};
+
 const confirmCreation = () => {
   new Dialog({
     title: "Créer les fiches — La Roche-Noire",
@@ -152,6 +173,7 @@ const confirmCreation = () => {
 };
 
 export const registerRocheNoireGenerator = () => {
+  Hooks.once("ready", migrateRevealingBackgrounds);
   Hooks.on("renderActorDirectory", (_app, html) => {
     if (!game.user.isGM || html.find("[data-create-roche-noire]").length) return;
     const actions = html.find(".directory-header .header-actions");
