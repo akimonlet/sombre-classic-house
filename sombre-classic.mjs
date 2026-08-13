@@ -2,6 +2,7 @@ import { SombreVictimData } from "./module/data-models.mjs";
 import { SombreActorSheet } from "./module/actor-sheet.mjs";
 import { registerTokenNameHooks } from "./module/token-names.mjs";
 import { registerTraitDashboard } from "./module/trait-dashboard.mjs";
+import { registerRocheNoireGenerator } from "./module/roche-noire.mjs";
 
 Hooks.once("init", () => {
   console.log("Sombre Classic — Fiche | Initialisation");
@@ -26,4 +27,5 @@ Hooks.once("init", () => {
 
   registerTokenNameHooks();
   registerTraitDashboard();
+  registerRocheNoireGenerator();
 });
