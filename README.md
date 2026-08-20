@@ -27,13 +27,13 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - synchronisation du nom du personnage et du joueur avec le Prototype Token ;
 - nom des tokens affiché pour tout le monde ;
 - récapitulatif MJ interactif des Traits des acteurs ;
-- générateur MJ optionnel des quatre fiches de **La Roche-Noire**, rangées dans `Scénarios personnalisés / La Roche-Noire` ;
+- générateur MJ optionnel des trois fiches de **Trois mots avant le feu**, rangées dans `Scénarios personnalisés / Trois mots avant le feu` ;
 - champs libres pour les relations, le background, l'équipement, les secrets et les notes MJ.
 
 ## Contenu volontairement absent
 
 - aucun Actor ni dossier créé automatiquement ;
-- le contenu optionnel de **La Roche-Noire** n’apparaît que si le MJ clique sur son bouton dans l’annuaire des acteurs ;
+- le contenu optionnel de **Trois mots avant le feu** n’apparaît que si le MJ clique sur son bouton dans l’annuaire des acteurs ;
 - aucun plan, texte de scénario ou aide de jeu ;
 - aucune suppression automatique des Actors déjà présents dans un monde existant.
 
