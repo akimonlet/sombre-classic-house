@@ -2,7 +2,7 @@
   "id": "sombre-classic-house",
   "title": "Sombre Classic — Fiche",
   "description": "Système personnel pour jouer à Sombre Classic dans Foundry VTT 12, sans création automatique de scénario ni de personnage.",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "compatibility": {
     "minimum": 12,
     "verified": 12,
@@ -10,7 +10,7 @@
   },
   "url": "https://github.com/akimonlet/sombre-classic-house",
   "manifest": "https://raw.githubusercontent.com/akimonlet/sombre-classic-house/main/system.json",
-  "download": "https://github.com/akimonlet/sombre-classic-house/releases/download/v0.5.7/sombre-classic-house-v0.5.7.zip",
+  "download": "https://github.com/akimonlet/sombre-classic-house/releases/download/v0.5.8/sombre-classic-house-v0.5.8.zip",
   "authors": [
     {
       "name": "akimine"
