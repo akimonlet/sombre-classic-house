@@ -2,7 +2,7 @@ import { SombreVictimData } from "./module/data-models.mjs";
 import { SombreActorSheet } from "./module/actor-sheet.mjs";
 import { registerTokenNameHooks } from "./module/token-names.mjs";
 import { registerTraitDashboard } from "./module/trait-dashboard.mjs";
-import { registerTroisMotsGenerator } from "./module/trois-mots.mjs";
+import { registerHelix2008Generator } from "./module/helix-2008.mjs";
 
 Hooks.once("init", () => {
   console.log("Sombre Classic — Fiche | Initialisation");
@@ -27,5 +27,5 @@ Hooks.once("init", () => {
 
   registerTokenNameHooks();
   registerTraitDashboard();
-  registerTroisMotsGenerator();
+  registerHelix2008Generator();
 });
