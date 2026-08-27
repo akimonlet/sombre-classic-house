@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HÉLIX 2008 — Plan architectural interactif</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #e9e9e6;
+      --panel: #ffffff;
+      --panel-2: #f1f1ed;
+      --paper: #ffffff;
+      --ink: #171717;
+      --muted: #606568;
+      --line: #a7aaab;
+      --gold: #b68b2b;
+      --red: #b52d28;
+      --red-soft: #f5d8d6;
+      --blue: #367f9a;
+      --green: #557b64;
+      --purple: #8b3ab8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .app {
+      width: min(1340px, 100%);
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1, h2, p { margin-top: 0; }
+    h1 { margin-bottom: 4px; font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: .03em; font-weight: 800; }
+    h2 { margin-bottom: 8px; font-size: 1.15rem; font-weight: 700; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+    .floor-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .floor-tab {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 9px 15px;
+      background: var(--panel);
+      color: var(--ink);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: all 0.15s ease;
+    }
+
+    .floor-tab:hover { background: var(--panel-2); }
+    .floor-tab[aria-pressed="true"] { border-color: #222; background: #222; color: #fff; }
+    .floor-tab:focus-visible, .hotspot:focus-visible { outline: 3px solid #276a86; outline-offset: 3px; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .map-shell, .details {
+      border: 1px solid #bfc1c0;
+      border-radius: 6px;
+      background: var(--panel);
+      box-shadow: 0 5px 16px rgba(0,0,0,.08);
+    }
+
+    .map-shell { padding: 14px; }
+    .details { padding: 20px; display: flex; flex-direction: column; }
+
+    .map-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .map-title-row strong { color: var(--ink); font-size: 1.05rem; }
+    .hint { color: var(--muted); font-size: .87rem; }
+
+    /* IMAGE MAP WITH OVERLAY HOTSPOTS & MARKERS */
+    .image-map {
+      position: relative;
+      width: 100%;
+      background: #fff;
+      overflow: hidden;
+      border: 1px solid #d4d4d0;
+      border-radius: 4px;
+    }
+    .image-map .floor { display: none; position: relative; }
+    .image-map .floor.active { display: block; }
+    .image-map img { display: block; width: 100%; height: auto; user-select: none; }
+
+    .hotspot {
+      position: absolute;
+      min-width: 0;
+      min-height: 0;
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      background: transparent;
+      color: transparent;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease;
+      z-index: 3;
+    }
+    .hotspot:hover,
+    .hotspot:focus-visible,
+    .hotspot.selected {
+      border-color: #b68b2b;
+      background: rgba(182, 139, 43, .16);
+    }
+    .hotspot.danger-zone:hover,
+    .hotspot.danger-zone.selected {
+      border-color: #b52d28;
+      background: rgba(181, 45, 40, .18);
+    }
+    .hotspot.breach-zone:hover,
+    .hotspot.breach-zone.selected {
+      border-color: #8b3ab8;
+      background: rgba(139, 58, 184, .22);
+    }
+
+    .start-marker {
+      position: absolute;
+      z-index: 5;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      box-shadow: 0 2px 7px rgba(0,0,0,.6);
+      pointer-events: none;
+    }
+    .m-pj1 { background: #c25e00; } /* Nicolas */
+    .m-pj2 { background: #007799; } /* Inès */
+    .m-pj3 { background: #2e7d32; } /* Samira */
+    .m-pj4 { background: #6a1b9a; } /* Lukas */
+    .m-pj5 { background: #b71c1c; } /* Anna */
+
+    /* SIDEBAR DETAILS */
+    .details-label {
+      margin-bottom: 6px;
+      color: var(--gold);
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .details h2 { color: #111; margin-bottom: 10px; }
+    .details p { color: #292929; line-height: 1.5; font-size: 0.92rem; margin-bottom: 12px; }
+    .details ul { padding-left: 20px; color: #292929; line-height: 1.45; font-size: 0.88rem; }
+    .details li + li { margin-top: 6px; }
+
+    .tag {
+      display: inline-block;
+      margin: 0 6px 6px 0;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: .76rem;
+      font-weight: 600;
+    }
+    .tag-pj { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+    .tag-level { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+    .tag-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #ef4444; }
+    .tag-item { background: #ecfdf5; color: #065f46; border: 1px solid #34d399; }
+    .tag-secret { background: #f3e8ff; color: #6b21a8; border: 1px solid #c084fc; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #e0e0dc;
+      color: var(--muted);
+      font-size: .83rem;
+    }
+
+    .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #fff; }
+    .danger-key { width: 18px; height: 10px; background: #f5d8d6; border: 1px solid var(--red); }
+    .breach-key { width: 18px; height: 10px; background: rgba(139,58,184,0.2); border: 1px solid var(--purple); }
+
+    .footer-note {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 880px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .layout { grid-template-columns: 1fr; }
+      .details { min-height: 220px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <h1>HÉLIX 2008</h1>
+        <p class="subtitle">Plan MJ interactif du complexe — survol ou clic sur une pièce pour inspecter ses informations.</p>
+      </div>
+      <nav class="floor-tabs" aria-label="Choix du niveau">
+        <button class="floor-tab" type="button" data-floor="ground" aria-pressed="true">Niveau 0 (Surface)</button>
+        <button class="floor-tab" type="button" data-floor="mid" aria-pressed="false">Niveau -1 (-20m : Cryo)</button>
+        <button class="floor-tab" type="button" data-floor="deep" aria-pressed="false">Niveau -2 (-80m : Bunker)</button>
+      </nav>
+    </header>
+
+    <section class="layout">
+      <div class="map-shell">
+        <div class="map-title-row">
+          <strong id="floor-name">Niveau 0 — Surface & Entrée du site</strong>
+          <span class="hint">Cliquez sur une pièce ou une pastille pour afficher ses détails.</span>
+        </div>
+
+        <div class="image-map" aria-label="Plans architecturaux interactifs d'HÉLIX">
+          
+          <!-- LEVEL 0: SURFACE -->
+          <div class="floor active" data-floor-panel="ground">
+            <img src="helix-plan-rdc.jpg" alt="Plan architectural du rez-de-chaussée et extérieurs d'HÉLIX">
+            
+            <button type="button" class="hotspot" data-room="R01" aria-label="Poste de Garde" style="left:11%;top:38%;width:7.5%;height:22.5%;"></button>
+            <button type="button" class="hotspot" data-room="R02" aria-label="Parking Manifestants" style="left:1%;top:4%;width:30%;height:92%;"></button>
+            <button type="button" class="hotspot" data-room="R04" aria-label="Atrium Presse & Visiteurs" style="left:33%;top:21%;width:21%;height:64%;"></button>
+            <button type="button" class="hotspot" data-room="R06" aria-label="Direction & Administration" style="left:53.5%;top:8%;width:26.5%;height:43%;"></button>
+            <button type="button" class="hotspot" data-room="R07" aria-label="Infirmerie & Service Médical" style="left:53.5%;top:52%;width:26.5%;height:36%;"></button>
+            <button type="button" class="hotspot danger-zone" data-room="R08" aria-label="Hangar Cryo Surface" style="left:80.5%;top:18%;width:10.5%;height:26%;"></button>
+            <button type="button" class="hotspot" data-room="R10" aria-label="Puits Ascenseur & Escalier" style="left:80.5%;top:44%;width:16.5%;height:35%;"></button>
+
+            <span class="start-marker m-pj1" style="left:14.5%;top:49%;" title="1 : Départ Nicolas Favre">1</span>
+            <span class="start-marker m-pj2" style="left:43.5%;top:50%;" title="2 : Départ Inès Renaud">2</span>
+            <span class="start-marker m-pj3" style="left:72.5%;top:67%;" title="3 : Départ Dr Samira Bensaïd">3</span>
+          </div>
+
+          <!-- LEVEL -1: -20M CRYO & GALERIES -->
+          <div class="floor" data-floor-panel="mid">
+            <img src="helix-plan-r-1.jpg" alt="Plan architectural du niveau -1 d'HÉLIX">
+            
+            <button type="button" class="hotspot" data-room="R12" aria-label="Sas Ascenseur Lourd" style="left:3%;top:9%;width:16.5%;height:55%;"></button>
+            <button type="button" class="hotspot" data-room="R13" aria-label="Galerie Centrale B" style="left:20%;top:38%;width:64%;height:23%;"></button>
+            <button type="button" class="hotspot" data-room="R14" aria-label="Sous-station Cryo B-4" style="left:30%;top:9%;width:29.5%;height:29%;"></button>
+            <button type="button" class="hotspot" data-room="R15" aria-label="Pompes à Vide Primaires" style="left:60.5%;top:9%;width:24%;height:29%;"></button>
+            <button type="button" class="hotspot" data-room="R16" aria-label="Réserve Hazmat" style="left:29%;top:62%;width:30.5%;height:29%;"></button>
+            <button type="button" class="hotspot danger-zone" data-room="R18" aria-label="Transfos 400 kV" style="left:60.5%;top:62%;width:24%;height:29%;"></button>
+            <button type="button" class="hotspot" data-room="R21" aria-label="Sas Descente -80m" style="left:85.5%;top:9%;width:11.5%;height:82%;"></button>
+
+            <span class="start-marker m-pj4" style="left:45%;top:23.5%;" title="4 : Départ Lukas Meier">4</span>
+          </div>
+
+          <!-- LEVEL -2: -80M BUNKER & BREACH -->
+          <div class="floor" data-floor-panel="deep">
+            <img src="helix-plan-r-2.jpg" alt="Plan architectural du bunker et anneau de collision -80m d'HÉLIX">
+            
+            <button type="button" class="hotspot" data-room="R23" aria-label="Salle de Contrôle (CCR)" style="left:7%;top:32%;width:22.5%;height:35%;"></button>
+            <button type="button" class="hotspot" data-room="R24" aria-label="Serveurs & Données" style="left:42%;top:15%;width:20%;height:27%;"></button>
+            <button type="button" class="hotspot breach-zone" data-room="R27" aria-label="Point Zéro : La Brèche" style="left:64%;top:16%;width:30%;height:47%;"></button>
+            <button type="button" class="hotspot danger-zone" data-room="R29" aria-label="Puits Beam Dump" style="left:47%;top:57%;width:16%;height:19%;"></button>
+            <button type="button" class="hotspot" data-room="R30" aria-label="Galerie de Drainage Forêt" style="left:3%;top:76%;width:85%;height:18%;"></button>
+
+            <span class="start-marker m-pj5" style="left:18%;top:49%;" title="5 : Départ Dr Anna Kowalska">5</span>
+          </div>
+
+        </div>
+
+        <div class="legend" aria-label="Légende du plan">
+          <span class="legend-item"><span class="dot" style="background:#c25e00"></span>1 Nicolas (Sécurité)</span>
+          <span class="legend-item"><span class="dot" style="background:#007799"></span>2 Inès (Presse)</span>
+          <span class="legend-item"><span class="dot" style="background:#2e7d32"></span>3 Samira (Médecin)</span>
+          <span class="legend-item"><span class="dot" style="background:#6a1b9a"></span>4 Lukas (Cryo)</span>
+          <span class="legend-item"><span class="dot" style="background:#b71c1c"></span>5 Anna (Physique)</span>
+          <span class="legend-item"><span class="danger-key"></span>Danger / Froid</span>
+          <span class="legend-item"><span class="breach-key"></span>Point Zéro / Brèche</span>
+        </div>
+      </div>
+
+      <!-- DETAILS INSPECTION PANEL -->
+      <aside class="details" aria-live="polite">
+        <div class="details-label">Fiche Technique de la Salle</div>
+        <h2 id="detail-title">Poste de Garde & Grille</h2>
+        <div id="detail-tags">
+          <span class="tag tag-pj">Départ PJ 1</span>
+          <span class="tag tag-level">Niveau 0</span>
+        </div>
+        <p id="detail-text">Bâtiment vitré renforcé contrôlant le portail d'accès au complexe. Nicolas commence ici face à 80 manifestants et un car scolaire bloqué.</p>
+        <ul id="detail-list">
+          <li><strong>Objets utiles :</strong> Trousseau passe-partout du site, Taser 2 cartouches, Matraque, Pistolet 9mm caché par Serge.</li>
+          <li><strong>Dangers :</strong> Manifestants paniqués à 10h05, premier point d'assaut des blindés militaires à 11h15.</li>
+          <li><strong>Accès :</strong> Grille d'entrée principale, barrière pivotante et esplanade centrale.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <p class="footer-note">
+      * Les proportions sont architecturales et narratives. Les portes rouges sont scellées magnétiquement en cas de coupure de courant ; elles s'ouvrent au pied-de-biche ou avec les clés de dérogation de Nicolas et Zimmerman.
+    </p>
+  </main>
+
+  <script>
+    const roomsData = {
+      'R01': {
+        title: "Poste de Garde & Grille Principale",
+        tags: ["Départ PJ 1", "Niveau 0 (Surface)", "Sécurité"],
+        text: "Bâtiment vitré renforcé contrôlant le portail d'accès au complexe. Nicolas Favre commence ici son service avec Serge face à 80 manifestants et un car scolaire coincé.",
+        list: [
+          "Trousseau de clés passe-partout du site et Taser 2 coups.",
+          "Moniteurs de vidéosurveillance extérieure (permettent de voir les blindés militaires à 11h15).",
+          "Pistolet 9mm non déclaré caché dans le faux plafond (Secret de Serge).",
+          "Point d'entrée principal des commandos du Protocole Ardoise Noire."
+        ]
+      },
+      'R02': {
+        title: "Parking & Parvis des Manifestants",
+        tags: ["Niveau 0 (Surface)", "Extérieur"],
+        text: "Grand parking d'accueil extérieur où stationnent les véhicules du personnel, le car scolaire des collégiens et la foule des manifestants anti-trou noir.",
+        list: [
+          "Car scolaire et véhicules civils utilisables pour une fuite.",
+          "Van de Claire Vaneck avec matériel de premiers secours et mégaphone.",
+          "Foule paniquée à 10h05 tentant d'escalader les grilles."
+        ]
+      },
+      'R04': {
+        title: "Atrium Presse & Centre des Visiteurs",
+        tags: ["Départ PJ 2", "Niveau 0 (Surface)", "Presse / VIP"],
+        text: "Vaste hall lumineux avec grande verrière et maquette centrale ronde de l'accélérateur. Inès Renaud prépare ici son duplex télévisé avant que le ciel ne s'illumine d'un éclair violet.",
+        list: [
+          "Torche vidéo LED très puissante (arme redoutable pour aveugler les Rôdeurs de Faille).",
+          "Enregistreur audio contenant l'interview exclusive du Pr Hoffman.",
+          "Verrière fragilisée : risque d'effondrement de débris coupants lors du choc de 10h00.",
+          "Présence d'otages / civils affolés (journalistes, collégiens du car scolaire)."
+        ]
+      },
+      'R06': {
+        title: "Direction & Administration",
+        tags: ["Niveau 0 (Surface)", "Bureaux"],
+        text: "Bureaux feutrés de la direction et des relations publiques. Arnaud Delaroche s'y réfugie en état de choc.",
+        list: [
+          "Téléphone fixe filaire relié à la ligne de secours.",
+          "Dossiers confidentiels sur les subventions européennes d'HÉLIX.",
+          "Baies vitrées brisées donnant sur le parvis extérieur."
+        ]
+      },
+      'R07': {
+        title: "Infirmerie & Service Médical",
+        tags: ["Départ PJ 3", "Niveau 0 (Surface)", "Médical"],
+        text: "Service médical moderne avec deux lits de soins, pharmacie sécurisée et bureau de consultation. Le Dr Samira Bensaïd y traite Marc et Élodie.",
+        list: [
+          "Sacoche médicale d'urgence (3 doses de Morphine, 2 Garrots, Scalpel, Pansements compressifs).",
+          "Bouteille d'oxygène portable 5L (aide pour l'asthmatique Anna ou en zone toxique).",
+          "Défibrillateur cardiaque pouvant servir d'arme improvisée.",
+          "Refuge temporaire pour regrouper les blessés du hall."
+        ]
+      },
+      'R08': {
+        title: "Hangar Cryogénique de Surface",
+        tags: ["Niveau 0 (Surface)", "Zone Dangereuse"],
+        text: "Bâtiment industriel abritant les immenses citernes verticales d'hélium liquide sous haute pression.",
+        list: [
+          "Cuves sous 200 bars : risque d'explosion mortelle en cas d'incendie.",
+          "Gants haute protection cryogénique et flexibles renforcés.",
+          "Nuages opaques de vapeur blanche envahissant la cour en cas de fuite."
+        ]
+      },
+      'R10': {
+        title: "Cage d'Ascenseur Lourd & Puits Vertical",
+        tags: ["Trois Niveaux", "Axe Vertical"],
+        text: "Puits vertical en béton armé de 80 mètres de profondeur avec monte-charge de 20 tonnes et escalier métallique de secours.",
+        list: [
+          "Monte-charge bloqué entre deux niveaux à 10h00.",
+          "Escalier hélicoïdal métallique : seule voie physique reliant la surface au bunker -80m.",
+          "Chute mortelle en cas d'échec critique lors d'une poursuite."
+        ]
+      },
+      'R12': {
+        title: "Sas Ascenseur Lourd (-20m)",
+        tags: ["Niveau -1 (-20m)", "Galerie"],
+        text: "Palier de déchargement intermédiaire avec doubles portes blindées étanches et sol grillagé.",
+        list: [
+          "Extincteurs lourds à CO2 (très efficaces pour repousser les anomalies gazeuses).",
+          "Palan de levage et caisse d'outils en acier.",
+          "Accès direct à la galerie centrale et à la cryogénie."
+        ]
+      },
+      'R13': {
+        title: "Galerie Technique Centrale B",
+        tags: ["Niveau -1 (-20m)", "Corridor"],
+        text: "Axe de circulation principal reliant l'ascenseur, les stations cryo et le sas de descente profonde.",
+        list: [
+          "Long couloir carrelé éclairé par néons de secours rouges.",
+          "Trappes d'accès aux caniveaux et gaines de ventilation.",
+          "Zone de patrouille fréquente des Rôdeurs de Faille."
+        ]
+      },
+      'R14': {
+        title: "Sous-station Cryogénique B-4",
+        tags: ["Départ PJ 4", "Niveau -1 (-20m)", "Cryogénie"],
+        text: "Labyrinthe assourdissant de tuyaux inox givrés. Lukas Meier s'y trouve devant la vanne V-12 sous pression.",
+        list: [
+          "Grande clé à griffe en acier trempé (arme contondante redoutable).",
+          "Téléphone rouge analogique mural sur ligne cuivre (fonctionne sans électricité réseau).",
+          "Vanne V-12 : permet de réguler ou purger le froid extrême du secteur B.",
+          "Point de relais technique pour actionner l'arrêt du faisceau."
+        ]
+      },
+      'R15': {
+        title: "Salle des Pompes à Vide Primaires",
+        tags: ["Niveau -1 (-20m)", "Technique"],
+        text: "Batterie de pompes turbomoléculaires maintenant le vide dans l'anneau de particules.",
+        list: [
+          "Bruit assourdissant masquant les bruits de pas des créatures.",
+          "Détecteurs de fuites à l'hélium avec signal sonore et optique.",
+          "Zone de chasse favorite d'un Rôdeur de Faille tapi au plafond."
+        ]
+      },
+      'R16': {
+        title: "Réserve Hazmat & Casiers Cryo",
+        tags: ["Niveau -1 (-20m)", "Équipement Vital"],
+        text: "Local blindé verrouillé contenant les équipements de protection pour milieu cryogénique et toxique.",
+        list: [
+          "3 Combinaisons Hazmat étanches cryo autonomes (bouteilles d'air 45 minutes).",
+          "Permet de survivre à l'hélium liquide à -271°C et aux gaz d'extinction Halon.",
+          "Porte verrouillée magnétiquement : nécessite crochetage, clé ou badge 3."
+        ]
+      },
+      'R18': {
+        title: "Salle des Transformateurs 400 kV",
+        tags: ["Niveau -1 (-20m)", "Haute Tension"],
+        text: "Salle blindée haute tension abritant les transformateurs et le générateur de secours.",
+        list: [
+          "Arcs électriques mortels traversant le sol inondé.",
+          "Levier du disjoncteur général et perches isolantes en fibre de verre.",
+          "Possibilité d'attirer un monstre dans un piège à haute tension (5 blessures nettes)."
+        ]
+      },
+      'R21': {
+        title: "Sas de Descente Profonde (-80m)",
+        tags: ["Niveau -1 (-20m)", "Accès Bunker"],
+        text: "Double sas étanche en acier lourd contrôlant l'escalier vers la caverne et la salle de contrôle.",
+        list: [
+          "Sas verrouillé dès l'incident de 10h00.",
+          "Nécessite le Badge Maître d'Anna ou le trousseau passe-partout de Nicolas."
+        ]
+      },
+      'R23': {
+        title: "Salle de Contrôle Centrale (CCR)",
+        tags: ["Départ PJ 5", "Niveau -2 (-80m)", "Bunker"],
+        text: "Le cœur opérationnel d'HÉLIX. Le Dr Anna Kowalska s'y trouve avec Zimmerman devant les consoles de tir.",
+        list: [
+          "Console principale du BEAM DUMP (double serrure à clé physique pour fermer la Faille).",
+          "Seconde clé de sécurité cachée dans le tiroir du bureau vitré de Zimmerman.",
+          "Ordinateurs portables durcis avec enregistrement physique du phénomène.",
+          "Inhalateur Ventoline d'Anna (vital en cas de crise de panique/asthme)."
+        ]
+      },
+      'R24': {
+        title: "Salle des Serveurs & Archivage Données",
+        tags: ["Niveau -2 (-80m)", "Cible Prioritaire"],
+        text: "Baies de disques durs enregistrant l'intégralité des mesures du tir à 7 TeV.",
+        list: [
+          "Disques durs amovibles cryptés : preuve absolue de l'accident pour la presse mondiale.",
+          "Système d'extinction automatique au gaz Halon (mortel sans masque après 30s).",
+          "Cible des commandos Ardoise Noire qui viennent y poser du plastic C4 à 11h25."
+        ]
+      },
+      'R27': {
+        title: "Point Zéro : La Brèche (Caverne ATLAS)",
+        tags: ["Niveau -2 (-80m)", "Zone de Faille"],
+        text: "Cathédrale souterraine de 40 mètres de hauteur abritant le détecteur de 12 000 tonnes. Au centre s'ouvre la déchirure dimensionnelle violette.",
+        list: [
+          "Point d'irruption continu des créatures tant que le Beam Dump n'est pas activé.",
+          "Froid surnaturel et anomalies gravitationnelles locales.",
+          "Passerelles métalliques suspendues au-dessus du vide."
+        ]
+      },
+      'R29': {
+        title: "Puits d'Absorption du Beam Dump",
+        tags: ["Niveau -2 (-80m)", "Arrêt Faisceau"],
+        text: "Chambre blindée contenant 200 tonnes de graphite refroidi pour dissiper l'énergie du faisceau.",
+        list: [
+          "Émet un grondement sismique colossal lors de l'arrêt d'urgence.",
+          "Température de plusieurs milliers de degrés dans le puits après déclenchement."
+        ]
+      },
+      'R30': {
+        title: "Galerie de Drainage & Issue Secrète Forêt",
+        tags: ["Niveau -2 (-80m)", "Voie de Fuite"],
+        text: "Ancien tunnel d'exhaure des eaux souterraines, non surveillé par les militaires.",
+        list: [
+          "Débouche 2 km plus loin dans une ravine forestière du Jura suisse.",
+          "Eau froide jusqu'aux genoux et boue glissante.",
+          "La meilleure issue d'évasion pour sauver sa peau et les preuves."
+        ]
+      }
+    };
+
+    const floorDisplayNames = {
+      ground: "Niveau 0 — Surface & Entrée du site",
+      mid: "Niveau -1 (-20m) — Galeries techniques & Cryogénie",
+      deep: "Niveau -2 (-80m) — Bunker CCR & Point Zéro de la Brèche"
+    };
+
+    const titleEl = document.getElementById("detail-title");
+    const tagsEl = document.getElementById("detail-tags");
+    const textEl = document.getElementById("detail-text");
+    const listEl = document.getElementById("detail-list");
+    const floorNameEl = document.getElementById("floor-name");
+
+    function selectHotspot(roomKey) {
+      document.querySelectorAll(".hotspot").forEach(el => el.classList.remove("selected"));
+      const target = document.querySelector(`.hotspot[data-room="${roomKey}"]`);
+      if (target) target.classList.add("selected");
+
+      const data = roomsData[roomKey];
+      if (!data) return;
+
+      titleEl.textContent = data.title;
+      tagsEl.innerHTML = data.tags.map(t => {
+        let cls = 'tag-level';
+        if (t.includes('Départ')) cls = 'tag-pj';
+        else if (t.includes('Danger') || t.includes('Point Zéro') || t.includes('Faille')) cls = 'tag-danger';
+        else if (t.includes('Vital') || t.includes('Équipement')) cls = 'tag-item';
+        else if (t.includes('Prioritaire')) cls = 'tag-secret';
+        return `<span class="tag ${cls}">${t}</span>`;
+      }).join("");
+      textEl.textContent = data.text;
+      listEl.innerHTML = data.list.map(item => `<li>${item}</li>`).join("");
+    }
+
+    document.querySelectorAll(".hotspot").forEach(btn => {
+      btn.addEventListener("click", () => selectHotspot(btn.dataset.room));
+      btn.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectHotspot(btn.dataset.room);
+        }
+      });
+    });
+
+    document.querySelectorAll(".floor-tab").forEach(button => {
+      button.addEventListener("click", () => {
+        const floor = button.dataset.floor;
+        document.querySelectorAll(".floor-tab").forEach(tab => tab.setAttribute("aria-pressed", String(tab === button)));
+        document.querySelectorAll(".floor").forEach(panel => panel.classList.toggle("active", panel.dataset.floorPanel === floor));
+        document.querySelectorAll(".hotspot").forEach(el => el.classList.remove("selected"));
+        floorNameEl.textContent = floorDisplayNames[floor];
+      });
+    });
+  </script>
+</body>
+</html>
