@@ -157,7 +157,7 @@ const MONSTERS = [
     gmNotes: "Insensible aux armes à feu. Dispersé par les extincteurs CO2 ou expulsé par la ventilation lourde.",
     img: "",
     body: 12,
-    spirit: 16,
+    spirit: 12,
     isAntagonist: true
   },
   {
@@ -251,7 +251,10 @@ const actorData = (character, folderId) => ({
     traitsRandomLocked: false,
     adrenalinePending: false,
     resources: {
-      body: { value: character.body, max: 12 },
+      body: {
+        value: character.body,
+        max: character.isAntagonist ? Math.max(12, character.body) : 12
+      },
       spirit: { value: character.spirit, max: 12 },
       adrenaline: { value: 0, max: 3 }
     },
