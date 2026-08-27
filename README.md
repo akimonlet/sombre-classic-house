@@ -27,7 +27,7 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - synchronisation du nom du personnage et du joueur avec le Prototype Token ;
 - nom des tokens affiché pour tout le monde ;
 - récapitulatif MJ interactif des Traits des acteurs ;
-- générateur MJ optionnel des 15 fiches d'**HÉLIX 2008** (5 PJ, 5 PNJ, 5 Monstres avec tokens dédiés, inventaires complets et secrets), rangées dans `Scénarios personnalisés / HÉLIX 2008` ;
+- générateur MJ optionnel des 15 fiches d'**HÉLIX 2008** (5 PJ, 5 PNJ, 5 Monstres avec tokens peints dédiés, inventaires complets et secrets), rangées dans `Scénarios personnalisés / HÉLIX 2008` ;
 - champs libres pour les relations, le background, l'équipement, les secrets et les notes MJ.
 
 ## Contenu volontairement absent
