@@ -113,7 +113,7 @@ const NPCS = [
     background: "Blessé superficiellement au bras par de l'hélium à 09h20. Gaillard robuste et loyal envers le Dr Bensaïd.",
     equipment: "Bleu de travail, Tournevis isolé, Badge d'accès Niveau 2",
     gmNotes: "Sait où sont stockées les 3 combinaisons cryogéniques étanches (R16).",
-    img: "",
+    img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/pnj_marc_lesueur.jpg",
     body: 10,
     spirit: 8,
     isAntagonist: false
@@ -126,7 +126,7 @@ const NPCS = [
     background: "En état de choc catatonique à l'infirmerie suite à la prise de sédatif lourd.",
     equipment: "Sac à main, Badge visiteur, Boîte d'anxiolytiques",
     gmNotes: "Fardeau vulnérable à protéger lors de l'évacuation.",
-    img: "",
+    img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/pnj_elodie_brunet.jpg",
     body: 6,
     spirit: 6,
     isAntagonist: false
@@ -155,7 +155,7 @@ const MONSTERS = [
     background: "Brume violette semi-consciente traversant les parois. Provoque des hallucinations et un froid extrême à -50°C.",
     equipment: "Aura de gel (-50°C, 1 Blessure), Drain de folie (1 Esprit/round)",
     gmNotes: "Insensible aux armes à feu. Dispersé par les extincteurs CO2 ou expulsé par la ventilation lourde.",
-    img: "",
+    img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/monstre_spectre_resonance.jpg",
     body: 12,
     spirit: 12,
     isAntagonist: true
@@ -168,7 +168,7 @@ const MONSTERS = [
     background: "Essaim d'arthropodes d'obsidienne de la taille d'une main nichés par centaines dans les gaines de ventilation.",
     equipment: "Morsures nécrosantes multiples sous les vêtements",
     gmNotes: "Sensibles au feu et aux sprays inflammables. Inefficaces contre les combinaisons Hazmat étanches.",
-    img: "",
+    img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/monstre_parasites_cendre.jpg",
     body: 8,
     spirit: 2,
     isAntagonist: true
