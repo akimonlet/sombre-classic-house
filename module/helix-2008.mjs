@@ -6,10 +6,11 @@ const PCS = [
   {
     id: "nicolas",
     name: "Nicolas Favre",
+    playerName: "Crevetolog",
     subfolder: "1. Personnages Joueurs",
     profession: "Agent de sécurité privée",
-    background: "Nicolas arrive en voiture de service à la grille d'entrée face aux 80 manifestants du collectif Léman-Sécurité et au car scolaire coincé.",
-    equipment: "Trousseau de clés passe-partout du site HÉLIX, Badge d'accès Niveau 3, Talkie-walkie VHF (Canal 1 - Sécurité), Taser à cartouche (2 coups), Matraque télescopique, Lampe torche Maglite",
+    background: "Ancien gendarme reconverti dans la sécurité privée, Nicolas est un professionnel calme et consciencieux qui supporte mal les ordres absurdes.",
+    equipment: "Talkie-walkie VHF, Lampe torche Maglite",
     img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/pj1_nicolas_favre.jpg",
     body: 12,
     spirit: 8,
@@ -18,10 +19,11 @@ const PCS = [
   {
     id: "ines",
     name: "Inès Renaud",
+    playerName: "Pikiou",
     subfolder: "1. Personnages Joueurs",
     profession: "Journaliste scientifique",
-    background: "Inès prépare son duplex télévisé pour l'ouverture d'antenne de 09h55 dans l'atrium des visiteurs, avant d'être abordée par le Pr Hoffman.",
-    equipment: "Enregistreur numérique Olympus WS-320M, Torche vidéo LED 12V très puissante (lumière blanche aveuglante), Badge d'accès Presse / Médias, Bloc-notes et stylo",
+    background: "Journaliste scientifique curieuse et tenace, Inès s'est fait une réputation en posant les questions que les chercheurs et leurs communicants préféreraient éviter.",
+    equipment: "Enregistreur numérique, Bloc-notes et stylo",
     img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/pj2_ines_renaud.jpg",
     body: 8,
     spirit: 12,
@@ -30,10 +32,11 @@ const PCS = [
   {
     id: "samira",
     name: "Dr Samira Bensaïd",
+    playerName: "Grelot",
     subfolder: "1. Personnages Joueurs",
     profession: "Médecin du travail",
-    background: "Le Dr Bensaïd gère les urgences du matin à l'infirmerie du bâtiment B : Marc avec sa brûlure cryo et Élodie en crise d'angoisse.",
-    equipment: "Sacoche médicale d'urgence, 3 doses de Morphine injectable, 2 Garrots tourniquets, Scalpel stérile, Pansements compressifs et bandes, Lampe stylo médicale, Stéthoscope, Badge d'accès Service Médical",
+    background: "Médecin du travail expérimentée, Samira garde son sang-froid face aux urgences et refuse que la hiérarchie fasse passer la production avant la santé.",
+    equipment: "Petite sacoche médicale (pansements et une dose de morphine)",
     img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/pj3_samira_bensaid.jpg",
     body: 8,
     spirit: 12,
@@ -42,10 +45,11 @@ const PCS = [
   {
     id: "lukas",
     name: "Lukas Meier",
+    playerName: "Delva",
     subfolder: "1. Personnages Joueurs",
     profession: "Ingénieur cryogénie",
-    background: "Lukas contrôle les vannes et compresseurs d'hélium à 1,9 K à la sous-station B-4 (-20m) sous la pression de son chef Bossis.",
-    equipment: "Grande clé à griffe en acier trempé 450mm (arme contondante lourde), Lampe frontale industrielle étanche, Gants cryogéniques isolants (résistance -200°C), Dosimètre électronique actif, Trousseau de clés de vannes B-4",
+    background: "Ingénieur de terrain bourru mais fiable, Lukas connaît les machines d'HÉLIX mieux que quiconque et accorde davantage de confiance aux instruments qu'aux cadres.",
+    equipment: "Grande clé à griffe, Lampe frontale industrielle",
     img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/pj4_lukas_meier.jpg",
     body: 10,
     spirit: 10,
@@ -54,10 +58,11 @@ const PCS = [
   {
     id: "anna",
     name: "Dr Anna Kowalska",
+    playerName: "Max",
     subfolder: "1. Personnages Joueurs",
     profession: "Physicienne principale",
-    background: "Anna supervise les derniers paramètres du faisceau à 7 TeV dans la salle de contrôle centrale (-80m) face à l'intransigeance du directeur Zimmerman.",
-    equipment: "Badge Maître Sécurité Niveau 4 (ouvre tous les sas du site), Inhalateur de secours Ventoline (vital en cas de crise d'asthme), Ordinateur portable durci Panasonic Toughbook avec télémétrie du tir 7 TeV, Première clé physique du Beam Dump",
+    background: "Physicienne brillante ayant consacré des années à HÉLIX, Anna partage l'ambition scientifique du projet tout en prenant ses risques bien plus au sérieux que sa direction.",
+    equipment: "Badge personnel Niveau 4, Inhalateur de secours",
     img: "systems/sombre-classic-house/assets/scenarios/helix-2008/tokens/pj5_anna_kowalska.jpg",
     body: 6,
     spirit: 12,
@@ -216,21 +221,42 @@ const ensureActorFolder = async (name, parentId = null) => (
   ?? Folder.create({ name, type: "Actor", folder: parentId })
 );
 
+const normalizedName = (value) => String(value ?? "").trim().toLocaleLowerCase("fr");
+
+const playerUserFor = (character) => {
+  if (!character.playerName) return null;
+  const expected = normalizedName(character.playerName);
+  return game.users.find((user) => normalizedName(user.name) === expected) ?? null;
+};
+
+const tokenNameFor = (character) => (
+  character.playerName ? `${character.name} - ${character.playerName}` : character.name
+);
+
+const ownershipFor = (character) => {
+  const player = playerUserFor(character);
+  const ownership = { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE };
+  if (player) ownership[player.id] = CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+  return ownership;
+};
+
 const actorData = (character, folderId) => ({
   name: character.name,
   type: "victime",
   img: character.img || "icons/svg/mystery-man.svg",
   folder: folderId,
+  ownership: ownershipFor(character),
   flags: { [SYSTEM_ID]: { helix2008Id: character.id } },
   prototypeToken: {
-    name: character.name,
+    name: tokenNameFor(character),
+    actorLink: true,
     texture: { src: character.img || "icons/svg/mystery-man.svg" },
     displayName: CONST.TOKEN_DISPLAY_MODES.ALWAYS
   },
   system: {
     scenarioId: "helix-2008",
     isAntagonist: Boolean(character.isAntagonist),
-    playerName: "",
+    playerName: character.playerName || "",
     profession: character.profession,
     nameRandomLocked: true,
     professionRandomLocked: true,
@@ -268,6 +294,45 @@ const actorData = (character, folderId) => ({
   }
 });
 
+const syncPlayerCharacters = async () => {
+  const missingUsers = [];
+
+  for (const character of PCS) {
+    const actor = game.actors.find((candidate) => candidate.getFlag(SYSTEM_ID, "helix2008Id") === character.id);
+    if (!actor) continue;
+
+    const player = playerUserFor(character);
+    if (!player) missingUsers.push(character.playerName);
+
+    const tokenName = tokenNameFor(character);
+    await actor.update({
+      ownership: ownershipFor(character),
+      "system.playerName": character.playerName,
+      "system.background": character.background,
+      "system.equipment": character.equipment,
+      "prototypeToken.name": tokenName,
+      "prototypeToken.actorLink": true,
+      "prototypeToken.displayName": CONST.TOKEN_DISPLAY_MODES.ALWAYS
+    });
+
+    for (const scene of game.scenes) {
+      const updates = scene.tokens
+        .filter((token) => token.actorId === actor.id)
+        .map((token) => ({
+          _id: token.id,
+          actorLink: true,
+          name: tokenName,
+          displayName: CONST.TOKEN_DISPLAY_MODES.ALWAYS
+        }));
+      if (updates.length) await scene.updateEmbeddedDocuments("Token", updates);
+    }
+  }
+
+  if (missingUsers.length) {
+    ui.notifications.warn(`Utilisateurs Foundry introuvables : ${[...new Set(missingUsers)].join(", ")}. Les pseudos sont inscrits sur les fiches, mais l'ownership devra être attribué après leur création.`);
+  }
+};
+
 const createCharacters = async () => {
   const rootFolder = await ensureActorFolder(ROOT_FOLDER_NAME);
   const scenarioFolder = await ensureActorFolder(SCENARIO_FOLDER_NAME, rootFolder.id);
@@ -286,13 +351,17 @@ const createCharacters = async () => {
   const existingIds = new Set(game.actors.map((actor) => actor.getFlag(SYSTEM_ID, "helix2008Id")).filter(Boolean));
   const missing = ALL_CHARACTERS.filter((character) => !existingIds.has(character.id));
 
-  if (!missing.length) {
-    ui.notifications.info("Toutes les fiches d'HÉLIX 2008 (PJ, PNJ et Monstres) existent déjà.");
-    return;
+  if (missing.length) {
+    await Actor.createDocuments(missing.map((character) => actorData(character, folderMap[character.subfolder])));
   }
 
-  await Actor.createDocuments(missing.map((character) => actorData(character, folderMap[character.subfolder])));
-  ui.notifications.info(`${missing.length} fiches créées dans HÉLIX 2008 (PJ, PNJ et Monstres).`);
+  await syncPlayerCharacters();
+
+  if (missing.length) {
+    ui.notifications.info(`${missing.length} fiches créées dans HÉLIX 2008 ; PJ attribués et tokens synchronisés.`);
+  } else {
+    ui.notifications.info("Fiches HÉLIX 2008 déjà présentes : inventaires, backgrounds, ownerships et tokens des PJ ont été synchronisés.");
+  }
 };
 
 const confirmCreation = () => {
@@ -301,11 +370,11 @@ const confirmCreation = () => {
     content: [
       "<p>Créer le dossier <strong>Scénarios personnalisés / HÉLIX 2008</strong> avec :</p>",
       "<ul>",
-      "<li><strong>5 Personnages Joueurs</strong> (Nicolas, Inès, Samira, Lukas, Anna avec inventaires complets)</li>",
+      "<li><strong>5 Personnages Joueurs</strong> avec inventaires légers et ownership attribué</li>",
       "<li><strong>5 PNJ Survivants</strong> (Serge, Claire, Zimmerman, Marc, Élodie)</li>",
       "<li><strong>5 Monstres & Menaces</strong> (Rôdeur de Faille, Spectre, Parasites, Commandos, Capitaine Vane)</li>",
       "</ul>",
-      "<p>Les fiches déjà présentes ne seront ni remplacées ni dupliquées.</p>"
+      "<p>Les fiches déjà présentes ne seront pas dupliquées ; les données des cinq PJ seront synchronisées.</p>"
     ].join(""),
     buttons: {
       create: {

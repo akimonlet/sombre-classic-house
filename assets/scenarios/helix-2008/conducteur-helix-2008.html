@@ -120,6 +120,8 @@ header.hud-header {
   border-radius: 4px;
   font-size: 0.76rem;
   cursor: pointer;
+  touch-action: none;
+  user-select: none;
   font-weight: 800;
   letter-spacing: 0.5px;
   transition: all 0.2s;
@@ -128,6 +130,27 @@ header.hud-header {
   background: #113318;
   border-color: var(--accent-green);
   color: #a7f3d0;
+}
+
+.evac-countdown {
+  color: #fbbf24;
+  font-family: var(--font-mono);
+  font-size: .92rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  min-width: 48px;
+  text-align: center;
+}
+.evac-countdown.urgent {
+  color: #fb7185;
+  animation: pulseAlarm .8s ease-in-out infinite alternate;
+}
+.evac-countdown.expired {
+  color: #ef4444;
+}
+@keyframes pulseAlarm {
+  from { opacity: 1; }
+  to { opacity: .48; }
 }
 
 .alert-level-select {
@@ -507,8 +530,11 @@ h2.tab-title {
   padding: 12px 20px;
   max-width: 100%;
   height: calc(100vh - 65px);
-  display: flex;
   flex-direction: column;
+}
+
+#tab-map.active {
+  display: flex;
 }
 
 .map-layout {
@@ -958,27 +984,129 @@ h2.tab-title {
   background: rgba(139, 58, 184, .25) !important;
 }
 
-.start-marker {
+.character-marker {
   position: absolute;
-  z-index: 5;
-  width: 28px;
-  height: 28px;
-  display: grid;
-  place-items: center;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   transform: translate(-50%, -50%);
-  border: 2px solid #fff;
-  border-radius: 50%;
-  color: #fff;
-  font-weight: 800;
-  font-size: 13px;
-  box-shadow: 0 2px 7px rgba(0,0,0,.6);
-  pointer-events: none;
+  pointer-events: auto;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,.72));
 }
-.m-pj1 { background: #c25e00; }
-.m-pj2 { background: #007799; }
-.m-pj3 { background: #2e7d32; }
-.m-pj4 { background: #6a1b9a; }
-.m-pj5 { background: #b71c1c; }
+.character-marker:active {
+  cursor: grabbing;
+}
+.character-marker:hover img,
+.character-marker:focus-visible img {
+  box-shadow: 0 0 0 3px rgba(255,255,255,.95), 0 0 16px #24b5e8;
+}
+.character-marker.npc-marker:hover img,
+.character-marker.npc-marker:focus-visible img {
+  box-shadow: 0 0 0 3px rgba(255,255,255,.95), 0 0 16px #f59e0b;
+}
+.character-marker.selected-character img {
+  box-shadow: 0 0 0 3px #fff, 0 0 20px #24b5e8;
+}
+.character-marker.npc-marker.selected-character img {
+  box-shadow: 0 0 0 3px #fff, 0 0 20px #f59e0b;
+}
+.character-marker:focus-visible {
+  outline: none;
+}
+.character-marker img {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  object-fit: cover;
+  border: 3px solid #24b5e8;
+  border-radius: 50%;
+  background: #111827;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.character-marker .marker-label {
+  padding: 3px 7px;
+  border: 1px solid #24b5e8;
+  border-radius: 4px;
+  background: rgba(8, 19, 32, .94);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.character-marker.npc-marker {
+  z-index: 7;
+}
+.character-marker.npc-marker img {
+  width: 31px;
+  height: 31px;
+  flex-basis: 31px;
+  border-width: 2px;
+  border-color: #f59e0b;
+}
+.character-marker.npc-marker .marker-label {
+  border-color: #f59e0b;
+  background: rgba(44, 30, 8, .94);
+  color: #fde68a;
+  font-size: .66rem;
+}
+.character-marker.label-left .marker-label {
+  order: -1;
+}
+.map-key-portrait {
+  width: 23px;
+  height: 23px;
+  object-fit: cover;
+  border: 2px solid #24b5e8;
+  border-radius: 50%;
+}
+.map-key-portrait.npc {
+  width: 20px;
+  height: 20px;
+  border-color: #f59e0b;
+}
+.map-floor-move-btn {
+  margin: 4px 4px 0 0;
+  padding: 3px 7px;
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  background: #1e2b40;
+  color: #dbeafe;
+  font-size: .7rem;
+  cursor: pointer;
+}
+.map-floor-move-btn:hover,
+.map-floor-move-btn.active {
+  border-color: var(--accent-cyan);
+  background: #17344a;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .character-marker img {
+    width: 31px;
+    height: 31px;
+    flex-basis: 31px;
+  }
+  .character-marker.npc-marker img {
+    width: 26px;
+    height: 26px;
+    flex-basis: 26px;
+  }
+  .character-marker .marker-label {
+    font-size: .62rem;
+    padding: 2px 5px;
+  }
+}
 
 
 /* HANDOUTS & DIEGETIC DOCUMENTS STYLING */
@@ -1229,6 +1357,13 @@ h2.tab-title {
       <button class="btn-hud" onclick="advanceTime(10)" style="padding:2px 6px; font-size:0.72rem;">+10m</button>
     </div>
 
+    <div class="hud-status-group" title="Temps restant avant le verrouillage des sas et du refuge R12">
+      <span class="status-label">Refuge R12 :</span>
+      <span class="evac-countdown" id="evacCountdownDisplay">08:00</span>
+      <button class="btn-hud" id="evacCountdownToggle" onclick="toggleEvacuationCountdown()" style="padding:2px 7px; font-size:0.72rem;">▶</button>
+      <button class="btn-hud" onclick="resetEvacuationCountdown()" style="padding:2px 7px; font-size:0.72rem;" title="Remettre le décompte à huit minutes">↺</button>
+    </div>
+
     <button class="btn-hud" onclick="resetCampaignData()" title="Réinitialiser toutes les données de session">🔄 Reset</button>
   </div>
 </header>
@@ -1308,11 +1443,11 @@ h2.tab-title {
             <p><strong>Acte I : Le Matin Ordinaire (09h00 - 10h00)</strong><br>
             Vignettes individuelles (10-15 min par PJ). Routine, tensions sociales réalistes, matériel collecté et indices semés.</p>
             <hr style="border:none; border-top:1px solid var(--border); margin:8px 0;">
-            <p><strong>Acte II : Le Basculement & Le Beam Dump (10h00 - 10h25)</strong><br>
-            Tir de collision. Flash violet, coupure de courant, brèche dimensionnelle. Les PJ ferment la porte grâce à l'arrêt d'urgence.</p>
+            <p><strong>Acte II : Le Basculement & Le Confinement (10h00 - 10h08)</strong><br>
+            Tir de collision, flash violet et ouverture de la brèche. L'alarme laisse huit minutes aux survivants pour rejoindre le refuge R12.</p>
             <hr style="border:none; border-top:1px solid var(--border); margin:8px 0;">
-            <p><strong>Acte III : La Traque & Le Regroupement (10h25 - 11h15)</strong><br>
-            Progression dans le noir, sas pneumatiques soudés, monstres en maraude, sauvetage des PNJ survivants.</p>
+            <p><strong>Acte III : L'Arrêt du Faisceau & La Traque (10h08 - 11h15)</strong><br>
+            Zimmerman expose la situation à R12. Les survivants doivent déclencher l'arrêt d'urgence du faisceau, puis choisir une voie de sortie.</p>
             <hr style="border:none; border-top:1px solid var(--border); margin:8px 0;">
             <p><strong>Acte IV : Le Protocole Ardoise Noire (11h15 - 12h00)</strong><br>
             Arrivée des commandos. Fausse joie : ils tirent à vue. Fuite désespérée vers l'extérieur pour survivre.</p>
@@ -1397,8 +1532,8 @@ h2.tab-title {
           <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap;">
             <img src="tokens/pj1_nicolas_favre.jpg" alt="Nicolas Favre" style="width:90px; height:90px; border-radius:6px; border:2px solid var(--accent-amber); object-fit:cover; box-shadow:0 3px 10px rgba(0,0,0,0.5);">
             <div style="flex:1; min-width:240px;">
-              <div><strong>Corps :</strong> 4 | <strong>Esprit :</strong> 2 | <strong>Avantages :</strong> Costaud, Procédures d'urgence | <strong>Désavantage :</strong> Soupe au lait</div>
-              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Badge niveau 3, Trousseau passe-partout, Talkie VHF canal 1, Taser 2 coups, Matraque.</div>
+              <div><strong>Corps :</strong> 12 | <strong>Esprit :</strong> 8 | <strong>Traits :</strong> déterminés sur la fiche Foundry</div>
+              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Talkie-walkie VHF et lampe torche Maglite.</div>
             </div>
           </div>
 
@@ -1451,8 +1586,8 @@ h2.tab-title {
           <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap;">
             <img src="tokens/pj2_ines_renaud.jpg" alt="Inès Renaud" style="width:90px; height:90px; border-radius:6px; border:2px solid var(--accent-cyan); object-fit:cover; box-shadow:0 3px 10px rgba(0,0,0,0.5);">
             <div style="flex:1; min-width:240px;">
-              <div><strong>Corps :</strong> 2 | <strong>Esprit :</strong> 4 | <strong>Avantages :</strong> Perspicace, Débrouillarde | <strong>Désavantage :</strong> Obsédée par le scoop</div>
-              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Enregistreur numérique portable Olympus, Torche vidéo LED 12V très puissante, Passe Presse.</div>
+              <div><strong>Corps :</strong> 8 | <strong>Esprit :</strong> 12 | <strong>Traits :</strong> déterminés sur la fiche Foundry</div>
+              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Enregistreur numérique, bloc-notes et stylo.</div>
             </div>
           </div>
 
@@ -1463,14 +1598,14 @@ h2.tab-title {
             <p><strong>Objectif :</strong> Boucler son duplex et décider qui interviewer pour son ouverture d'antenne.</p>
             <div class="dialogue-bubble">
               <div class="dialogue-speaker">Professeur Hoffman (à voix basse)</div>
-              « Mademoiselle Renaud, ils ne comprennent pas ce qu'ils font. À 7 TeV, la cavitation du vide quantique ne va pas créer un trou noir... elle va ouvrir une brèche. Si la résonance s'emballe, il n'y a qu'une issue : le bouton d'arrêt d'urgence manuel, le Beam Dump. »
+              « Mademoiselle Renaud, ils ne comprennent pas ce qu'ils font. À 7 TeV, la cavitation du vide quantique ne va pas créer un trou noir... elle va ouvrir une brèche. Si la résonance s'emballe, il n'y a qu'une issue : l'arrêt d'urgence du faisceau, ce que les ingénieurs appellent le Beam Dump. »
             </div>
             <p><strong>Décisions & Impacts :</strong></p>
             <ul style="padding-left:18px; margin-top:4px;">
               <li><em>Interviewer Delaroche</em> : Évite les ennuis, reçoit un badge "Accès Libre Galerie Visiteur".</li>
               <li><em>Enregistrer l'avertissement d'Hoffman</em> : Obtient l'enregistrement audio exclusif qui prouve l'alerte précoce (or pour la suite), mais Delaroche lui refuse l'accès aux étages VIP.</li>
             </ul>
-            <p style="margin-top:8px;"><strong>Information Clé révélée :</strong> Le "Beam Dump" dévie le faisceau vers 200 tonnes de graphite pour fermer instantanément toute anomalie énergétique, actionnable depuis la salle de contrôle ou la sous-station cryo.</p>
+            <p style="margin-top:8px;"><strong>Information Clé révélée :</strong> L'<strong>arrêt d'urgence du faisceau</strong>, appelé « Beam Dump » par les techniciens, dévie les protons vers 200 tonnes de graphite. Il peut être déclenché depuis la salle de contrôle ou la sous-station cryogénique.</p>
           </div>
 
           <div class="stat-tracker">
@@ -1504,8 +1639,8 @@ h2.tab-title {
           <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap;">
             <img src="tokens/pj3_samira_bensaid.jpg" alt="Dr Samira Bensaïd" style="width:90px; height:90px; border-radius:6px; border:2px solid var(--accent-green); object-fit:cover; box-shadow:0 3px 10px rgba(0,0,0,0.5);">
             <div style="flex:1; min-width:240px;">
-              <div><strong>Corps :</strong> 2 | <strong>Esprit :</strong> 4 | <strong>Avantages :</strong> Sang-froid médical, Pharmacologie | <strong>Désavantage :</strong> Protectrice viscérale</div>
-              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Sacoche médicale d'urgence (Morphine x3, Garrots x2, Scalpel, Pansements compressifs, Lampe stylo).</div>
+              <div><strong>Corps :</strong> 8 | <strong>Esprit :</strong> 12 | <strong>Traits :</strong> déterminés sur la fiche Foundry</div>
+              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Petite sacoche médicale avec pansements et une dose de morphine.</div>
             </div>
           </div>
 
@@ -1558,8 +1693,8 @@ h2.tab-title {
           <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap;">
             <img src="tokens/pj4_lukas_meier.jpg" alt="Lukas Meier" style="width:90px; height:90px; border-radius:6px; border:2px solid var(--accent-purple); object-fit:cover; box-shadow:0 3px 10px rgba(0,0,0,0.5);">
             <div style="flex:1; min-width:240px;">
-              <div><strong>Corps :</strong> 3 | <strong>Esprit :</strong> 3 | <strong>Avantages :</strong> Connaissance des installations, Sang-froid technique | <strong>Désavantage :</strong> Entêté</div>
-              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Grande clé à griffe en acier trempé, Lampe frontale industrielle, Gants cryo isolants, Dosimètre actif.</div>
+              <div><strong>Corps :</strong> 10 | <strong>Esprit :</strong> 10 | <strong>Traits :</strong> déterminés sur la fiche Foundry</div>
+              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Grande clé à griffe et lampe frontale industrielle.</div>
             </div>
           </div>
 
@@ -1611,8 +1746,8 @@ h2.tab-title {
           <div style="display:flex; gap:16px; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap;">
             <img src="tokens/pj5_anna_kowalska.jpg" alt="Dr Anna Kowalska" style="width:90px; height:90px; border-radius:6px; border:2px solid var(--accent-red); object-fit:cover; box-shadow:0 3px 10px rgba(0,0,0,0.5);">
             <div style="flex:1; min-width:240px;">
-              <div><strong>Corps :</strong> 1 | <strong>Esprit :</strong> 5 | <strong>Avantages :</strong> Autorité scientifique, Génie de la physique | <strong>Désavantage :</strong> Asthmatique</div>
-              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Badge Maître Sécurité Niveau 4, Inhalateur Ventoline, Ordinateur portable durci avec données du tir.</div>
+              <div><strong>Corps :</strong> 6 | <strong>Esprit :</strong> 12 | <strong>Traits :</strong> déterminés sur la fiche Foundry</div>
+              <div style="margin-top:4px;"><span class="tag tag-cyan">Équipement :</span> Badge personnel Niveau 4 et inhalateur de secours.</div>
             </div>
           </div>
 
@@ -1627,10 +1762,10 @@ h2.tab-title {
             </div>
             <p><strong>Décisions & Impacts :</strong></p>
             <ul style="padding-left:18px; margin-top:4px;">
-              <li><em>Obtempérer à 100%</em> : Zimmerman lui confie les pleins accès console.</li>
-              <li><em>Tenter un bridage secret ou insister</em> : Zimmerman s'emporte et s'isole dans son bureau vitré. Anna peut en profiter pour repérer où il range la seconde clé physique du Beam Dump (dans le tiroir supérieur de son bureau).</li>
+              <li><em>Obtempérer à 100%</em> : Zimmerman lui confie les pleins accès console ; Anna remarque la première clé opérateur fixée au pupitre rouge.</li>
+              <li><em>Tenter un bridage secret ou insister</em> : Zimmerman s'emporte et s'isole dans son bureau vitré. Anna peut en profiter pour repérer où il range la seconde clé physique de l'arrêt du faisceau (dans le tiroir supérieur de son bureau).</li>
             </ul>
-            <p style="margin-top:8px;"><strong>Information Clé révélée :</strong> Le Beam Dump nécessite deux clés physiques tournées en simultané, et l'inertie thermique des électroaimants prend 8 à 12 secondes avant d'absorber la totalité du faisceau.</p>
+            <p style="margin-top:8px;"><strong>Information Clé révélée :</strong> L'arrêt d'urgence du faisceau nécessite deux clés physiques tournées simultanément. L'inertie des électroaimants impose ensuite de maintenir la commande pendant dix secondes.</p>
           </div>
 
           <div class="stat-tracker">
@@ -1669,24 +1804,79 @@ h2.tab-title {
         <div class="timeline-step critical active">
           <div class="timeline-dot"></div>
           <div class="timeline-time">10h00:00 — LE BASCULEMENT</div>
-          <div class="timeline-title">Phase 2 : L'Incident & L'Arrêt d'Urgence</div>
+          <div class="timeline-title">Phase 2 : L'Incident & Le Confinement</div>
           <div class="callout alert">
             <strong>Description à faire :</strong> Le compte à rebours s'achève. Un silence surnaturel de deux secondes s'installe. Puis un éclair violet aveuglant déchire tout le complexe. Un bruit d'implosion assourdissant fait vibrer le sol. Les néons explosent, l'éclairage de secours rouge clignote. Les sirènes de surpression hurlent.
           </div>
-          <p style="font-size:0.88rem;">Au niveau -80m, la caverne de détection est déchiquetée par une déchirure spatiale luminescente. Des formes monstrueuses traversent. Anna (au CCR) ou Lukas (en Cryo) doivent enclencher le <strong>Beam Dump</strong> pour couper l'anneau et fermer la brèche. Cela prend 10 secondes d'angoisse.</p>
+          <p style="font-size:0.88rem;">Au niveau −80 m, la caverne de détection est déchiquetée par une déchirure spatiale luminescente. Les automatismes de sécurité tombent en panne et des formes monstrueuses traversent. Le faisceau continue de circuler : la brèche restera ouverte tant que l'arrêt manuel ne sera pas déclenché.</p>
+          <div class="callout rule">
+            <div class="callout-title">ALARME DE CONFINEMENT — 8 MINUTES POUR REJOINDRE R12</div>
+            <p><strong>Annonce automatique :</strong> « Anomalie majeure. Tout le personnel doit rejoindre immédiatement le refuge intermédiaire R12. Verrouillage définitif des sas dans huit minutes. »</p>
+            <p style="margin-top:8px;">Le monte-charge reste alimenté en mode évacuation jusqu'à la fin du décompte. R12, situé à −20 m, est à mi-chemin entre la surface et le bunker profond. À zéro, ses deux portes blindées se ferment : toute personne encore à la surface ou à −80 m est isolée.</p>
+            <p style="margin-top:8px;"><strong>PNJ à rassembler :</strong> Serge, Claire, Marc, Élodie et Zimmerman. Ils connaissent le protocole, mais la panique, les blessures et l'obstination de Zimmerman empêchent un regroupement automatique.</p>
+          </div>
+        </div>
+
+        <div class="timeline-step critical">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">10h08 — LE REFUGE R12</div>
+          <div class="timeline-title">Phase 3 : Le Diagnostic de Zimmerman</div>
+          <p style="color:var(--text-muted); font-size:0.88rem;">Les portes se ferment derrière les survivants. L'accès depuis la surface et le bunker est condamné, mais le pupitre intérieur permet au groupe de libérer une branche à la fois : la galerie vers la cryogénie ou le sas vers le niveau −80 m. Les grondements réguliers prouvent que l'accélérateur fonctionne encore.</p>
+          <div class="dialogue-bubble">
+            <div class="dialogue-speaker">Zimmerman, livide, devant le pupitre de R12</div>
+            « Écoutez-moi. Le système automatique n'a pas coupé le faisceau. Tant qu'il circule, la déchirure restera ouverte et d'autres choses passeront. Il faut déclencher l'<strong>arrêt d'urgence du faisceau</strong> — le <em>Beam Dump</em>, dans notre jargon. Il déviera les protons vers le puits de graphite.<br><br>
+            Deux possibilités. La salle de contrôle R23 : la clé opérateur est fixée à la console rouge, la clé de direction est dans le tiroir supérieur de mon bureau vitré. Il faut les tourner ensemble. Ou la sous-station cryogénique B-4, R14 : un disjoncteur mécanique permet la même coupure. Dans les deux cas, maintenez la commande dix secondes. Après cela seulement, la brèche se refermera.<br><br>
+            Ce plan au-dessus du pupitre indique aussi les issues. R01 ramène à la grille principale. R30 est une galerie d'exhaure qui ressort dans la forêt, deux kilomètres au sud. Mais choisissez vite : quelque chose remonte vers nous. »
+          </div>
+          <div class="callout rule">
+            <div class="callout-title">Ce que les PJ comprennent immédiatement</div>
+            <ol style="padding-left:20px;margin-top:6px;">
+              <li>Ils doivent arrêter le faisceau pour empêcher de nouvelles créatures de franchir la brèche.</li>
+              <li>Ils choisissent la <strong>route R23</strong> (deux clés, deux personnes) ou la <strong>route R14</strong> (disjoncteur mécanique).</li>
+              <li>Ils maintiennent la commande choisie pendant dix secondes sous pression.</li>
+              <li>La brèche se ferme, mais les créatures déjà présentes ne disparaissent pas.</li>
+              <li>Ils gagnent ensuite R01 ou R30 pour quitter le complexe.</li>
+            </ol>
+          </div>
+          <div class="callout cyan">
+            <div class="callout-title">Les PJ ne dépendent pas uniquement de Zimmerman</div>
+            <ul style="padding-left:18px;margin-top:6px;">
+              <li>Inès peut réécouter l'avertissement enregistré du professeur Hoffman.</li>
+              <li>Anna a vu l'alerte « arrêt physique requis » sur la console de R23.</li>
+              <li>Lukas connaît la consigne murale et le disjoncteur mécanique de B-4.</li>
+              <li>Le pupitre de R12 affiche les deux itinéraires vers R23 et R14.</li>
+            </ul>
+          </div>
         </div>
 
         <div class="timeline-step">
           <div class="timeline-dot"></div>
-          <div class="timeline-time">10h05 - 10h40</div>
-          <div class="timeline-title">Phase 3 : Le Silence, Le Noir & La Traque</div>
-          <p style="color:var(--text-muted); font-size:0.88rem;">La porte est refermée, mais une dizaine de <em>Rôdeurs de Faille</em> et des <em>Parasites de Cendre</em> sont lâchés dans le complexe. Les portes coupe-feu sont soudées magnétiquement. Les PJ tentent de communiquer via le téléphone rouge ou la radio VHF et de se regrouper au rez-de-chaussée ou au niveau -20m.</p>
+          <div class="timeline-time">10h10 - 11h15</div>
+          <div class="timeline-title">Phase 4 : Fermer la Brèche, Puis Sortir</div>
+          <p style="color:var(--text-muted); font-size:0.88rem;">Les survivants choisissent entre R23 et R14 pour arrêter le faisceau, tandis que les créatures déjà passées rôdent dans le complexe. Fuir avant la coupure reste physiquement possible, mais la brèche continuera de vomir des créatures et le complexe risque de s'effondrer.</p>
+          <div class="callout cyan">
+            <div class="callout-title">Option A — Salle de contrôle R23</div>
+            <strong>Trajet :</strong> R12 → R13 → R21 → R23. Anna reconnaît la procédure. Une personne récupère la clé de direction dans le bureau vitré ; la clé opérateur reste attachée à la console. Deux personnes tournent les clés simultanément puis l'une maintient la commande dix secondes.
+          </div>
+          <div class="callout cyan">
+            <div class="callout-title">Option B — Cryogénie B-4, R14</div>
+            <strong>Trajet :</strong> R12 → R13 → R14. Lukas reconnaît l'armoire de secours et le disjoncteur mécanique. La fuite d'hélium rend la salle glaciale et peu respirable ; la commande doit également rester maintenue dix secondes.
+          </div>
+          <p style="color:var(--text-muted); font-size:0.88rem;"><strong>Après la coupure :</strong> un choc sourd traverse la montagne, les lumières vacillent et la déchirure se replie. Le silence qui suit confirme la réussite. Les survivants consultent alors le plan photoluminescent de R12 ou les panneaux d'évacuation répétés dans les galeries.</p>
+          <ul style="padding-left:20px;margin-top:8px;color:var(--text-muted);font-size:0.88rem;">
+            <li><strong>Route de surface :</strong> remonter par R10 puis gagner le poste de garde R01 ; c'est la voie la plus courte, mais elle débouche sur le cordon militaire.</li>
+            <li><strong>Route souterraine :</strong> descendre à −80 m puis suivre la galerie de drainage R30, qui ressort deux kilomètres plus loin dans la forêt.</li>
+          </ul>
+          <div class="callout rule">
+            <div class="callout-title">Comment trouvent-ils R30 ?</div>
+            Le plan d'évacuation fixé dans R12 porte la mention « EXHAURE SUD — SORTIE DE SECOURS — 2 KM ». Anna connaît l'existence de cette galerie de maintenance et peut confirmer qu'elle débouche hors du périmètre principal.
+          </div>
         </div>
 
         <div class="timeline-step critical">
           <div class="timeline-dot"></div>
           <div class="timeline-time">11h15:00</div>
-          <div class="timeline-title">Phase 4 : L'Arrivée du Détachement « Ardoise Noire »</div>
+          <div class="timeline-title">Phase 5 : L'Arrivée du Détachement « Ardoise Noire »</div>
           <div class="callout secret">
             <strong>Le Faux Sauvetage :</strong> Des hélicoptères noirs atterrissent. Des commandos d'élite en treillis sombre et masques balistiques pénètrent dans le bâtiment. Les survivants courent vers eux... mais les soldats ouvrent le feu sans sommation à la mitraillette avec silencieux. Ordre officiel : <em>Zéro témoin, purge totale des disques durs.</em>
           </div>
@@ -1695,7 +1885,7 @@ h2.tab-title {
         <div class="timeline-step">
           <div class="timeline-dot"></div>
           <div class="timeline-time">11h30 - 12h15</div>
-          <div class="timeline-title">Phase 5 : La Grande Évasion</div>
+          <div class="timeline-title">Phase 6 : La Grande Évasion</div>
           <p style="color:var(--text-muted); font-size:0.88rem;">Pris en étau entre les créatures affamées et les escouades de nettoyage qui posent des charges thermiques, les survivants doivent utiliser les conduits d'aération, les tunnels de drainage ou forcer la grille nord pour s'enfuir dans la forêt du Jura.</p>
         </div>
 
@@ -1709,7 +1899,7 @@ h2.tab-title {
           <h2 style="font-size:1.45rem; font-weight:800; color:#fff; margin-bottom:4px; display:flex; align-items:center; gap:10px;">
             <span>🗺️</span> Plan Architectural Interactif HÉLIX
           </h2>
-          <div style="color:var(--text-muted); font-size:0.88rem;">Plans CAD 2D haute précision avec overlay interactif. Cliquez sur une pièce ou une pastille (1 à 5).</div>
+          <div style="color:var(--text-muted); font-size:0.88rem;">Plans CAD 2D haute précision avec overlay interactif. Cliquez sur une pièce ou un personnage ; faites glisser les portraits pour les déplacer.</div>
         </div>
 
         <div class="map-level-tabs" style="display:flex; gap:8px;">
@@ -1732,7 +1922,7 @@ h2.tab-title {
             
             <!-- LEVEL 0: SURFACE -->
             <div class="floor-panel active" id="g-panel-ground" style="display:block; position:relative;">
-              <img src="maps/helix-plan-rdc.jpg" alt="Plan architectural du rez-de-chaussée et extérieurs d'HÉLIX" style="display:block; width:100%; height:auto; user-select:none;">
+              <img src="helix-plan-rdc.jpg" alt="Plan architectural du rez-de-chaussée et extérieurs d'HÉLIX" style="display:block; width:100%; height:auto; user-select:none;">
               
               <button type="button" class="hotspot" data-room="R01" onclick="selectGlobalRoom('R01')" aria-label="Poste de Garde" style="left:11%;top:38%;width:7.5%;height:22.5%;"></button>
               <button type="button" class="hotspot" data-room="R02" onclick="selectGlobalRoom('R02')" aria-label="Parking Manifestants" style="left:1%;top:4%;width:30%;height:92%;"></button>
@@ -1742,14 +1932,33 @@ h2.tab-title {
               <button type="button" class="hotspot danger-zone" data-room="R08" onclick="selectGlobalRoom('R08')" aria-label="Hangar Cryo Surface" style="left:80.5%;top:18%;width:10.5%;height:26%;"></button>
               <button type="button" class="hotspot" data-room="R10" onclick="selectGlobalRoom('R10')" aria-label="Puits Ascenseur & Escalier" style="left:80.5%;top:44%;width:16.5%;height:35%;"></button>
 
-              <span class="start-marker m-pj1" style="left:14.5%;top:49%;" title="1 : Départ Nicolas Favre">1</span>
-              <span class="start-marker m-pj2" style="left:43.5%;top:50%;" title="2 : Départ Inès Renaud">2</span>
-              <span class="start-marker m-pj3" style="left:72.5%;top:67%;" title="3 : Départ Dr Samira Bensaïd">3</span>
+              <button type="button" class="character-marker pc-marker" data-character="nicolas" onclick="selectMapCharacter('nicolas')" style="left:14.5%;top:49%;" title="Afficher la fiche de Nicolas Favre" aria-label="Afficher la fiche de Nicolas Favre">
+                <img src="tokens/pj1_nicolas_favre.jpg" alt=""><span class="marker-label">Nicolas</span>
+              </button>
+              <button type="button" class="character-marker pc-marker" data-character="ines" onclick="selectMapCharacter('ines')" style="left:43.5%;top:50%;" title="Afficher la fiche d'Inès Renaud" aria-label="Afficher la fiche d'Inès Renaud">
+                <img src="tokens/pj2_ines_renaud.jpg" alt=""><span class="marker-label">Inès</span>
+              </button>
+              <button type="button" class="character-marker pc-marker label-left" data-character="samira" onclick="selectMapCharacter('samira')" style="left:72.5%;top:67%;" title="Afficher la fiche de Samira Bensaïd" aria-label="Afficher la fiche de Samira Bensaïd">
+                <img src="tokens/pj3_samira_bensaid.jpg" alt=""><span class="marker-label">Samira</span>
+              </button>
+
+              <button type="button" class="character-marker npc-marker label-left" data-character="serge" onclick="selectMapCharacter('serge')" style="left:15%;top:58%;" title="Afficher la fiche de Serge Morin" aria-label="Afficher la fiche de Serge Morin">
+                <img src="tokens/pnj_serge_morin.jpg" alt=""><span class="marker-label">Serge</span>
+              </button>
+              <button type="button" class="character-marker npc-marker" data-character="claire" onclick="selectMapCharacter('claire')" style="left:9%;top:24%;" title="Afficher la fiche de Claire Vaneck" aria-label="Afficher la fiche de Claire Vaneck">
+                <img src="tokens/pnj_claire_vaneck.jpg" alt=""><span class="marker-label">Claire</span>
+              </button>
+              <button type="button" class="character-marker npc-marker label-left" data-character="marc" onclick="selectMapCharacter('marc')" style="left:68%;top:78%;" title="Afficher la fiche de Marc Lesueur" aria-label="Afficher la fiche de Marc Lesueur">
+                <img src="tokens/pnj_marc_lesueur.jpg" alt=""><span class="marker-label">Marc</span>
+              </button>
+              <button type="button" class="character-marker npc-marker" data-character="elodie" onclick="selectMapCharacter('elodie')" style="left:77%;top:78%;" title="Afficher la fiche d'Élodie Brunet" aria-label="Afficher la fiche d'Élodie Brunet">
+                <img src="tokens/pnj_elodie_brunet.jpg" alt=""><span class="marker-label">Élodie</span>
+              </button>
             </div>
 
             <!-- LEVEL -1: -20M CRYO -->
             <div class="floor-panel" id="g-panel-mid" style="display:none; position:relative;">
-              <img src="maps/helix-plan-r-1.jpg" alt="Plan architectural du niveau -1 d'HÉLIX" style="display:block; width:100%; height:auto; user-select:none;">
+              <img src="helix-plan-r-1.jpg" alt="Plan architectural du niveau -1 d'HÉLIX" style="display:block; width:100%; height:auto; user-select:none;">
               
               <button type="button" class="hotspot" data-room="R12" onclick="selectGlobalRoom('R12')" aria-label="Sas Ascenseur Lourd" style="left:3%;top:9%;width:16.5%;height:55%;"></button>
               <button type="button" class="hotspot" data-room="R13" onclick="selectGlobalRoom('R13')" aria-label="Galerie Centrale B" style="left:20%;top:38%;width:64%;height:23%;"></button>
@@ -1759,31 +1968,35 @@ h2.tab-title {
               <button type="button" class="hotspot danger-zone" data-room="R18" onclick="selectGlobalRoom('R18')" aria-label="Transfos 400 kV" style="left:60.5%;top:62%;width:24%;height:29%;"></button>
               <button type="button" class="hotspot" data-room="R21" onclick="selectGlobalRoom('R21')" aria-label="Sas Descente -80m" style="left:85.5%;top:9%;width:11.5%;height:82%;"></button>
 
-              <span class="start-marker m-pj4" style="left:45%;top:23.5%;" title="4 : Départ Lukas Meier">4</span>
+              <button type="button" class="character-marker pc-marker" data-character="lukas" onclick="selectMapCharacter('lukas')" style="left:45%;top:23.5%;" title="Afficher la fiche de Lukas Meier" aria-label="Afficher la fiche de Lukas Meier">
+                <img src="tokens/pj4_lukas_meier.jpg" alt=""><span class="marker-label">Lukas</span>
+              </button>
             </div>
 
             <!-- LEVEL -2: -80M BUNKER -->
             <div class="floor-panel" id="g-panel-deep" style="display:none; position:relative;">
-              <img src="maps/helix-plan-r-2.jpg" alt="Plan architectural du bunker -80m d'HÉLIX" style="display:block; width:100%; height:auto; user-select:none;">
+              <img src="helix-plan-r-2.jpg" alt="Plan architectural du bunker -80m d'HÉLIX" style="display:block; width:100%; height:auto; user-select:none;">
               
               <button type="button" class="hotspot" data-room="R23" onclick="selectGlobalRoom('R23')" aria-label="Salle de Contrôle (CCR)" style="left:7%;top:32%;width:22.5%;height:35%;"></button>
               <button type="button" class="hotspot" data-room="R24" onclick="selectGlobalRoom('R24')" aria-label="Serveurs & Données" style="left:42%;top:15%;width:20%;height:27%;"></button>
               <button type="button" class="hotspot breach-zone" data-room="R27" onclick="selectGlobalRoom('R27')" aria-label="Point Zéro : La Brèche" style="left:64%;top:16%;width:30%;height:47%;"></button>
-              <button type="button" class="hotspot danger-zone" data-room="R29" onclick="selectGlobalRoom('R29')" aria-label="Puits Beam Dump" style="left:47%;top:57%;width:16%;height:19%;"></button>
+              <button type="button" class="hotspot danger-zone" data-room="R29" onclick="selectGlobalRoom('R29')" aria-label="Puits d'absorption du faisceau" style="left:47%;top:57%;width:16%;height:19%;"></button>
               <button type="button" class="hotspot" data-room="R30" onclick="selectGlobalRoom('R30')" aria-label="Galerie de Drainage Forêt" style="left:3%;top:76%;width:85%;height:18%;"></button>
 
-              <span class="start-marker m-pj5" style="left:18%;top:49%;" title="5 : Départ Dr Anna Kowalska">5</span>
+              <button type="button" class="character-marker pc-marker" data-character="anna" onclick="selectMapCharacter('anna')" style="left:18%;top:49%;" title="Afficher la fiche d'Anna Kowalska" aria-label="Afficher la fiche d'Anna Kowalska">
+                <img src="tokens/pj5_anna_kowalska.jpg" alt=""><span class="marker-label">Anna</span>
+              </button>
+              <button type="button" class="character-marker npc-marker label-left" data-character="zimmerman" onclick="selectMapCharacter('zimmerman')" style="left:23%;top:42%;" title="Afficher la fiche de Hans Zimmerman" aria-label="Afficher la fiche de Hans Zimmerman">
+                <img src="tokens/pnj_hans_zimmerman.jpg" alt=""><span class="marker-label">Zimmerman</span>
+              </button>
             </div>
 
           </div>
 
           <!-- MAP LEGEND -->
           <div style="display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:12px; padding-top:10px; border-top:1px solid #e2e8f0; color:#475569; font-size:0.82rem;">
-            <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:50%; background:#c25e00; border:1px solid #fff;"></span>1 Nicolas</span>
-            <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:50%; background:#007799; border:1px solid #fff;"></span>2 Inès</span>
-            <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:50%; background:#2e7d32; border:1px solid #fff;"></span>3 Samira</span>
-            <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:50%; background:#6a1b9a; border:1px solid #fff;"></span>4 Lukas</span>
-            <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; border-radius:50%; background:#b71c1c; border:1px solid #fff;"></span>5 Anna</span>
+            <span style="display:inline-flex; align-items:center; gap:6px;"><img class="map-key-portrait" src="tokens/pj1_nicolas_favre.jpg" alt="">PJ cyan — cliquer ou déplacer</span>
+            <span style="display:inline-flex; align-items:center; gap:6px;"><img class="map-key-portrait npc" src="tokens/pnj_serge_morin.jpg" alt="">PNJ ambre — cliquer ou déplacer</span>
             <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:16px; height:10px; background:#f5d8d6; border:1px solid #b52d28;"></span>Danger / Froid</span>
             <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:16px; height:10px; background:rgba(139,58,184,0.2); border:1px solid #8b3ab8;"></span>Point Zéro / Brèche</span>
           </div>
@@ -1791,7 +2004,7 @@ h2.tab-title {
 
         <!-- DETAILS SIDEBAR -->
         <aside style="background:var(--bg-panel); border:1px solid var(--border); border-radius:6px; padding:18px; display:flex; flex-direction:column; box-shadow:0 4px 18px rgba(0,0,0,0.4);" aria-live="polite">
-          <div style="color:var(--accent-amber); font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:800; margin-bottom:6px;">Fiche Tactique Salle</div>
+          <div id="hud-detail-kind" style="color:var(--accent-amber); font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:800; margin-bottom:6px;">Fiche Tactique Salle</div>
           <h2 id="hud-detail-title" style="color:#fff; font-size:1.18rem; font-weight:800; margin-bottom:8px;">Poste de Garde & Grille</h2>
           <div id="hud-detail-tags" style="margin-bottom:12px;">
             <span class="tag tag-amber">Départ PJ 1</span>
@@ -1800,7 +2013,7 @@ h2.tab-title {
           <p id="hud-detail-text" style="color:var(--text-main); font-size:0.88rem; line-height:1.5; margin-bottom:14px;">
             Bâtiment vitré renforcé contrôlant le portail d'accès au complexe. Nicolas Favre commence ici son service avec Serge face à 80 manifestants et un car scolaire coincé.
           </p>
-          <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-dim); font-weight:800; margin-bottom:6px;">Éléments Clés & Fouille :</div>
+          <div id="hud-detail-list-title" style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-dim); font-weight:800; margin-bottom:6px;">Éléments Clés & Fouille :</div>
           <ul id="hud-detail-list" style="padding-left:18px; color:var(--text-muted); font-size:0.84rem; line-height:1.45;">
             <li>Trousseau de clés passe-partout du site et Taser 2 coups.</li>
             <li>Moniteurs de vidéosurveillance extérieure (permettent de voir les blindés militaires à 11h15).</li>
@@ -1897,7 +2110,7 @@ h2.tab-title {
             </div>
             <div class="callout secret">
               <div class="callout-title">Secret & Clé Vitale</div>
-              Possède sur lui le badge maître Niveau 4 et a la seconde clé physique du Beam Dump enfermée dans le tiroir de son bureau (salle R23). Il sera impitoyablement abattu par le commando militaire s'il est encore vivant à 11h15.
+              Possède sur lui le badge maître Niveau 4. La clé de direction de l'arrêt du faisceau est enfermée dans le tiroir de son bureau à R23. Il sera impitoyablement abattu par le commando militaire s'il est encore vivant à 11h15.
             </div>
           </div>
         </div>
@@ -1962,8 +2175,8 @@ h2.tab-title {
         <li onclick="toggleCheckItem(this)">
           <input type="checkbox">
           <div>
-            <strong>1. Le Double Clé du Beam Dump</strong><br>
-            <span style="font-size:0.83rem; color:var(--text-muted);">Emplacement : Bureau vitré de Zimmerman (CCR -80m). Nécessaire pour couper l'anneau et fermer la brèche dimensionnelle en cas de destruction de la console principale.</span>
+            <strong>1. Les deux clés de l'arrêt du faisceau</strong><br>
+            <span style="font-size:0.83rem; color:var(--text-muted);">La clé opérateur reste fixée au pupitre rouge de R23 ; la clé de direction se trouve dans le tiroir supérieur du bureau vitré de Zimmerman. Les deux doivent être tournées simultanément.</span>
           </div>
         </li>
         <li onclick="toggleCheckItem(this)">
@@ -1984,7 +2197,7 @@ h2.tab-title {
           <input type="checkbox">
           <div>
             <strong>4. L'Enregistrement Audio d'Inès (Pr Hoffman)</strong><br>
-            <span style="font-size:0.83rem; color:var(--text-muted);">Emplacement : Dictaphone numérique d'Inès. Prouve que la direction connaissait le risque de cavitation quantique et rend le témoignage d'Inès d'une valeur inestimable pour faire éclater le scandale.</span>
+            <span style="font-size:0.83rem; color:var(--text-muted);">Emplacement : enregistreur numérique d'Inès. Hoffman y nomme l'arrêt d'urgence du faisceau et ses deux postes de commande ; l'enregistrement prouve également que la direction avait été alertée.</span>
           </div>
         </li>
         <li onclick="toggleCheckItem(this)">
@@ -1992,6 +2205,13 @@ h2.tab-title {
           <div>
             <strong>5. L'Ordre de Mission "Ardoise Noire"</strong><br>
             <span style="font-size:0.83rem; color:var(--text-muted);">Emplacement : Tablette tactique ou cadavre d'un commando abattu. Document officiel portant la mention : « Confinement total. Liquidation de tout personnel civil et scientifique présent sur zone. »</span>
+          </div>
+        </li>
+        <li onclick="toggleCheckItem(this)">
+          <input type="checkbox">
+          <div>
+            <strong>6. Le Plan d'Évacuation de R12</strong><br>
+            <span style="font-size:0.83rem; color:var(--text-muted);">Fixé au-dessus du pupitre du refuge. Il indique la sortie principale par R10/R01 et une seconde issue : « Exhaure Sud R30 — sortie de secours — forêt à 2 km ».</span>
           </div>
         </li>
       </ul>
@@ -2004,7 +2224,7 @@ h2.tab-title {
 
       <div class="callout alert">
         <div class="callout-title">Doctrine de Menace pour Sombre Classic</div>
-        Les créatures d'HÉLIX ne sont pas des sacs de points de vie à éliminer au fusil : ce sont des prédateurs mortels face auxquels le combat frontal est presque toujours suicidaire. La survie repose sur la fuite, la discrétion, l'utilisation de l'environnement (éclairage, extinction, électricité) et l'activation du Beam Dump.
+        Les créatures d'HÉLIX ne sont pas des sacs de points de vie à éliminer au fusil : ce sont des prédateurs mortels face auxquels le combat frontal est presque toujours suicidaire. La survie repose sur la fuite, la discrétion, l'utilisation de l'environnement et le déclenchement de l'arrêt d'urgence du faisceau.
       </div>
 
       <div class="card-grid">
@@ -2034,7 +2254,7 @@ h2.tab-title {
             <div class="callout rule" style="margin:8px 0;">
               <div class="callout-title">Points Faibles & Contre-Mesures</div>
               <ul style="padding-left:18px; font-size:0.84rem;">
-                <li><strong>Aveuglement :</strong> Très sensible aux flashs lumineux violents (Torche LED 12V d'Inès) : le force à battre en retraite 1 round.</li>
+                <li><strong>Aveuglement :</strong> Très sensible aux flashs lumineux violents (projecteur vidéo récupérable dans la régie R05) : le force à battre en retraite 1 round.</li>
                 <li><strong>Diversion sonore :</strong> Jeter un objet métallique détourne son attention (jet d'Esprit).</li>
               </ul>
             </div>
@@ -2156,7 +2376,7 @@ h2.tab-title {
             <span class="toggle-icon">▲</span>
           </div>
           <div class="card-body">
-            <p>La coupure de courant générale active le verrouillage magnétique de sécurité bio. Les sas exigent 3 tours d'effraction au pied-de-biche ou les clés de dérogation de Nicolas / Zimmerman.</p>
+            <p>À 10h08, le confinement active le verrouillage magnétique. Les portes ordinaires peuvent être ouvertes avec le trousseau du poste R01 ou le badge maître de Zimmerman ; les doubles portes de R12 ne répondent plus qu'au pupitre situé à l'intérieur du refuge.</p>
           </div>
         </div>
       </div>
@@ -2343,7 +2563,7 @@ h2.tab-title {
               <div style="font-size:0.88rem; line-height:1.5;">
                 <p><strong>EN CAS D'EMBALLEMENT THERMIQUE OU D'ANOMALIE GRAVITATIONNELLE :</strong></p>
                 <ol style="padding-left:20px; margin:8px 0;">
-                  <li><strong>Insérer les deux clés physiques</strong> (Clé Opérateur Anna + Clé Directeur Zimmerman) dans le pupitre rouge de la CCR (ou basculer le disjoncteur secours Cryo B-4).</li>
+                  <li><strong>Insérer les deux clés physiques</strong> (clé opérateur fixée au pupitre + clé de direction rangée dans le bureau de Zimmerman) dans la console rouge de la CCR, ou basculer le disjoncteur de secours Cryo B-4.</li>
                   <li><strong>Tourner simultanément d'un quart de tour</strong> vers la droite.</li>
                   <li><strong>Maintenir le bouton poussoir enfoncé pendant 10 secondes</strong> jusqu'au verrouillage des électroaimants de déflexion vers les blocs de graphite.</li>
                 </ol>
@@ -2495,7 +2715,7 @@ const ROOMS_DB = {
     normalUse: 'Accueil des VIP, conférences de presse et visites scolaires.',
     access: 'Parvis extérieur, Espace Presse (R05), Direction (R06), Infirmerie (R07).',
     occupants: 'Inès Renaud (PJ), Gilles (Cadreur), Pr Hoffman, journalistes de la RTS et France 3, car scolaire de 4ème.',
-    items: 'Éclairage vidéo puissant (Torche LED), Enregistreur audio de poche, Gobelets de café chaud, Câbles électriques solides.',
+    items: 'Projecteur vidéo puissant de la régie, enregistreur audio de poche, gobelets de café chaud et câbles électriques solides.',
     hazards: 'Plafond de verre qui vole en éclats lors du souffle de 10h00, panique de masse.',
     events: '09h25 : Vignette d\'Inès. 10h00 : Éclair violet zénithal, chute de débris, premiers blessés parmi les journalistes.'
   },
@@ -2557,21 +2777,21 @@ const ROOMS_DB = {
     occupants: 'Personne en temps normal.',
     items: 'Interphone de gaine, Treuil manuel de secours, Éclairage de puits.',
     hazards: 'Chute vertigineuse de 80m dans le vide si la cage est bloquée. Escalier glissant et raide.',
-    events: 'À 10h00, l\'ascenseur se bloque à mi-hauteur. L\'escalier de secours reste la seule voie physique.'
+    events: 'À 10h00, le monte-charge passe en mode évacuation et dessert les trois niveaux. À 10h08, il s\'immobilise et les accès extérieurs se verrouillent ; depuis R12, le groupe peut libérer une branche à la fois.'
   },
 
   // LEVEL 1 (-20m)
   'R12': {
     code: 'R12',
     level: 'Niveau -1 (-20m)',
-    title: 'Sas d\'Arrivée Ascenseur Lourd',
-    desc: 'Palier bétonné avec doubles portes blindées étanches. Sol grillagé au-dessus des caniveaux techniques.',
-    normalUse: 'Transit du matériel cryogénique vers les sous-stations.',
+    title: 'Refuge de Confinement R12',
+    desc: 'Palier bétonné renforcé, aménagé comme refuge intermédiaire avec doubles portes blindées, ventilation autonome et balises d\'urgence.',
+    normalUse: 'Point de rassemblement protégé lors des incidents cryogéniques, radiologiques ou électriques.',
     access: 'Puits ascenseur (R10), Galerie centrale B, Sous-station Cryo (R14).',
-    occupants: 'Techniciens de maintenance.',
-    items: 'Extincteurs à poudre CO2, Caisse à outils métalliques, Palan d\'atelier.',
+    occupants: 'Point de convergence de tous les PJ et PNJ survivants avant 10h08.',
+    items: 'Extincteurs à poudre CO2, caisse à outils, palan d\'atelier et plan photoluminescent indiquant R01 et la sortie de secours R30.',
     hazards: 'Lumières clignotantes rouges, flaques d\'huile et de condensat glacé.',
-    events: 'Un ouvrier blessé s\'y traîne à 10h08 en réclamant de l\'aide.'
+    events: '10h00 : début du décompte. 10h08 : verrouillage des accès extérieurs ; les retardataires sont isolés, tandis que le pupitre intérieur permet de libérer une branche à la fois.'
   },
   'R14': {
     code: 'R14',
@@ -2583,7 +2803,7 @@ const ROOMS_DB = {
     occupants: 'Lukas Meier (PJ), Jean-Pierre Bossis (Chef secteur), Tariq (Technicien).',
     items: 'Grande clé à griffe en acier trempé, Téléphone rouge analogique mural sur ligne cuivre, Manomètres de rechange, Lampes frontales.',
     hazards: 'Vanne V-12 sous haute pression, fuites mortelles d\'hélium glacé.',
-    events: '09h30 : Vignette de Lukas. 10h02 : Explosion de conduite si la vanne a été shuntée. Relais pour le Beam Dump manuel.'
+    events: '09h30 : vignette de Lukas. 10h02 : explosion de conduite si la vanne a été shuntée. Le disjoncteur mécanique permet l\'arrêt d\'urgence du faisceau sans les deux clés de R23.'
   },
   'R15': {
     code: 'R15',
@@ -2642,8 +2862,8 @@ const ROOMS_DB = {
     access: 'Niveau -1 (Galerie B) et Niveau -2 (Bunker -80m).',
     occupants: 'Poste de contrôle automatique.',
     items: 'Badgeuse d\'urgence, extincteur.',
-    hazards: 'Sas verrouillé magnétiquement après l\'incident.',
-    events: 'Nécessite le badge Maître d\'Anna ou le trousseau de Nicolas pour s\'ouvrir.'
+    hazards: 'Après 10h08, le verrouillage magnétique isole définitivement le bunker profond.',
+    events: '10h00 : ouverture automatique d\'évacuation. 10h08 : verrouillage depuis le bunker ; le pupitre de R12 peut encore ouvrir ce sas depuis l\'intérieur.'
   },
 
   // LEVEL 2 (-80m)
@@ -2655,7 +2875,7 @@ const ROOMS_DB = {
     normalUse: 'Pilotage complet de l\'accélérateur et déclenchement des collisions.',
     access: 'Sas blindé -80m, Salle des serveurs (R24), Labyrinthe détecteur (R26).',
     occupants: 'Dr Anna Kowalska (PJ), Directeur Hans Zimmerman, Dr Matteo Ricci, Sophie (Opératrice).',
-    items: 'Console principale d\'arrêt d\'urgence (BEAM DUMP), Première clé physique sur pupitre, Clé de Zimmerman dans son bureau, Téléphone rouge mural, Ordinateurs portables durcis.',
+    items: 'Console d\'arrêt d\'urgence du faisceau, clé opérateur fixée au pupitre, clé de direction dans le tiroir de Zimmerman, téléphone rouge et ordinateurs durcis.',
     hazards: 'Écrans explosés, verre brisé, sirènes stridentes, panique des ingénieurs.',
     events: '09h35 : Vignette d\'Anna. 10h00 : Point de commandement pour couper l\'accélérateur et refermer la brèche.'
   },
@@ -2681,19 +2901,19 @@ const ROOMS_DB = {
     occupants: 'Point d\'apparition de la Faille et des créatures.',
     items: 'Matériel scientifique lourd, passerelles métalliques suspendues au-dessus du vide.',
     hazards: 'Radiation résonante, froid surnaturel, champ gravitationnel instable, présence de créatures majeures.',
-    events: '10h00 : Ouverture de la déchirure dimensionnelle violette. Tant que le Beam Dump n\'est pas actionné, des monstres en sortent en continu.'
+    events: '10h00 : ouverture de la déchirure dimensionnelle violette. Tant que l\'arrêt du faisceau n\'est pas déclenché, des monstres en sortent en continu.'
   },
   'R29': {
     code: 'R29',
     level: 'Niveau -2 (-80m)',
-    title: 'Puits d\'Absorption du Beam Dump',
+    title: 'Puits d\'Absorption du Faisceau',
     desc: 'Chambre blindée contenant d\'immenses blocs de graphite refroidis à l\'eau pour stopper les paquets de protons.',
     normalUse: 'Absorption d\'urgence de l\'énergie cinétique du faisceau.',
     access: 'Tunnel de faisceau (R28).',
     occupants: 'Personne.',
     items: 'Blindage thermique, vannes d\'eau de refroidissement.',
     hazards: 'Chaleur extrême (plusieurs milliers de degrés) pendant 30 secondes après le tir d\'arrêt d\'urgence.',
-    events: 'Quand le Beam Dump est activé, un grondement colossal secoue toute la montagne.'
+    events: 'Quand l\'arrêt du faisceau est activé, un grondement colossal secoue toute la montagne.'
   },
   'R30': {
     code: 'R30',
@@ -2717,7 +2937,10 @@ let gameState = {
   portalOpen: true,
   alertLevel: 'red',
   currentTime: '10:00:00',
+  evacuationSeconds: 480,
+  evacuationRunning: false,
   roomStates: {},
+  characterPositions: {},
   checkedStats: {},
   checkedClues: {},
   eventLogs: [],
@@ -2730,7 +2953,12 @@ window.addEventListener('DOMContentLoaded', () => {
   renderCurrentMapLevel();
   renderEventLogs();
   updateHudDisplay();
+  restoreMapCharacterPositions();
+  initMapCharacterDragging();
+  if (gameState.evacuationRunning && gameState.evacuationSeconds > 0) startEvacuationTimer();
 });
+
+let evacuationTimerId = null;
 
 // TAB SWITCHING
 function switchTab(tabId) {
@@ -2893,7 +3121,7 @@ function togglePortalState() {
   } else {
     btn.textContent = 'FERMÉE (Stoppée)';
     btn.classList.add('closed');
-    addLogEntry('✅ Le Beam Dump a été activé : La Faille est FERMÉE !');
+    addLogEntry('✅ L’arrêt d’urgence du faisceau a été activé : la Faille est FERMÉE !');
   }
   saveStateToLocalStorage();
 }
@@ -2914,6 +3142,95 @@ function advanceTime(minutes) {
   gameState.currentTime = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
   document.getElementById('hudTimeDisplay').textContent = gameState.currentTime;
   addLogEntry(`Avance de l'horloge : ${gameState.currentTime}`);
+  saveStateToLocalStorage();
+}
+
+function renderEvacuationCountdown() {
+  const display = document.getElementById('evacCountdownDisplay');
+  const toggle = document.getElementById('evacCountdownToggle');
+  if (!display || !toggle) return;
+
+  const seconds = Math.max(0, Number(gameState.evacuationSeconds) || 0);
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  display.classList.toggle('urgent', seconds > 0 && seconds <= 120);
+  display.classList.toggle('expired', seconds === 0);
+  toggle.textContent = gameState.evacuationRunning ? 'Ⅱ' : '▶';
+  toggle.title = gameState.evacuationRunning ? 'Mettre le décompte en pause' : 'Démarrer le décompte de confinement';
+}
+
+function advanceClockOneSecond() {
+  let [hours, minutes, seconds] = gameState.currentTime.split(':').map(Number);
+  seconds += 1;
+  if (seconds >= 60) {
+    seconds = 0;
+    minutes += 1;
+  }
+  if (minutes >= 60) {
+    minutes = 0;
+    hours = (hours + 1) % 24;
+  }
+  gameState.currentTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  const display = document.getElementById('hudTimeDisplay');
+  if (display) display.textContent = gameState.currentTime;
+}
+
+function startEvacuationTimer() {
+  if (evacuationTimerId || gameState.evacuationSeconds <= 0) return;
+  gameState.evacuationRunning = true;
+  renderEvacuationCountdown();
+
+  evacuationTimerId = window.setInterval(() => {
+    gameState.evacuationSeconds = Math.max(0, gameState.evacuationSeconds - 1);
+    advanceClockOneSecond();
+
+    const milestones = {
+      300: '⏱️ Plus que 5 minutes avant le verrouillage de R12.',
+      120: '⚠️ Plus que 2 minutes avant le verrouillage de R12.',
+      60: '🚨 Plus qu’une minute avant le verrouillage de R12.'
+    };
+    if (milestones[gameState.evacuationSeconds]) addLogEntry(milestones[gameState.evacuationSeconds]);
+
+    if (gameState.evacuationSeconds === 0) {
+      window.clearInterval(evacuationTimerId);
+      evacuationTimerId = null;
+      gameState.evacuationRunning = false;
+      gameState.roomStates.R12 = { ...(gameState.roomStates.R12 || {}), locked: true };
+      gameState.roomStates.R21 = { ...(gameState.roomStates.R21 || {}), locked: true };
+      addLogEntry('🔒 ACCÈS EXTÉRIEURS VERROUILLÉS : les retardataires sont isolés ; R12 contrôle encore les branches internes.');
+      applyRoomVisualStates();
+    }
+
+    renderEvacuationCountdown();
+    saveStateToLocalStorage();
+  }, 1000);
+}
+
+function toggleEvacuationCountdown() {
+  if (gameState.evacuationRunning) {
+    gameState.evacuationRunning = false;
+    window.clearInterval(evacuationTimerId);
+    evacuationTimerId = null;
+    addLogEntry('⏸️ Décompte de confinement mis en pause.');
+  } else if (gameState.evacuationSeconds > 0) {
+    addLogEntry('🚨 ALARME : évacuation vers le refuge R12, verrouillage dans huit minutes.');
+    startEvacuationTimer();
+  }
+  renderEvacuationCountdown();
+  saveStateToLocalStorage();
+}
+
+function resetEvacuationCountdown() {
+  if (evacuationTimerId) window.clearInterval(evacuationTimerId);
+  evacuationTimerId = null;
+  gameState.evacuationSeconds = 480;
+  gameState.evacuationRunning = false;
+  if (gameState.roomStates.R12) gameState.roomStates.R12.locked = false;
+  if (gameState.roomStates.R21) gameState.roomStates.R21.locked = false;
+  renderEvacuationCountdown();
+  applyRoomVisualStates();
+  addLogEntry('↺ Décompte de confinement remis à 8 minutes.');
   saveStateToLocalStorage();
 }
 
@@ -2992,6 +3309,8 @@ function loadStateFromLocalStorage() {
   const timeDisplay = document.getElementById('hudTimeDisplay');
   if (timeDisplay && gameState.currentTime) timeDisplay.textContent = gameState.currentTime;
 
+  renderEvacuationCountdown();
+
   const notesArea = document.getElementById('gmNotesArea');
   if (notesArea && gameState.gmNotes) notesArea.value = gameState.gmNotes;
 
@@ -3012,6 +3331,7 @@ function renderCurrentMapLevel() {
 
 function updateHudDisplay() {
   document.getElementById('hudTimeDisplay').textContent = gameState.currentTime;
+  renderEvacuationCountdown();
 }
 
 function resetCampaignData() {
@@ -3108,19 +3428,21 @@ const CAD_ROOMS_DATA = {
     tags: ["Trois Niveaux", "Axe Vertical"],
     text: "Puits vertical en béton armé de 80 mètres de profondeur avec monte-charge de 20 tonnes et escalier métallique de secours.",
     list: [
-      "Monte-charge bloqué entre deux niveaux à 10h00.",
-      "Escalier hélicoïdal métallique : seule voie physique reliant la surface au bunker -80m.",
+      "Mode évacuation de 10h00 à 10h08 : le monte-charge relie rapidement les trois niveaux.",
+      "À 10h08, le monte-charge s'immobilise et les accès extérieurs se ferment ; le pupitre de R12 contrôle encore les branches internes.",
       "Chute mortelle en cas d'échec critique lors d'une poursuite."
     ]
   },
   'R12': {
-    title: "Sas Ascenseur Lourd (-20m)",
-    tags: ["Niveau -1 (-20m)", "Galerie"],
-    text: "Palier de déchargement intermédiaire avec doubles portes blindées étanches et sol grillagé.",
+    title: "Refuge de Confinement R12 (-20m)",
+    tags: ["Niveau -1 (-20m)", "Point de rassemblement"],
+    text: "Refuge intermédiaire en béton renforcé avec doubles portes blindées et ventilation autonome ; tous les survivants doivent l'atteindre avant 10h08.",
     list: [
       "Extincteurs lourds à CO2 (très efficaces pour repousser les anomalies gazeuses).",
       "Palan de levage et caisse d'outils en acier.",
-      "Accès direct à la galerie centrale et à la cryogénie."
+      "Accès direct à la galerie centrale et à la cryogénie.",
+      "Plan d'évacuation lumineux : sortie principale R01 et galerie de secours R30 à 2 km dans la forêt.",
+      "À zéro : fermeture des sas et isolement définitif des retardataires."
     ]
   },
   'R14': {
@@ -3179,8 +3501,8 @@ const CAD_ROOMS_DATA = {
     tags: ["Niveau -1 (-20m)", "Accès Bunker"],
     text: "Double sas étanche en acier lourd contrôlant l'escalier vers la caverne et la salle de contrôle.",
     list: [
-      "Sas verrouillé dès l'incident de 10h00.",
-      "Nécessite le Badge Maître d'Anna ou le trousseau passe-partout de Nicolas."
+      "Sas maintenu ouvert en mode évacuation jusqu'à 10h08.",
+      "À la fin du décompte, son contrôle local se verrouille ; le pupitre intérieur de R12 peut encore l'ouvrir pour le groupe."
     ]
   },
   'R23': {
@@ -3188,8 +3510,8 @@ const CAD_ROOMS_DATA = {
     tags: ["Départ PJ 5", "Niveau -2 (-80m)", "Bunker"],
     text: "Le cœur opérationnel d'HÉLIX. Le Dr Anna Kowalska s'y trouve avec Zimmerman devant les consoles de tir.",
     list: [
-      "Console principale du BEAM DUMP (double serrure à clé physique pour fermer la Faille).",
-      "Seconde clé de sécurité cachée dans le tiroir du bureau vitré de Zimmerman.",
+      "Console principale de l'arrêt d'urgence du faisceau avec double serrure.",
+      "Clé opérateur fixée au pupitre ; clé de direction cachée dans le tiroir du bureau de Zimmerman.",
       "Ordinateurs portables durcis avec enregistrement physique du phénomène.",
       "Inhalateur Ventoline d'Anna (vital en cas de crise de panique/asthme)."
     ]
@@ -3209,13 +3531,13 @@ const CAD_ROOMS_DATA = {
     tags: ["Niveau -2 (-80m)", "Zone de Faille"],
     text: "Cathédrale souterraine de 40 mètres de hauteur abritant le détecteur de 12 000 tonnes. Au centre s'ouvre la déchirure dimensionnelle violette.",
     list: [
-      "Point d'irruption continu des créatures tant que le Beam Dump n'est pas activé.",
+      "Point d'irruption continu des créatures tant que l'arrêt du faisceau n'est pas activé.",
       "Froid surnaturel et anomalies gravitationnelles locales.",
       "Passerelles métalliques suspendues au-dessus du vide."
     ]
   },
   'R29': {
-    title: "Puits d'Absorption du Beam Dump",
+    title: "Puits d'Absorption du Faisceau",
     tags: ["Niveau -2 (-80m)", "Arrêt Faisceau"],
     text: "Chambre blindée contenant 200 tonnes de graphite refroidi pour dissiper l'énergie du faisceau.",
     list: [
@@ -3234,6 +3556,206 @@ const CAD_ROOMS_DATA = {
     ]
   }
 };
+
+const MAP_CHARACTERS_DATA = {
+  nicolas: {
+    name: "Nicolas Favre",
+    img: "tokens/pj1_nicolas_favre.jpg",
+    tags: ["PJ", "Crevetolog", "Sécurité"],
+    text: "Ancien gendarme reconverti dans la sécurité privée, Nicolas est un professionnel calme et consciencieux qui supporte mal les ordres absurdes.",
+    list: ["Départ : poste de garde R01, à la surface.", "Corps 12 · Esprit 8.", "Objets : talkie-walkie VHF et lampe torche Maglite."]
+  },
+  ines: {
+    name: "Inès Renaud",
+    img: "tokens/pj2_ines_renaud.jpg",
+    tags: ["PJ", "Pikiou", "Journaliste"],
+    text: "Journaliste scientifique curieuse et tenace, Inès s'est fait une réputation en posant les questions que les chercheurs et leurs communicants préféreraient éviter.",
+    list: ["Départ : atrium presse R04, à la surface.", "Corps 8 · Esprit 12.", "Objets : enregistreur numérique, bloc-notes et stylo."]
+  },
+  samira: {
+    name: "Dr Samira Bensaïd",
+    img: "tokens/pj3_samira_bensaid.jpg",
+    tags: ["PJ", "Grelot", "Médecin"],
+    text: "Médecin du travail expérimentée, Samira garde son sang-froid face aux urgences et refuse que la hiérarchie fasse passer la production avant la santé.",
+    list: ["Départ : infirmerie R07, à la surface.", "Corps 8 · Esprit 12.", "Objet : petite sacoche médicale avec pansements et une dose de morphine."]
+  },
+  lukas: {
+    name: "Lukas Meier",
+    img: "tokens/pj4_lukas_meier.jpg",
+    tags: ["PJ", "Delva", "Cryogénie"],
+    text: "Ingénieur de terrain bourru mais fiable, Lukas connaît les machines d'HÉLIX mieux que quiconque et accorde davantage de confiance aux instruments qu'aux cadres.",
+    list: ["Départ : sous-station cryogénique R14, à −20 m.", "Corps 10 · Esprit 10.", "Objets : grande clé à griffe et lampe frontale industrielle."]
+  },
+  anna: {
+    name: "Dr Anna Kowalska",
+    img: "tokens/pj5_anna_kowalska.jpg",
+    tags: ["PJ", "Max", "Physicienne"],
+    text: "Physicienne brillante ayant consacré des années à HÉLIX, Anna partage l'ambition scientifique du projet tout en prenant ses risques bien plus au sérieux que sa direction.",
+    list: ["Départ : salle de contrôle R23, à −80 m.", "Corps 6 · Esprit 12.", "Objets : badge personnel Niveau 4 et inhalateur de secours."]
+  },
+  serge: {
+    name: "Serge Morin",
+    img: "tokens/pnj_serge_morin.jpg",
+    tags: ["PNJ", "Sécurité", "R01"],
+    text: "Gardien en chef du portail, ancien militaire suisse, soupe au lait et vite dépassé par une foule qu'il ne contrôle plus.",
+    list: ["Position initiale : poste de garde R01 avec Nicolas.", "Sous pression : devient violent ou cherche à fuir.", "MJ : connaît le code 7741 et cache un pistolet dans le faux plafond."]
+  },
+  claire: {
+    name: "Claire Vaneck",
+    img: "tokens/pnj_claire_vaneck.jpg",
+    tags: ["PNJ", "Manifestante", "R02"],
+    text: "Porte-parole idéaliste des opposants à HÉLIX, Claire est courageuse mais se préoccupe avant tout des enfants présents devant le site.",
+    list: ["Position initiale : parking et manifestation R02.", "Possède une trousse de secours dans son van.", "Connaît les sentiers forestiers autour du complexe."]
+  },
+  marc: {
+    name: "Marc Lesueur",
+    img: "tokens/pnj_marc_lesueur.jpg",
+    tags: ["PNJ", "Maintenance", "R07"],
+    text: "Technicien robuste et loyal, Marc minimise sa brûlure cryogénique parce qu'il redoute davantage son chef que la blessure.",
+    list: ["Position initiale : infirmerie R07 ; peut descendre à R14 selon Samira.", "Corps 10 · Esprit 8.", "Sait où sont rangées les combinaisons cryogéniques de R16."]
+  },
+  elodie: {
+    name: "Élodie Brunet",
+    img: "tokens/pnj_elodie_brunet.jpg",
+    tags: ["PNJ", "Administration", "R07"],
+    text: "Jeune secrétaire de direction en pleine crise d'angoisse, Élodie est lucide si Samira la calme mais devient un fardeau si elle est fortement sédatée.",
+    list: ["Position initiale : infirmerie R07.", "Corps 6 · Esprit 6.", "Doit être accompagnée jusqu'au refuge R12."]
+  },
+  zimmerman: {
+    name: "Dr Hans Zimmerman",
+    img: "tokens/pnj_hans_zimmerman.jpg",
+    tags: ["PNJ", "Direction", "R23"],
+    text: "Directeur scientifique ambitieux et arrogant, Zimmerman refuse d'abandonner son expérience tant qu'il pense pouvoir encore en reprendre le contrôle.",
+    list: ["Position initiale : salle de contrôle R23, à −80 m.", "Possède un badge maître Niveau 4.", "Doit être convaincu ou forcé à quitter son poste pour rejoindre R12."]
+  }
+};
+
+let mapCharacterDrag = null;
+let suppressCharacterClickUntil = 0;
+
+const mapFloorPanel = (floorKey) => document.getElementById(`g-panel-${floorKey}`);
+const mapFloorKey = (marker) => marker.closest('.floor-panel')?.id.replace('g-panel-', '') || 'ground';
+
+function persistMapCharacterPosition(marker) {
+  const characterKey = marker.dataset.character;
+  if (!characterKey) return;
+  gameState.characterPositions[characterKey] = {
+    floor: mapFloorKey(marker),
+    left: Number.parseFloat(marker.style.left) || 50,
+    top: Number.parseFloat(marker.style.top) || 50
+  };
+  saveStateToLocalStorage();
+}
+
+function restoreMapCharacterPositions() {
+  for (const [characterKey, position] of Object.entries(gameState.characterPositions || {})) {
+    const marker = document.querySelector(`.character-marker[data-character="${characterKey}"]`);
+    const panel = mapFloorPanel(position.floor);
+    if (!marker || !panel) continue;
+    panel.appendChild(marker);
+    marker.style.left = `${position.left}%`;
+    marker.style.top = `${position.top}%`;
+  }
+}
+
+function initMapCharacterDragging() {
+  document.querySelectorAll('.character-marker').forEach((marker) => {
+    if (marker.dataset.dragReady === 'true') return;
+    marker.dataset.dragReady = 'true';
+    marker.querySelector('img')?.setAttribute('draggable', 'false');
+
+    marker.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0) return;
+      const panel = marker.closest('.floor-panel');
+      if (!panel) return;
+      marker.setPointerCapture?.(event.pointerId);
+      mapCharacterDrag = {
+        marker,
+        panel,
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        moved: false
+      };
+    });
+
+    marker.addEventListener('pointermove', (event) => {
+      if (!mapCharacterDrag || mapCharacterDrag.marker !== marker || mapCharacterDrag.pointerId !== event.pointerId) return;
+      const distance = Math.hypot(event.clientX - mapCharacterDrag.startX, event.clientY - mapCharacterDrag.startY);
+      if (distance < 4 && !mapCharacterDrag.moved) return;
+      mapCharacterDrag.moved = true;
+      const rect = mapCharacterDrag.panel.getBoundingClientRect();
+      const left = Math.min(97, Math.max(3, ((event.clientX - rect.left) / rect.width) * 100));
+      const top = Math.min(95, Math.max(5, ((event.clientY - rect.top) / rect.height) * 100));
+      marker.style.left = `${left.toFixed(2)}%`;
+      marker.style.top = `${top.toFixed(2)}%`;
+    });
+
+    const finishDrag = (event) => {
+      if (!mapCharacterDrag || mapCharacterDrag.marker !== marker || mapCharacterDrag.pointerId !== event.pointerId) return;
+      if (mapCharacterDrag.moved) {
+        suppressCharacterClickUntil = Date.now() + 300;
+        persistMapCharacterPosition(marker);
+      }
+      marker.releasePointerCapture?.(event.pointerId);
+      mapCharacterDrag = null;
+    };
+    marker.addEventListener('pointerup', finishDrag);
+    marker.addEventListener('pointercancel', finishDrag);
+  });
+}
+
+function moveMapCharacterToFloor(characterKey, floorKey) {
+  const marker = document.querySelector(`.character-marker[data-character="${characterKey}"]`);
+  const panel = mapFloorPanel(floorKey);
+  if (!marker || !panel) return;
+  panel.appendChild(marker);
+  marker.style.left = '50%';
+  marker.style.top = '50%';
+  persistMapCharacterPosition(marker);
+  switchGlobalCadFloor(floorKey);
+  window.setTimeout(() => selectMapCharacter(characterKey), 0);
+}
+
+function selectMapCharacter(characterKey) {
+  if (Date.now() < suppressCharacterClickUntil) return;
+  const data = MAP_CHARACTERS_DATA[characterKey];
+  if (!data) return;
+
+  document.querySelectorAll('.hotspot').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.character-marker').forEach(el => el.classList.remove('selected-character'));
+  const marker = document.querySelector(`.character-marker[data-character="${characterKey}"]`);
+  if (marker) marker.classList.add('selected-character');
+
+  const kindEl = document.getElementById('hud-detail-kind');
+  const titleEl = document.getElementById('hud-detail-title');
+  const tagsEl = document.getElementById('hud-detail-tags');
+  const textEl = document.getElementById('hud-detail-text');
+  const listEl = document.getElementById('hud-detail-list');
+  const listTitleEl = document.getElementById('hud-detail-list-title');
+
+  if (kindEl) kindEl.textContent = data.tags[0] === 'PJ' ? 'Fiche Personnage Joueur' : 'Fiche Personnage Non-Joueur';
+  if (listTitleEl) listTitleEl.textContent = 'Informations rapides :';
+  if (titleEl) titleEl.textContent = data.name;
+  if (tagsEl) {
+    tagsEl.innerHTML = data.tags.map((tag, index) => {
+      const cls = index === 0 ? (tag === 'PJ' ? 'tag-cyan' : 'tag-amber') : (index === 1 && tag !== 'Sécurité' ? 'tag-green' : 'tag-purple');
+      return `<span class="tag ${cls}">${tag}</span>`;
+    }).join(' ');
+  }
+  if (textEl) {
+    textEl.innerHTML = `<span style="display:flex;gap:12px;align-items:flex-start;"><img src="${data.img}" alt="" style="width:76px;height:76px;object-fit:cover;border-radius:6px;border:2px solid ${data.tags[0] === 'PJ' ? '#24b5e8' : '#f59e0b'};flex:0 0 auto;"><span>${data.text}</span></span>`;
+  }
+  if (listEl) {
+    const currentFloor = mapFloorKey(marker);
+    const floorButtons = [
+      ['ground', 'Surface'],
+      ['mid', '−20 m'],
+      ['deep', '−80 m']
+    ].map(([floor, label]) => `<button type="button" class="map-floor-move-btn ${floor === currentFloor ? 'active' : ''}" onclick="moveMapCharacterToFloor('${characterKey}', '${floor}')">${label}</button>`).join('');
+    listEl.innerHTML = data.list.map(item => `<li>${item}</li>`).join('') + `<li style="margin-top:8px;"><strong>Déplacer vers :</strong><br>${floorButtons}</li>`;
+  }
+}
 
 function selectCadRoom(roomKey) {
   document.querySelectorAll('.cad-room').forEach(el => el.classList.remove('selected'));
@@ -3284,6 +3806,7 @@ function switchGlobalCadFloor(floorKey) {
 
 function selectGlobalRoom(roomKey) {
   document.querySelectorAll('.hotspot').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.character-marker').forEach(el => el.classList.remove('selected-character'));
   const target = document.querySelector(`.hotspot[data-room="${roomKey}"]`);
   if (target) target.classList.add('selected');
 
@@ -3292,7 +3815,11 @@ function selectGlobalRoom(roomKey) {
   const tagsEl = document.getElementById('hud-detail-tags');
   const textEl = document.getElementById('hud-detail-text');
   const listEl = document.getElementById('hud-detail-list');
+  const kindEl = document.getElementById('hud-detail-kind');
+  const listTitleEl = document.getElementById('hud-detail-list-title');
 
+  if (kindEl) kindEl.textContent = 'Fiche Tactique Salle';
+  if (listTitleEl) listTitleEl.textContent = 'Éléments Clés & Fouille :';
   if (titleEl) titleEl.textContent = data.title;
   if (tagsEl) {
     tagsEl.innerHTML = (data.tags || []).map(t => {
