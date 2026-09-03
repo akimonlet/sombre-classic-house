@@ -10,7 +10,7 @@ Le scénario n'est pas une enquête à résoudre. C'est un ensemble de **situati
 
 ## Introduction commune — à lire aux joueurs
 
-> **Bellécourt, 2 h 17.** Il pleut depuis assez longtemps pour que les rues brillent comme des couloirs d'hôpital et que chaque passant ait l'air vaguement coupable. Vous êtes quatre gardiens de la paix, répartis dans deux voitures, au début d'un service de nuit qui promet d'être calme.
+> **Bellécourt, 23 h 47.** Il pleut depuis assez longtemps pour que les rues brillent comme des couloirs d'hôpital et que chaque passant ait l'air vaguement coupable. Vous êtes quatre gardiens de la paix, répartis dans deux voitures, au début d'un service de nuit qui promet d'être calme.
 >
 > Ce matin, au commissariat, le commissaire **Valette** vous a réunis dans la salle de briefing. Derrière lui, un vidéoprojecteur affichait en lettres bleues : *OBJECTIF EXCELLENCE*. Il a posé les deux mains sur son pupitre, attendu le silence, puis il vous a parlé.
 >
@@ -40,7 +40,7 @@ Le scénario n'est pas une enquête à résoudre. C'est un ensemble de **situati
 
 ## Les faits, en une minute
 
-Il est 2 h 17 à **Bellécourt**, ville moyenne détrempée par une pluie froide.
+Il est 23 h 47 à **Bellécourt**, ville moyenne détrempée par une pluie froide.
 
 **Élias Varga**, surnommé *le Boucher de Bellevue*, devait être transféré de la prison à l'hôpital après avoir simulé une occlusion. Une lame en céramique était cousue dans la languette de sa chaussure. Dans l'ambulance, il a égorgé un surveillant, blessé l'autre et contraint l'ambulancière **Nora Benali** à prendre une sortie. Elle a provoqué un accident contre l'entrée de service du centre commercial **Bellevue Forum**.
 
