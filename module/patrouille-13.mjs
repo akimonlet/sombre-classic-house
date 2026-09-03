@@ -122,7 +122,8 @@ const ownershipFor = (character) => {
 };
 
 const actorData = (character, folderId) => {
-  const image = `${ASSET_ROOT}/tokens/${character.id}.svg`;
+  const tokenExtension = character.playerName ? "webp" : "svg";
+  const image = `${ASSET_ROOT}/tokens/${character.id}.${tokenExtension}`;
   return {
     name: character.name,
     type: "victime",
