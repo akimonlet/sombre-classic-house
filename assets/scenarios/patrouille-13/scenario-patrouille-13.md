@@ -8,6 +8,36 @@ Le scénario n'est pas une enquête à résoudre. C'est un ensemble de **situati
 
 ---
 
+## Introduction commune — à lire aux joueurs
+
+> **Bellécourt, 2 h 17.** Il pleut depuis assez longtemps pour que les rues brillent comme des couloirs d'hôpital et que chaque passant ait l'air vaguement coupable. Vous êtes quatre gardiens de la paix, répartis dans deux voitures, au début d'un service de nuit qui promet d'être calme.
+>
+> Ce matin, au commissariat, le commissaire **Valette** vous a réunis dans la salle de briefing. Derrière lui, un vidéoprojecteur affichait en lettres bleues : *OBJECTIF EXCELLENCE*. Il a posé les deux mains sur son pupitre, attendu le silence, puis il vous a parlé.
+>
+> « Je vais être clair. Je n'ai pas choisi vos noms au hasard. Vos dossiers parlent pour vous. Parfois très fort. Vous avez été retenus pour intégrer **Patrouille 13**, notre nouveau dispositif d'excellence opérationnelle de proximité.
+>
+> La police moderne a besoin d'agents autonomes, réactifs, capables d'intervenir là où les unités spécialisées ne peuvent pas être mobilisées. Vous serez le premier contact. La présence qui rassure. Le dernier rempart entre les citoyens et le désordre.
+>
+> Sur le terrain, personne ne vous dira quoi faire. Parce que je vous fais confiance. Et parce que les effectifs sont ce qu'ils sont.
+>
+> À partir d'aujourd'hui, vous n'êtes plus quatre fonctionnaires en uniforme. Vous êtes une équipe. Vous êtes **l'élite du quotidien**. Faites honneur à ce commissariat, à votre insigne et, dans la mesure du possible, au matériel. »
+>
+> Valette vous a regardés un par un. Son regard s'est arrêté un peu plus longtemps sur l'un d'entre vous, sans qu'il soit possible de déterminer si c'était de la confiance ou une inquiétude médicale. Puis il a hoché la tête : « Allez me sécuriser cette ville. »
+>
+> Maintenant, dans vos deux voitures de patrouille, ses mots résonnent encore. *Autonomes. Réactifs. L'élite du quotidien.*
+>
+> La radio grésille.
+>
+> « Treize, rue des Forges pour divagation d'animal sur la voie publique. Propriétaire possiblement alcoolisée. »
+>
+> Une seconde plus tard :
+>
+> « Dix-Neuf, rendez-vous au Chicken King, boulevard Jaurès. Suspicion de vol avec violence. Le suspect serait déguisé en poulet. »
+>
+> L'élite prend son service.
+
+---
+
 ## Les faits, en une minute
 
 Il est 2 h 17 à **Bellécourt**, ville moyenne détrempée par une pluie froide.
