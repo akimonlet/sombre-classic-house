@@ -3,9 +3,9 @@ const ROOT_FOLDER_NAME = "Scénarios personnalisés";
 const SCENARIO_FOLDER_NAME = "PATROUILLE 13";
 const ASSET_ROOT = "systems/sombre-classic-house/assets/scenarios/patrouille-13";
 
-const pc = (id, name, playerName, body, spirit, personality, advantage, disadvantage, background, equipment, positiveLink, secret) => ({
+const pc = (id, name, playerName, body, spirit, personality, advantage, disadvantage, background, equipment, positiveLink, secret, disadvantageDescription = "") => ({
   id, name, playerName, body, spirit, personality, advantage, disadvantage,
-  background, equipment, positiveLink, secret,
+  background, equipment, positiveLink, secret, disadvantageDescription,
   subfolder: "1. Personnages Joueurs",
   profession: "Agent de police",
   isAntagonist: false
@@ -32,7 +32,8 @@ const PCS = [
     "Policière rassurée seulement lorsque les faits entrent dans une case. Elle cite des numéros d’articles faux avec une précision impeccable, photographie tout et déteste qu’on déplace une pièce à conviction.",
     "Pistolet de service, 2 chargeurs, tonfa, menottes, radio, lampe, carnet, gants nitrile.",
     "Elle protège la réputation de Joël parce qu’un scandale sur leur patrouille ruinerait aussi sa carrière.",
-    "Elle a déjà croisé Varga pendant sa garde à vue ; il se souvient qu’elle tire de la main gauche. Code : identifier clairement une cible avant de tirer et annoncer toute entorse à la procédure."
+    "Elle a déjà croisé Varga pendant sa garde à vue ; il se souvient qu’elle tire de la main gauche.",
+    "Identifier clairement une cible avant de tirer ; annoncer toute entorse à la procédure dans le rapport. Transgresser ce code provoque des Séquelles."
   ),
   pc(
     "tony-cherif", "Tony Cherif", "Grelot", 12, 8, 3, "Fort", "Panique",
@@ -146,9 +147,9 @@ const actorData = (character, folderId) => {
       personalityRandomUsed: true,
       personalityRandomLocked: true,
       advantage: character.advantage || "",
-      advantageDescription: "",
+      advantageDescription: character.advantageDescription || "",
       disadvantage: character.disadvantage || "",
-      disadvantageDescription: "",
+      disadvantageDescription: character.disadvantageDescription || "",
       advantageRandomUsed: true,
       advantageRandomLocked: true,
       disadvantageRandomUsed: true,
