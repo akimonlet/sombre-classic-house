@@ -154,125 +154,48 @@ Les deux véhicules arrivent par des côtés différents du bâtiment. Les joueu
 
 ---
 
-# 3. Bellevue Forum
+# 3. Bellevue Forum — l'essentiel
 
-## Vue d'ensemble
+Le plan interactif suffit pour les déplacements : **[ouvrir le plan de Bellevue Forum](Plan interactif%20-%20Patrouille%2013.html)**.
 
-Un centre commercial de trois niveaux organisé autour d'un grand atrium. Presque tous les rideaux métalliques sont baissés. L'éclairage normal est coupé dans la moitié du bâtiment ; les enseignes de secours, les vitrines et les publicités vidéo donnent une lumière intermittente.
+## Comment retrouver Varga
 
-```text
-                      [QUAI NORD / SORTIE DE VARGA]
-                                 │
-       [CINÉMA] ─── [COULOIR DE SERVICE] ─── [SÉCURITÉ]
-          │                    │                    │
- [PARKING OUEST] ─────── [ATRIUM / 3 NIVEAUX] ─ [PHARMACIE]
-          │                    │                    │
-       [HYPER] ─────── [GALERIE TECHNIQUE] ─ [ACCÈS SUD]
-                                 │
-                       [AMBULANCE ENCASTRÉE]
-```
+**Varga n'est pas caché dans une pièce à découvrir. Il traverse le centre avec Nora pour atteindre le quai nord. C'est une poursuite contre une cible en mouvement.**
 
-Tous les lieux sont reliés par des escaliers, escalators immobiles ou passages de service. Le plan indique des rapports, pas des cases : une poursuite peut déplacer l'action d'un lieu à l'autre en quelques instants.
+Trajet normal :
 
-## Accès sud — l'ambulance
+> **Ambulance → atrium → couloir de service → quai nord**
 
-L'ambulance a traversé une porte vitrée et s'est écrasée contre un kiosque. Le moteur tourne encore. Une alarme locale répète un carillon absurde.
+Si cette route est bloquée :
 
-Présences et informations :
+> **Atrium → hypermarché → galerie technique → quai nord**
 
-- le surveillant pénitentiaire mort est attaché à une poignée intérieure ;
-- le second, **Hugo Klein**, est vivant sous le tableau de bord, blessé au ventre et presque incohérent ;
-- la ceinture de maintien du prisonnier a été tranchée ;
-- une traînée de sang mène vers l'atrium, mais elle vient surtout de Nora ;
-- la trousse de secours contient de quoi stabiliser une personne, pas la remettre debout ;
-- le dossier de transfert porte le nom et la photo de Varga ;
-- les clés sont absentes ; Varga les a prises sans savoir qu'un coupe-circuit immobilise désormais l'ambulance.
+À chaque cran de pression, avancer Varga d'une zone. Les PJ peuvent le rattraper en suivant les traces, le devancer en allant directement au quai ou lui couper une route. **Aucun jet n'est nécessaire pour connaître la direction générale.** Un jet réussi donne seulement sa position exacte ou un avantage.
 
-**Klein** veut qu'on l'empêche de mourir. Entre deux pertes de conscience, il peut dire : « chaussure », « la fille est vivante » et « il écoute la radio ».
+Indices immédiats, à donner librement :
 
-## Atrium — le grand vide
+- **ambulance :** dossier avec sa photo et sang de Nora vers l'atrium ;
+- **atrium :** traces humides et gouttes de sang en direction du nord ;
+- **témoins :** Sofiane, Maël et Noé ont vu « un policier » pousser une femme blessée vers le nord ;
+- **sécurité :** Samir aperçoit périodiquement Varga et Nora sur les caméras du couloir nord ;
+- **si les PJ perdent la piste :** une porte claque, Nora laisse tomber un objet, Varga tire, parle à la radio ou la grille nord se met en mouvement.
 
-Trois étages de balcons dominent une fontaine sèche. Une musique d'ambiance continue de jouer. Un mannequin d'exposition porte l'uniforme ensanglanté de Lefort, placé là par Varga pour attirer un tir ou une approche imprudente.
+Toujours donner un signe de sa direction lorsque le rythme retombe. Le suspense vient du danger de l'approche, pas de la recherche d'un indice caché.
 
-- Lefort est ailleurs, encore vivant au début de cette phase ;
-- une douille de chevrotine se trouve près de la fontaine ;
-- les ascenseurs sont bloqués au premier étage ;
-- chaque balcon offre des lignes de vue, mais les vitrines reflètent les silhouettes ;
-- le micro du poste de sécurité permet de parler dans tout le centre ;
-- au moindre coup de feu, les cinq personnes cachées au cinéma croient à un massacre et commencent à bouger.
+## Les lieux en une ligne
 
-## Parking ouest — les mauvaises silhouettes
+| Zone | Ce qui compte immédiatement |
+|---|---|
+| **Accès sud** | Ambulance encastrée ; Klein vivant ; trousse de secours ; dossier et photo de Varga. |
+| **Atrium** | Mannequin portant l'uniforme de Lefort ; douille de chevrotine ; piste vers le nord. |
+| **Parking ouest** | Sofiane tient le pistolet de Lefort ; Maël veut fuir ; tous deux ont vu Varga et Nora. |
+| **Sécurité** | Samir contrôle six caméras, l'éclairage, les rideaux et la sonorisation. |
+| **Cinéma** | Cinq employés cachés ; Noé isolé en projection ; Pavel a les clés du fourgon. |
+| **Pharmacie** | Élise peut soigner ; Marc est blessé et a vu Nora cacher les clés de l'ambulance. |
+| **Hypermarché** | Route de contournement sombre vers la galerie technique ; outils et rideau coupe-feu. |
+| **Quai nord** | Sortie de Varga ; trois véhicules ; grille très bruyante, quarante secondes pour s'ouvrir. |
 
-Le parking compte une centaine de véhicules, piliers en béton et néons capricieux. Deux jeunes voleurs, **Sofiane** et **Maël**, tentaient de voler un catalyseur lorsque l'ambulance a percuté le bâtiment.
-
-- ils ont vu un homme en gilet de police pousser une femme blessée vers l'atrium ;
-- ils ont ensuite trouvé Lefort et lui ont pris son pistolet « pour se défendre » ;
-- Sofiane tient l'arme sans savoir enlever la sûreté ;
-- Maël veut abandonner son ami et courir ;
-- leur cric, leur lampe et leur fourgonnette fonctionnent ;
-- un policier qui crie « lâche ton arme » provoque chez Sofiane une panique immédiate, pas une intention meurtrière.
-
-Leur silhouette armée est dangereuse parce qu'elle ressemble exactement à ce que les policiers s'attendent à rencontrer.
-
-## Cinéma — les gens qui n'existent pas sur les registres
-
-Une équipe de nettoyage non déclarée travaillait après la fermeture : **Irina**, **Moussa**, **Pavel**, **Ana** et son fils **Noé**, neuf ans. Ils se sont enfermés dans une salle après les détonations.
-
-- Moussa a barricadé la porte avec un distributeur de confiseries ;
-- Pavel possède les clés du quai nord mais refuse d'ouvrir tant qu'il pense le tireur dehors ;
-- Noé s'est caché seul dans la cabine de projection après avoir vu « un policier traîner une dame » ;
-- Irina veut attendre les forces spéciales ;
-- Ana veut retrouver son fils ;
-- Varga sait que des voix viennent du cinéma et peut y chercher un véhicule ou un otage supplémentaire.
-
-Ils ne sont ni disciplinés ni silencieux. Une annonce rassurante, une détonation ou une rumeur change immédiatement leur conduite.
-
-## Poste de sécurité — Samir et les écrans
-
-**Samir Ouali**, agent de sécurité, s'est enfermé dans le poste avec une bombe lacrymogène, une matraque et les commandes des rideaux métalliques. Il a vu Varga frapper Lefort, mais il a aussi vu Tony en direct plusieurs semaines plus tôt et le considère comme un clown dangereux.
-
-- il n'ouvre qu'à une voix ou une image qu'il juge crédible ;
-- six caméras fonctionnent encore, avec des angles morts importants ;
-- il peut lever un rideau à la fois, déverrouiller le quai nord ou rallumer certaines zones ;
-- la caméra du couloir nord montre parfois Varga et Nora, sans son ;
-- Varga connaît l'emplacement du poste et a déjà coupé son téléphone filaire ;
-- si Samir se croit abandonné, il tente seul de gagner le parking.
-
-Le système de sonorisation, les caméras et les rideaux sont des outils. Aucun n'est nécessaire à la survie ou à la compréhension de la situation.
-
-## Pharmacie — survivre fait du bruit
-
-La pharmacienne **Élise Vautrin** faisait l'inventaire avec son compagnon **Marc**. Ils sont cachés derrière le rideau baissé.
-
-- Marc a été touché par une balle perdue à la cuisse ;
-- Élise peut traiter une blessure et possède des antalgiques puissants ;
-- Marc a vu Nora glisser discrètement les clés de l'ambulance sous une poubelle de tri dans l'atrium ;
-- leur rideau s'ouvre manuellement de l'intérieur, dans un vacarme métallique ;
-- Marc veut sortir tout de suite ; Élise juge l'extérieur trop dangereux ;
-- l'odeur du sang et les gémissements trahissent leur présence à courte distance.
-
-## Hypermarché — trop de cachettes
-
-L'hypermarché est sombre, immense et partiellement en travaux. Les sorties arrière rejoignent la galerie technique et le quai nord.
-
-- outils, alcool, extincteurs, couvertures, lampes et couteaux sont faciles à trouver ;
-- les armes véritables se limitent à ce que les PJ et Lefort ont apporté ;
-- une autolaveuse se déplace encore très lentement selon son programme ;
-- les miroirs antivol et les portiques produisent régulièrement de faux mouvements ;
-- un rideau coupe-feu peut séparer l'hypermarché en deux depuis un boîtier rouge ;
-- Varga traverse ce lieu s'il doit contourner l'atrium ; il n'y attend personne sans raison.
-
-## Galerie technique et quai nord — la sortie
-
-Des conduites, tableaux électriques, compacteurs et réserves débouchent sur le quai. Trois véhicules s'y trouvent : le fourgon de nettoyage, la voiture de Samir et un camion frigorifique dont le chauffeur dort dans la cabine.
-
-- Pavel possède les clés du fourgon ;
-- Samir possède les clés de sa voiture ;
-- le camion est ouvert, moteur froid, clés dans un gobelet ;
-- la grille extérieure met environ quarante secondes à se lever et produit un bruit énorme ;
-- un bouton d'arrêt peut la bloquer à mi-hauteur ;
-- l'équipe d'intervention prévoit d'arriver par cette rue, mais Varga l'ignore ;
-- si personne ne contrarie son trajet, Varga arrive ici avec Nora environ 35 minutes après l'appel prioritaire.
+Les détails secondaires sont accessibles directement en cliquant sur les zones du plan interactif.
 
 ---
 
