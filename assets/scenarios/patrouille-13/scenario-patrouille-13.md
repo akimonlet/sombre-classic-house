@@ -85,11 +85,16 @@ Alterner les binômes toutes les **5 à 7 minutes**. Ces situations servent à f
 
 **PJ : Joël Santi et Mélanie Roussel.**
 
-Un poney gris portant un chapeau d'anniversaire bloque une rue étroite. Il appartient à **Gisèle Brémont**, propriétaire ivre d'un bar karaoké. Elle soutient qu'on le lui a volé alors qu'elle l'avait attaché à un distributeur de billets. Trois clients filment. Un chauffeur de bus klaxonne sans interruption. Le poney mord quiconque saisit sa bride et se calme devant les chips au paprika.
+Le central les a envoyés rue des Forges pour « animal divagant et gêne à la circulation ». Leur voiture débouche derrière une file de six véhicules coincés dans une rue étroite. Un bus est arrêté en travers, son conducteur appuyé sur le klaxon. Vingt mètres plus loin, un poney gris coiffé d'un chapeau d'anniversaire se tient au milieu de la chaussée. Sa longe traîne derrière lui.
+
+**Gisèle Brémont** est déjà sur place, devant son bar karaoké, *Le Micro d'Or*. Ivre, manteau jeté sur une robe à paillettes, elle fait de grands signes aux policiers tout en criant qu'« ils ont retrouvé son cheval ». Trois clients du bar filment la scène. Le chauffeur de bus, à moitié sorti de sa cabine, exige que quelqu'un pousse « cette saloperie » sur le trottoir.
+
+Gisèle affirme qu'on lui a volé le poney quelques minutes plus tôt, alors qu'elle l'avait attaché au distributeur de billets voisin. Elle ne peut décrire ni voleur, ni direction de fuite, mais réclame déjà une enquête criminelle. Dès que les portières de la voiture de police s'ouvrent, elle marche vers les agents, le chauffeur descend de son bus et le poney vient renifler le rétroviseur. Il mord quiconque saisit sa bride et se calme devant les chips au paprika.
 
 Ce qui peut nourrir la situation :
 
 - Gisèle exige une enquête criminelle et veut souffler dans l'éthylotest « pour prouver sa sobriété » ;
+- la longe n'est ni coupée ni arrachée : le nœud de Gisèle s'est simplement défait ; la caméra du distributeur confirme qu'aucun voleur n'est passé ;
 - le chauffeur tente de passer sur le trottoir ;
 - un adolescent affirme en direct que la police maltraite l'animal ;
 - le poney porte une sacoche contenant 2 400 euros en petites coupures : la recette non déclarée du bar ;
