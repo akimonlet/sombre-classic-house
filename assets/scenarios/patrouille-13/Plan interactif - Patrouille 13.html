@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Patrouille 13 — plan interactif de Bellevue Forum</title>
+<style>
+:root{color-scheme:light;--bg:#e6e6e2;--paper:#fbfaf5;--panel:#fff;--ink:#202224;--muted:#666b6e;--line:#a9acae;--blue:#367e96;--red:#a63d36;--gold:#b18731;--green:#536f5e;--shadow:0 6px 20px #00000016}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,"Segoe UI",sans-serif}button{font:inherit;color:inherit}.app{width:min(1480px,100%);margin:auto;padding:18px}header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:14px}h1,h2,p{margin-top:0}h1{font-size:clamp(1.6rem,3vw,2.5rem);margin-bottom:3px;letter-spacing:.025em}.subtitle{margin:0;color:var(--muted)}.tabs,.tools{display:flex;gap:7px;flex-wrap:wrap}.tab,.tool,.token{border:1px solid var(--line);border-radius:5px;background:var(--panel);padding:8px 12px;cursor:pointer}.tab:hover,.tool:hover,.token:hover{background:#f1f0eb}.tab[aria-pressed=true]{background:#25282a;color:#fff;border-color:#25282a}.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}.map-card,.sidebar section{background:var(--panel);border:1px solid #b8babb;box-shadow:var(--shadow)}.map-card{padding:12px}.map-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:9px}.map-top strong{font-size:1.03rem}.hint{font-size:.83rem;color:var(--muted)}.image-map{position:relative;overflow:hidden;background:var(--paper);border:1px solid #c9c9c4}.floor{display:none;position:relative}.floor.active{display:block}.floor img{display:block;width:100%;height:auto;user-select:none}.hotspot{position:absolute;border:2px solid transparent;border-radius:4px;background:transparent;cursor:pointer}.hotspot:hover,.hotspot:focus-visible,.hotspot.selected{border-color:var(--red);background:#a63d3618;outline:0}.hotspot.route:hover,.hotspot.route.selected{border-color:var(--gold);background:#b1873119}.marker{position:absolute;z-index:5;width:30px;height:30px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #fff;box-shadow:0 2px 8px #0009;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:800;cursor:pointer;user-select:none}.marker.pj{background:var(--blue)}.marker.npc{background:var(--green)}.marker.danger{background:var(--red)}.marker.wounded{background:#886137}.marker.selected-token{outline:4px solid #e4b84e;outline-offset:2px}.sidebar{display:grid;gap:12px}.sidebar section{padding:15px}.eyebrow{color:var(--gold);font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}.sidebar h2{font-size:1.15rem;margin-bottom:8px}.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}.tag{border:1px solid #8f9495;border-radius:999px;padding:3px 7px;font-size:.75rem;color:#45494b}.details p{color:#333}.details ul{padding-left:19px;margin-bottom:0}.details li+li{margin-top:5px}.token-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.token{padding:7px 8px;text-align:left;font-size:.8rem;display:flex;gap:7px;align-items:center}.token.active{background:#25282a;color:#fff;border-color:#25282a}.token-dot{width:10px;height:10px;border-radius:50%;flex:none}.token-dot.pj{background:var(--blue)}.token-dot.npc{background:var(--green)}.token-dot.danger{background:var(--red)}.token-dot.wounded{background:#886137}.placement-help{font-size:.78rem;color:var(--muted);margin:8px 0 0}.status{display:grid;gap:6px}.status label{display:flex;gap:8px;align-items:flex-start;font-size:.84rem}.status input{accent-color:var(--red);margin-top:3px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:.78rem}.legend span{display:flex;align-items:center;gap:5px}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%}.footer-note{margin:12px 0 0;color:var(--muted);font-size:.82rem}.alert{background:#fff5dc!important;border-color:#d0a34e!important}.alert p{margin-bottom:0}.tools{margin-top:10px}.tool{padding:7px 9px;font-size:.8rem}.tool.danger-action{color:#8c2823}.hidden{display:none!important}
+@media(max-width:980px){header{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}.sidebar{grid-template-columns:1fr 1fr}.details{grid-column:1/-1}}
+@media(max-width:620px){.app{padding:9px}.sidebar{grid-template-columns:1fr}.token-grid{grid-template-columns:1fr 1fr}.tab{flex:1 1 auto}.map-top{align-items:flex-start;flex-direction:column}}
+@media print{body{background:white}.app{width:100%;padding:0}header,.sidebar,.legend,.footer-note,.map-top .hint{display:none}.layout{display:block}.map-card{border:0;box-shadow:none;padding:0}.floor{display:none!important}.floor.active{display:block!important}.hotspot,.marker{display:none}.image-map{border:0}}
+</style>
+</head>
+<body>
+<main class="app">
+<header>
+<div><h1>BELLEVUE FORUM</h1><p class="subtitle">Plan MJ interactif — Patrouille 13 · cliquez sur une zone ou déplacez les personnages.</p></div>
+<nav class="tabs" aria-label="Choix du niveau">
+<button class="tab" data-floor="rdc" aria-pressed="true">Rez-de-chaussée</button>
+<button class="tab" data-floor="upper" aria-pressed="false">Premier étage</button>
+<button class="tab" data-floor="service" aria-pressed="false">Services & parking</button>
+</nav>
+</header>
+<section class="layout">
+<div class="map-card">
+<div class="map-top"><strong id="floor-name">Rez-de-chaussée — atrium et accès sud</strong><span class="hint">Pièce : clic · Personnage : choisir puis cliquer sur le plan · Échap : annuler</span></div>
+<div class="image-map" id="image-map">
+<div class="floor active" data-floor-panel="rdc">
+<img src="Bellevue Forum - plan RDC.png" alt="Plan architectural du rez-de-chaussée de Bellevue Forum">
+<button class="hotspot" data-room="rdc-boutiques-ouest" aria-label="Boutiques ouest" style="left:5.6%;top:12%;width:25.7%;height:27%"></button>
+<button class="hotspot" data-room="hyper" aria-label="Hypermarché" style="left:5.6%;top:39%;width:26.3%;height:46%"></button>
+<button class="hotspot" data-room="west-access" aria-label="Accès parking ouest" style="left:5.6%;top:61%;width:7.5%;height:15%"></button>
+<button class="hotspot" data-room="atrium" aria-label="Atrium" style="left:32.5%;top:22%;width:35%;height:52%"></button>
+<button class="hotspot route" data-room="south-access" aria-label="Accès sud et ambulance" style="left:41.5%;top:78%;width:17%;height:14%"></button>
+<button class="hotspot" data-room="rdc-boutiques-est" aria-label="Boutiques est" style="left:68.1%;top:12%;width:26.3%;height:29%"></button>
+<button class="hotspot" data-room="pharmacy" aria-label="Pharmacie" style="left:68.1%;top:41%;width:26.3%;height:31%"></button>
+<button class="hotspot" data-room="rdc-closed" aria-label="Locaux fermés" style="left:68.1%;top:72%;width:26.3%;height:19%"></button>
+<button class="hotspot" data-room="rdc-vertical" aria-label="Escaliers, escalators et ascenseurs" style="left:32.5%;top:12%;width:35%;height:73%"></button>
+</div>
+<div class="floor" data-floor-panel="upper">
+<img src="Bellevue Forum - plan R+1.png" alt="Plan architectural du premier étage de Bellevue Forum">
+<button class="hotspot" data-room="cinema" aria-label="Cinéma" style="left:5.6%;top:12%;width:23.8%;height:38%"></button>
+<button class="hotspot" data-room="projection" aria-label="Cabine de projection" style="left:5.6%;top:50%;width:23.8%;height:16%"></button>
+<button class="hotspot" data-room="food-court" aria-label="Restauration" style="left:5.6%;top:66%;width:23.8%;height:25%"></button>
+<button class="hotspot route" data-room="service-corridor" aria-label="Couloir de service" style="left:29.4%;top:12%;width:41.2%;height:11%"></button>
+<button class="hotspot" data-room="balcony" aria-label="Balcons de l'atrium" style="left:30%;top:23%;width:40%;height:56%"></button>
+<button class="hotspot" data-room="security" aria-label="Poste de sécurité" style="left:70.6%;top:12%;width:23.8%;height:27%"></button>
+<button class="hotspot" data-room="upper-shops" aria-label="Boutiques est" style="left:70.6%;top:39%;width:23.8%;height:26%"></button>
+<button class="hotspot route" data-room="north-passage" aria-label="Passage nord" style="left:70.6%;top:65%;width:23.8%;height:26%"></button>
+</div>
+<div class="floor" data-floor-panel="service">
+<img src="Bellevue Forum - plan services et parking.png" alt="Plan architectural du niveau services et parking de Bellevue Forum">
+<button class="hotspot" data-room="parking" aria-label="Parking ouest" style="left:5.6%;top:12%;width:39.4%;height:79%"></button>
+<button class="hotspot route" data-room="technical" aria-label="Galerie technique" style="left:45%;top:12%;width:18.8%;height:79%"></button>
+<button class="hotspot route" data-room="loading" aria-label="Quai nord" style="left:63.8%;top:12%;width:30.6%;height:32%"></button>
+<button class="hotspot" data-room="electrical" aria-label="Local électrique" style="left:63.8%;top:44%;width:15%;height:26%"></button>
+<button class="hotspot" data-room="reserve" aria-label="Réserve" style="left:78.8%;top:44%;width:15.6%;height:26%"></button>
+<button class="hotspot" data-room="lefort-room" aria-label="Local où se trouve Lefort" style="left:63.8%;top:70%;width:15%;height:21%"></button>
+<button class="hotspot route" data-room="ground-access" aria-label="Accès au rez-de-chaussée" style="left:78.8%;top:70%;width:15.6%;height:21%"></button>
+</div>
+</div>
+<div class="legend"><span><i style="background:var(--blue)"></i>PJ</span><span><i style="background:var(--green)"></i>Civil / allié</span><span><i style="background:#886137"></i>Blessé</span><span><i style="background:var(--red)"></i>Menace</span></div>
+<p class="footer-note">Les proportions sont narratives. Le trait ocre indique le trajet le plus direct de Varga vers le quai nord ; les triangles bleus signalent les caméras encore exploitables.</p>
+</div>
+<aside class="sidebar">
+<section class="details" aria-live="polite"><div class="eyebrow">Zone sélectionnée</div><h2 id="detail-title">Atrium — niveau bas</h2><div class="tags" id="detail-tags"><span class="tag">Reflets</span><span class="tag">Lignes de vue</span></div><p id="detail-text">La fontaine sèche occupe le centre. Les balcons et vitrines multiplient les silhouettes trompeuses.</p><ul id="detail-list"><li>Le mannequin porte l'uniforme ensanglanté de Lefort.</li><li>Le micro de sécurité couvre tout le centre.</li><li>Les civils du cinéma réagissent à chaque détonation.</li></ul></section>
+<section><div class="eyebrow">Déplacement</div><h2>Personnages</h2><div class="token-grid" id="token-grid"></div><p class="placement-help">Choisis un nom, puis clique sur le niveau voulu. Double-clique un marqueur pour le retirer. Les positions sont mémorisées.</p><div class="tools"><button class="tool" id="hide-all">Masquer les marqueurs</button><button class="tool danger-action" id="reset-all">Réinitialiser</button></div></section>
+<section class="alert"><div class="eyebrow">Suivi rapide</div><div class="status"><label><input type="checkbox" data-state="lefort"> Lefort stabilisé</label><label><input type="checkbox" data-state="klein"> Klein stabilisé</label><label><input type="checkbox" data-state="cinema"> Civils du cinéma en mouvement</label><label><input type="checkbox" data-state="pharmacy"> Rideau de la pharmacie ouvert</label><label><input type="checkbox" data-state="northgate"> Grille nord en mouvement</label><label><input type="checkbox" data-state="intervention"> Unité d’intervention arrivée</label></div></section>
+</aside>
+</section>
+</main>
+<script>
+const roomData={
+"rdc-boutiques-ouest":{title:"Boutiques ouest",tags:["RDC","Rideaux baissés"],text:"Une succession de vitrines fermées qui renvoient les silhouettes de l'atrium.",list:["Reflets trompeurs à chaque déplacement.","Rideaux et arrière-boutiques utilisables comme couvertures temporaires."]},
+hyper:{title:"Hypermarché",tags:["RDC","Outils","Faux mouvements"],text:"Grand espace sombre, partiellement en travaux, relié à la galerie technique.",list:["Outils, alcool, extincteurs, lampes et couteaux.","Autolaveuse encore en mouvement.","Rideau coupe-feu commandé par un boîtier rouge."]},
+"west-access":{title:"Accès au parking ouest",tags:["RDC","Deux jeunes armés"],text:"Le passage mène au parking où Sofiane tient le pistolet de Lefort sans savoir enlever la sûreté.",list:["Maël cherche déjà à fuir.","Leur fourgonnette, leur lampe et leur cric fonctionnent.","Une sommation brutale provoque une panique immédiate."]},
+atrium:{title:"Atrium — niveau bas",tags:["Reflets","Lignes de vue","Leurre"],text:"La fontaine sèche occupe le centre. Balcons et vitrines multiplient les silhouettes trompeuses.",list:["Le mannequin porte l'uniforme ensanglanté de Lefort.","Une douille de chevrotine près de la fontaine.","Nora a caché les clés sous une poubelle de tri."]},
+"south-access":{title:"Accès sud — ambulance",tags:["Point d'entrée","Blessés","Dossier Varga"],text:"L'ambulance a traversé la façade et s'est immobilisée contre un kiosque.",list:["Klein est vivant sous le tableau de bord.","Trousse permettant de stabiliser une personne.","Dossier de transfert et ceinture tranchée."]},
+"rdc-boutiques-est":{title:"Boutiques est",tags:["RDC","Reflets"],text:"Vitrines fermées, couloirs étroits et enseignes de secours intermittentes.",list:["Plusieurs angles morts depuis le balcon.","Une porte de service rejoint le passage nord."]},
+pharmacy:{title:"Pharmacie",tags:["Élise","Marc blessé","Soins"],text:"Élise et Marc sont cachés derrière le rideau métallique baissé.",list:["Élise peut traiter une blessure.","Marc a vu Nora cacher les clés.","L'ouverture manuelle du rideau produit un vacarme métallique."]},
+"rdc-closed":{title:"Locaux commerciaux fermés",tags:["RDC","Réserves"],text:"Petites réserves et arrière-boutiques sans accès direct à l'extérieur.",list:["Cachettes brèves mais sans seconde issue.","Mobilier utilisable pour ralentir un passage."]},
+"rdc-vertical":{title:"Circulations verticales",tags:["4 escaliers","2 escalators","Ascenseurs bloqués"],text:"Les quatre escaliers rejoignent le balcon. Les escalators offrent des lignes de vue très exposées.",list:["Ascenseurs immobilisés au premier étage.","Les cages d'escalier coupent la vue entre niveaux."]},
+cinema:{title:"Cinéma",tags:["5 civils","Barricadé"],text:"L'équipe de nettoyage non déclarée s'est enfermée dans une salle.",list:["Irina veut attendre les renforts.","Moussa a barricadé la porte.","Pavel possède les clés du fourgon de nettoyage."]},
+projection:{title:"Cabine de projection",tags:["Noé","Isolé"],text:"Noé, neuf ans, s'est caché ici après avoir vu un policier traîner une dame.",list:["Il répond difficilement aux voix inconnues.","La cabine domine une partie du couloir du cinéma."]},
+"food-court":{title:"Zone de restauration",tags:["R+1","Mobilier"],text:"Tables légères, cuisines fermées et large vue sur les balcons.",list:["Peu de couvertures résistantes.","Extincteurs et accès d'eau dans les cuisines."]},
+"service-corridor":{title:"Couloir de service",tags:["R+1","Discret","Vers sécurité"],text:"Passage sans vue sur l'atrium reliant cinéma, sécurité et escaliers nord.",list:["Varga peut l'emprunter pour éviter les balcons.","Portes coupe-feu commandées depuis la sécurité."]},
+balcony:{title:"Balcons de l'atrium",tags:["R+1","Vue dominante","Exposé"],text:"Une coursive continue domine le niveau bas et ses vitrines.",list:["Excellent champ de tir, mais silhouette visible de presque partout.","Passerelles latérales et quatre cages d'escalier."]},
+security:{title:"Poste de sécurité",tags:["Samir","Caméras","Rideaux"],text:"Samir s'y est enfermé avec les commandes du centre et refuse d'ouvrir à n'importe qui.",list:["Six caméras fonctionnent encore.","Un rideau ou une zone d'éclairage commandé à la fois.","Sonorisation générale accessible."]},
+"upper-shops":{title:"Boutiques est — R+1",tags:["Rideaux baissés","Angles morts"],text:"Galerie sombre entre le balcon et le passage nord.",list:["Les vitrines reflètent les mouvements du balcon.","Certaines réserves rejoignent le couloir de service."]},
+"north-passage":{title:"Passage nord",tags:["Vers services","Voie de fuite"],text:"Le passage conduit vers les escaliers et le niveau technique du quai nord.",list:["Varga vise naturellement cet axe.","Une caméra couvre la porte mais pas l'escalier."]},
+parking:{title:"Parking ouest",tags:["Sofiane","Maël","Faible lumière"],text:"Rangées de véhicules, piliers de béton et néons défaillants.",list:["Sofiane possède le pistolet de Lefort.","Les moteurs, alarmes et phares peuvent modifier brutalement la visibilité.","Sortie directe vers la rue ouest."]},
+technical:{title:"Galerie technique",tags:["Conduites","Compacteurs","Trajet nord"],text:"Couloir industriel entre parking, hypermarché et quai nord.",list:["Tableaux électriques et commandes de rideaux.","Beaucoup de bruit ambiant et peu de dégagement.","Itinéraire direct mais facile à bloquer."]},
+loading:{title:"Quai nord",tags:["Sortie de Varga","3 véhicules","Grille"],text:"Le quai donne sur la rue nord derrière une lourde grille motorisée.",list:["Fourgon de nettoyage : clés détenues par Pavel.","Voiture de Samir : clés sur lui.","Camion frigorifique : clés dans un gobelet.","La grille met quarante secondes à monter."]},
+electrical:{title:"Local électrique",tags:["Contrôle","Service"],text:"Tableaux secondaires de l'éclairage et de certains rideaux coupe-feu.",list:["Permet de plonger une zone dans le noir.","Une mauvaise manipulation peut couper les caméras."]},
+reserve:{title:"Réserve technique",tags:["Outils","Produits"],text:"Matériel d'entretien, pièces de rechange et produits industriels.",list:["Outils lourds et ruban adhésif.","Produits irritants ou inflammables."]},
+"lefort-room":{title:"Local de maintenance — Lefort",tags:["Agent à terre","Urgent"],text:"Lefort est blessé au ventre près de la porte, sans uniforme ni armes.",list:["Il veut qu'on poursuive Varga plutôt qu'on le soigne.","Sans stabilisation, il perd connaissance puis meurt.","Son téléphone vibre régulièrement."]},
+"ground-access":{title:"Accès au rez-de-chaussée",tags:["Escalier","Monte-charge"],text:"Cage d'escalier et monte-charge reliant locaux commerciaux et service.",list:["Le monte-charge est bruyant mais offre une couverture métallique.","L'escalier débouche près des locaux fermés du RDC."]}
+};
+const floorNames={rdc:"Rez-de-chaussée — atrium et accès sud",upper:"Premier étage — cinéma, balcons et sécurité",service:"Services et parking — route du quai nord"};
+const roster=[
+{id:"joel",label:"Joël",short:"JS",kind:"pj",floor:"rdc",x:45,y:88},{id:"melanie",label:"Mélanie",short:"MR",kind:"pj",floor:"rdc",x:49,y:88},{id:"tony",label:"Tony",short:"TC",kind:"pj",floor:"rdc",x:12,y:56},{id:"lea",label:"Léa",short:"LB",kind:"pj",floor:"rdc",x:15,y:56},
+{id:"varga",label:"Varga",short:"V",kind:"danger",floor:"rdc",x:63,y:68},{id:"nora",label:"Nora",short:"N",kind:"npc",floor:"rdc",x:66,y:68},{id:"klein",label:"Klein",short:"K",kind:"wounded",floor:"rdc",x:51,y:84},
+{id:"samir",label:"Samir",short:"S",kind:"npc",floor:"upper",x:82,y:25},{id:"cinema",label:"Civils",short:"5",kind:"npc",floor:"upper",x:18,y:31},{id:"noe",label:"Noé",short:"N",kind:"npc",floor:"upper",x:18,y:57},
+{id:"sofiane",label:"Sofiane",short:"S",kind:"danger",floor:"service",x:27,y:46},{id:"mael",label:"Maël",short:"M",kind:"npc",floor:"service",x:32,y:52},{id:"lefort",label:"Lefort",short:"L",kind:"wounded",floor:"service",x:70,y:82},{id:"elise",label:"Élise",short:"E",kind:"npc",floor:"rdc",x:82,y:55},{id:"marc",label:"Marc",short:"M",kind:"wounded",floor:"rdc",x:85,y:58}
+];
+const defaults=Object.fromEntries(roster.map(t=>[t.id,{floor:t.floor,x:t.x,y:t.y,visible:true}]));
+let positions=JSON.parse(localStorage.getItem("p13-map-positions")||"null")||structuredClone(defaults);let selectedToken=null;let markersHidden=false;
+const title=document.querySelector("#detail-title"),tags=document.querySelector("#detail-tags"),text=document.querySelector("#detail-text"),list=document.querySelector("#detail-list"),floorName=document.querySelector("#floor-name"),tokenGrid=document.querySelector("#token-grid");
+function savePositions(){localStorage.setItem("p13-map-positions",JSON.stringify(positions))}
+function selectRoom(el){document.querySelectorAll(".hotspot").forEach(x=>x.classList.remove("selected"));el.classList.add("selected");const d=roomData[el.dataset.room];if(!d)return;title.textContent=d.title;tags.innerHTML=d.tags.map(x=>`<span class="tag">${x}</span>`).join("");text.textContent=d.text;list.innerHTML=d.list.map(x=>`<li>${x}</li>`).join("")}
+function activeFloor(){return document.querySelector(".floor.active").dataset.floorPanel}
+function renderMarkers(){document.querySelectorAll(".marker").forEach(x=>x.remove());if(markersHidden)return;for(const token of roster){const p=positions[token.id]||defaults[token.id];if(!p.visible)continue;const panel=document.querySelector(`[data-floor-panel="${p.floor}"]`);if(!panel)continue;const m=document.createElement("button");m.type="button";m.className=`marker ${token.kind}${selectedToken===token.id?" selected-token":""}`;m.style.left=p.x+"%";m.style.top=p.y+"%";m.textContent=token.short;m.title=token.label;m.dataset.token=token.id;m.addEventListener("click",e=>{e.stopPropagation();selectToken(token.id)});m.addEventListener("dblclick",e=>{e.stopPropagation();positions[token.id].visible=false;savePositions();renderMarkers()});panel.appendChild(m)}}
+function selectToken(id){selectedToken=selectedToken===id?null:id;document.querySelectorAll(".token").forEach(b=>b.classList.toggle("active",b.dataset.token===selectedToken));renderMarkers()}
+for(const token of roster){const b=document.createElement("button");b.type="button";b.className="token";b.dataset.token=token.id;b.innerHTML=`<span class="token-dot ${token.kind}"></span>${token.label}`;b.onclick=()=>selectToken(token.id);tokenGrid.appendChild(b)}
+document.querySelectorAll(".floor").forEach(panel=>panel.addEventListener("click",e=>{if(!selectedToken)return;const r=panel.getBoundingClientRect();positions[selectedToken]={floor:panel.dataset.floorPanel,x:((e.clientX-r.left)/r.width*100).toFixed(2),y:((e.clientY-r.top)/r.height*100).toFixed(2),visible:true};savePositions();selectedToken=null;document.querySelectorAll(".token").forEach(b=>b.classList.remove("active"));renderMarkers()}));
+document.querySelectorAll(".hotspot").forEach(el=>{el.addEventListener("click",()=>{if(!selectedToken)selectRoom(el)});el.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!selectedToken){e.preventDefault();selectRoom(el)}})});
+document.querySelectorAll(".tab").forEach(btn=>btn.onclick=()=>{const floor=btn.dataset.floor;document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-pressed",String(x===btn)));document.querySelectorAll(".floor").forEach(x=>x.classList.toggle("active",x.dataset.floorPanel===floor));floorName.textContent=floorNames[floor];document.querySelectorAll(".hotspot").forEach(x=>x.classList.remove("selected"))});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){selectedToken=null;document.querySelectorAll(".token").forEach(b=>b.classList.remove("active"));renderMarkers()}});
+document.querySelector("#hide-all").onclick=()=>{markersHidden=!markersHidden;document.querySelector("#hide-all").textContent=markersHidden?"Afficher les marqueurs":"Masquer les marqueurs";renderMarkers()};
+document.querySelector("#reset-all").onclick=()=>{if(confirm("Réinitialiser toutes les positions et le suivi ?")){positions=structuredClone(defaults);savePositions();localStorage.removeItem("p13-map-state");document.querySelectorAll("[data-state]").forEach(x=>x.checked=false);selectedToken=null;markersHidden=false;document.querySelector("#hide-all").textContent="Masquer les marqueurs";renderMarkers()}};
+const state=JSON.parse(localStorage.getItem("p13-map-state")||"{}");document.querySelectorAll("[data-state]").forEach(cb=>{cb.checked=Boolean(state[cb.dataset.state]);cb.onchange=()=>{state[cb.dataset.state]=cb.checked;localStorage.setItem("p13-map-state",JSON.stringify(state))}});
+renderMarkers();
+</script>
+</body>
+</html>
