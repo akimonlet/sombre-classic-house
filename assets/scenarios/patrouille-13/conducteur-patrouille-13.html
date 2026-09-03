@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Patrouille 13 — conducteur MJ</title>
+<style>
+:root{--ink:#e9e6df;--muted:#aaa8a2;--bg:#111315;--panel:#191c1f;--panel2:#212529;--line:#383d42;--blue:#68a9cb;--red:#d85d52;--amber:#d7a84d;--green:#7fa17b;--shadow:0 12px 28px #0007}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(110deg,#0c0e10,#141719 55%,#101214);color:var(--ink);font:16px/1.58 Georgia,"Times New Roman",serif}
+button,textarea{font:inherit}button{color:inherit}.app{display:grid;grid-template-columns:260px minmax(0,900px);gap:32px;max-width:1240px;margin:auto;padding:22px}
+aside{position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;padding:18px;background:#15181aeF;border:1px solid var(--line);box-shadow:var(--shadow)}
+.brand{font:700 1.35rem/1.1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff}.brand small{display:block;color:var(--red);font-size:.68rem;margin-top:7px;letter-spacing:.16em}
+nav{margin:18px 0}nav a{display:block;color:var(--muted);text-decoration:none;padding:6px 8px;border-left:2px solid transparent;font:600 .8rem/1.3 Arial,sans-serif}nav a:hover,nav a.active{color:#fff;border-color:var(--red);background:#ffffff08}
+.controls{border-top:1px solid var(--line);padding-top:15px}.label{font:700 .68rem Arial,sans-serif;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin:13px 0 7px}#clock{font:700 2rem/1 Consolas,monospace;color:#fff;margin:7px 0 10px}.row{display:flex;gap:6px;flex-wrap:wrap}button{border:1px solid var(--line);background:var(--panel2);padding:7px 10px;cursor:pointer}button:hover,button:focus-visible{border-color:var(--amber);outline:none}.pressure button{min-width:31px;padding:6px}.pressure button.active{background:var(--red);border-color:#ff8c82;color:white}
+textarea{width:100%;min-height:112px;resize:vertical;background:#0e1012;color:var(--ink);border:1px solid var(--line);padding:9px}
+main{min-width:0;padding-bottom:80px}.hero{padding:42px 0 28px;border-bottom:1px solid var(--line)}.eyebrow{font:700 .72rem Arial,sans-serif;color:var(--red);letter-spacing:.18em;text-transform:uppercase}.hero h1{font-size:clamp(3rem,8vw,6.5rem);line-height:.88;letter-spacing:-.055em;margin:12px 0 18px;color:#fff}.hero p{font-size:1.12rem;color:var(--muted);max-width:760px}
+article>h1:first-child{display:none}h1,h2,h3{scroll-margin-top:22px;text-wrap:balance}article h1{font:800 2.15rem/1.05 Arial,sans-serif;margin:62px 0 20px;color:#fff;border-top:1px solid var(--line);padding-top:24px}article h2{font:750 1.45rem/1.15 Arial,sans-serif;margin:34px 0 12px;color:#fff}article h3{font:700 1.05rem/1.2 Arial,sans-serif;color:var(--amber);margin:25px 0 7px}p{margin:9px 0}strong{color:#fff}blockquote{margin:22px 0;padding:17px 21px;border:1px solid #6b3935;background:#281b1b;color:#fff;font-size:1.08rem}blockquote p{margin:0}
+ul,ol{padding-left:1.35rem}li{margin:5px 0}hr{border:0;border-top:1px solid var(--line);margin:34px 0}pre{white-space:pre-wrap;background:#0d0f10;border:1px solid var(--line);padding:16px;overflow:auto;color:#ced6d9}code{font:14px Consolas,monospace}table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--panel)}th,td{text-align:left;vertical-align:top;padding:10px;border:1px solid var(--line)}th{font-family:Arial,sans-serif;color:#fff;background:#25292d}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:22px 0}.quick a{text-decoration:none;color:var(--ink);padding:13px;border:1px solid var(--line);background:var(--panel);font:700 .82rem Arial,sans-serif}.quick a:hover{border-color:var(--blue)}
+.floating-print{position:fixed;right:18px;bottom:18px;background:var(--red);border-color:#ff8d83;box-shadow:var(--shadow)}
+@media(max-width:850px){.app{display:block;padding:14px}aside{position:relative;top:auto;max-height:none;margin-bottom:22px}nav{columns:2}.hero{padding-top:16px}.quick{grid-template-columns:1fr}}
+@media print{body{background:white;color:#111;font-size:12pt}aside,.floating-print,.quick{display:none!important}.app{display:block;max-width:none;padding:0}main{padding:0}.hero{padding:0 0 12mm}.hero h1{color:#000;font-size:42pt}.hero p,.eyebrow{color:#333}article h1,article h2,strong{color:#000}article h1{break-before:page;border-color:#999}article h2{break-after:avoid}blockquote{color:#000;background:#eee;border-color:#777}table,pre{background:white}a{color:#000;text-decoration:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand">Patrouille 13<small>Console du meneur</small></div>
+  <nav id="nav"></nav>
+  <div class="controls">
+    <div class="label">Chronomètre de partie</div>
+    <div id="clock">00:00</div>
+    <div class="row"><button id="start">Démarrer</button><button id="reset">Remise à zéro</button></div>
+    <div class="label">Pression</div>
+    <div class="row pressure" id="pressure"></div>
+    <div class="label">Notes de partie</div>
+    <textarea id="notes" placeholder="Blessés, positions, munitions…"></textarea>
+  </div>
+</aside>
+<main>
+  <header class="hero">
+    <div class="eyebrow">Sombre Classic · 4 policiers · 2 heures</div>
+    <h1>PATROUILLE<br>13</h1>
+    <p>Deux affaires à la con. Un agent à terre. Un centre commercial fermé. Le suspect possède le fusil, le gilet et la radio d'un policier.</p>
+    <div class="quick"><a href="#binome-a-le-poney-de-la-rue-des-forges">Binôme A · Le poney</a><a href="#binome-b-le-hold-up-du-chicken-king">Binôme B · Chicken King</a><a href="#2-l-appel-qui-change-la-nuit">Appel prioritaire</a></div>
+  </header>
+  <article><h1 id="patrouille-13-conducteur-mj">PATROUILLE 13 — conducteur MJ</h1>
+<blockquote>
+<p><strong>Sombre Classic · 4 joueurs · 1 h 45 à 2 h · action, humour noir, slasher urbain</strong></p>
+</blockquote>
+<p>Deux binômes de policiers médiocres terminent leur service de nuit sur des interventions indignes de leur talent supposé. Puis un appel « agent à terre » les conduit dans un centre commercial fermé, où un tueur évadé possède un fusil, une radio de police et beaucoup plus de sang-froid qu'eux.</p>
+<p>Le scénario n'est pas une enquête à résoudre. C'est un ensemble de <strong>situations instables</strong>. Aucun indice n'est indispensable, aucun itinéraire n'est prévu et aucune scène ne suppose une conduite particulière des PJ.</p>
+<hr />
+<h2 id="les-faits-en-une-minute">Les faits, en une minute</h2>
+<p>Il est 2 h 17 à <strong>Bellécourt</strong>, ville moyenne détrempée par une pluie froide.</p>
+<p><strong>Élias Varga</strong>, surnommé <em>le Boucher de Bellevue</em>, devait être transféré de la prison à l'hôpital après avoir simulé une occlusion. Une lame en céramique était cousue dans la languette de sa chaussure. Dans l'ambulance, il a égorgé un surveillant, blessé l'autre et contraint l'ambulancière <strong>Nora Benali</strong> à prendre une sortie. Elle a provoqué un accident contre l'entrée de service du centre commercial <strong>Bellevue Forum</strong>.</p>
+<p>Varga a survécu avec deux côtes cassées. Il est entré dans le bâtiment avec Nora. L'agent <strong>Patrice Lefort</strong>, arrivé seul, l'a suivi sans attendre de renfort. Varga lui a pris son fusil à pompe, son gilet et sa radio.</p>
+<p>Quand la partie commence, les deux binômes ignorent tout cela. Le central traite encore l'accident comme une collision avec délit de fuite.</p>
+<h2 id="ce-que-veut-varga">Ce que veut Varga</h2>
+<p>Varga n'est ni fou ni surnaturel. Il est patient, observateur et totalement dépourvu d'empathie.</p>
+<p>Il veut :</p>
+<ul>
+<li>atteindre le quai de livraison nord ;</li>
+<li>obtenir les clés d'un véhicule discret ;</li>
+<li>conserver Nora comme bouclier et conductrice ;</li>
+<li>tuer quiconque peut le reconnaître ou lui barrer la route ;</li>
+<li>utiliser la radio volée pour suivre et désunir les policiers.</li>
+</ul>
+<p>Il ne veut pas « jouer » avec les PJ, défendre un territoire ou mourir dans un dernier carré. Une sortie libre l'intéresse davantage qu'un combat. Acculé, il frappe vite, tire une fois et change d'endroit.</p>
+<h2 id="la-couleur-de-la-partie">La couleur de la partie</h2>
+<p>Le début est franchement comique. Le basculement doit être net : après l'appel de Lefort, les mêmes défauts restent drôles autour de la table, mais le monde ne les protège plus.</p>
+<p>Quelques principes :</p>
+<ul>
+<li>les policiers sont ridicules, pas invulnérables ;</li>
+<li>les PNJ ont des objectifs simples et agissent sans attendre les PJ ;</li>
+<li>toute détonation dans le centre attire quelqu'un ou déclenche une panique ;</li>
+<li>Varga ne surgit pas pour « faire avancer le scénario » : il se déplace vers sa sortie ;</li>
+<li>un bon plan peut fonctionner sans jet ; un mauvais plan réussi crée seulement une chance ;</li>
+<li>ne jamais retenir une information utile derrière un unique jet.</li>
+</ul>
+<hr />
+<h1 id="1-deux-patrouilles-deux-affaires-a-la-con">1. Deux patrouilles, deux affaires à la con</h1>
+<p>Alterner les binômes toutes les <strong>5 à 7 minutes</strong>. Ces situations servent à faire exister les personnages, leur voiture, leur radio et leur manière désastreuse d'exercer l'autorité. Au bout de 25 minutes maximum, interrompre ce qui reste par l'appel prioritaire.</p>
+<h2 id="binome-a-le-poney-de-la-rue-des-forges">Binôme A — « Le poney de la rue des Forges »</h2>
+<p><strong>PJ : Joël Santi et Mélanie Roussel.</strong></p>
+<p>Un poney gris portant un chapeau d'anniversaire bloque une rue étroite. Il appartient à <strong>Gisèle Brémont</strong>, propriétaire ivre d'un bar karaoké. Elle soutient qu'on le lui a volé alors qu'elle l'avait attaché à un distributeur de billets. Trois clients filment. Un chauffeur de bus klaxonne sans interruption. Le poney mord quiconque saisit sa bride et se calme devant les chips au paprika.</p>
+<p>Ce qui peut nourrir la situation :</p>
+<ul>
+<li>Gisèle exige une enquête criminelle et veut souffler dans l'éthylotest « pour prouver sa sobriété » ;</li>
+<li>le chauffeur tente de passer sur le trottoir ;</li>
+<li>un adolescent affirme en direct que la police maltraite l'animal ;</li>
+<li>le poney porte une sacoche contenant 2 400 euros en petites coupures : la recette non déclarée du bar ;</li>
+<li>une dépanneuse municipale peut venir, mais seulement « dans quarante-cinq minutes » ;</li>
+<li>Mélanie dispose dans le coffre d'une couverture de survie, d'une corde et d'un cône de chantier ;</li>
+<li>la radio mentionne fugitivement un accident d'ambulance près de Bellevue Forum, sans caractère prioritaire.</li>
+</ul>
+<p><strong>Gisèle</strong> veut récupérer son argent sans reconnaître son existence. Le <strong>chauffeur</strong> veut libérer la rue. Les <strong>spectateurs</strong> veulent une vidéo humiliante.</p>
+<p>Rien n'a besoin d'être résolu. L'appel grave peut laisser le poney, Gisèle ou le bus dans n'importe quel état.</p>
+<h2 id="binome-b-le-hold-up-du-chicken-king">Binôme B — « Le hold-up du Chicken King »</h2>
+<p><strong>PJ : Tony Cherif et Léa Bouchard.</strong></p>
+<p>Au Chicken King, le directeur <strong>M. Pujol</strong> retient par le bras un homme déguisé en poulet géant. Il l'accuse d'avoir braqué la caisse. Le poulet, <strong>Dylan</strong>, employé du restaurant voisin, affirme être seulement venu récupérer son téléphone. La caissière pleure. Un client continue de manger face contre le mur.</p>
+<p>La vérité n'est pas très glorieuse : Dylan travaillait encore au Chicken King la semaine précédente. Pujol avait confisqué son téléphone pendant son dernier service, puis l'avait licencié avant de le lui rendre. Dylan est revenu le récupérer vêtu du costume publicitaire de son nouvel employeur, le restaurant voisin. Il a aussi emporté le tiroir-caisse en croyant que son téléphone était dessous, puis l'a abandonné dans les toilettes. Le tiroir est vide parce que la caissière, <strong>Yasmina</strong>, vole son patron depuis six mois.</p>
+<p>Ce qui peut nourrir la situation :</p>
+<ul>
+<li>le costume de poulet empêche Dylan de montrer ses mains et il refuse de l'enlever car il ne porte qu'un slip dessous ;</li>
+<li>Pujol veut une arrestation immédiate et propose discrètement des repas gratuits aux policiers ;</li>
+<li>Yasmina accuse Dylan avec beaucoup trop d'énergie ;</li>
+<li>le client face au mur est le frère de Yasmina et a l'argent dans son sac de livraison ;</li>
+<li>la caméra est braquée depuis trois semaines sur une affiche promotionnelle ;</li>
+<li>Tony peut découvrir que son téléphone diffuse encore son direct public ;</li>
+<li>Léa entend sur la fréquence secondaire un appel haché : « ...ambulance... entrée service... besoin d'une unité... »</li>
+</ul>
+<p><strong>Dylan</strong> veut récupérer son téléphone et partir. <strong>Pujol</strong> veut un coupable. <strong>Yasmina</strong> veut que personne ne fouille le sac de son frère.</p>
+<p>Ici encore, aucune conclusion n'est nécessaire.</p>
+<hr />
+<h1 id="2-l-appel-qui-change-la-nuit">2. L'appel qui change la nuit</h1>
+<p>Après 20 à 25 minutes, couper la situation en cours avec le central :</p>
+<blockquote>
+<p>« Toutes unités secteur Bellevue, priorité absolue. Indicatif Sept-Deux ne répond plus. Dernière transmission : individu armé à l'intérieur de Bellevue Forum, accès livraison sud. Agent possiblement à terre. Ambulance accidentée sur place. Patrouilles Treize et Dix-Neuf, intervention immédiate. »</p>
+</blockquote>
+<p>Pendant que les véhicules approchent, la porteuse radio précise :</p>
+<ul>
+<li>le centre est officiellement fermé depuis 22 h ;</li>
+<li>un agent de sécurité, <strong>Samir Ouali</strong>, serait encore sur place ;</li>
+<li>une équipe d'intervention arrive, délai annoncé vingt minutes ;</li>
+<li>aucun signalement fiable du tireur ;</li>
+<li>le centre compte peut-être des employés de nuit.</li>
+</ul>
+<p>Puis une voix masculine calme passe sur la même fréquence :</p>
+<blockquote>
+<p>« Treize, prenez le parking ouest. Dix-Neuf, restez à l'entrée sud. Je suis avec Lefort. »</p>
+</blockquote>
+<p>Ce n'est pas le central. C'est Varga avec la radio de Lefort. S'il est questionné, il répond comme un policier pressé, connaît le nom de Lefort grâce à son badge, puis coupe.</p>
+<p>Les deux véhicules arrivent par des côtés différents du bâtiment. Les joueurs peuvent se rejoindre immédiatement, rester séparés ou ignorer l'ordre : le lieu et les menaces ne l'exigent pas.</p>
+<hr />
+<h1 id="3-bellevue-forum">3. Bellevue Forum</h1>
+<h2 id="vue-d-ensemble">Vue d'ensemble</h2>
+<p>Un centre commercial de trois niveaux organisé autour d'un grand atrium. Presque tous les rideaux métalliques sont baissés. L'éclairage normal est coupé dans la moitié du bâtiment ; les enseignes de secours, les vitrines et les publicités vidéo donnent une lumière intermittente.</p>
+<pre><code class="language-text">                      [QUAI NORD / SORTIE DE VARGA]
+                                 │
+       [CINÉMA] ─── [COULOIR DE SERVICE] ─── [SÉCURITÉ]
+          │                    │                    │
+ [PARKING OUEST] ─────── [ATRIUM / 3 NIVEAUX] ─ [PHARMACIE]
+          │                    │                    │
+       [HYPER] ─────── [GALERIE TECHNIQUE] ─ [ACCÈS SUD]
+                                 │
+                       [AMBULANCE ENCASTRÉE]
+</code></pre>
+<p>Tous les lieux sont reliés par des escaliers, escalators immobiles ou passages de service. Le plan indique des rapports, pas des cases : une poursuite peut déplacer l'action d'un lieu à l'autre en quelques instants.</p>
+<h2 id="acces-sud-l-ambulance">Accès sud — l'ambulance</h2>
+<p>L'ambulance a traversé une porte vitrée et s'est écrasée contre un kiosque. Le moteur tourne encore. Une alarme locale répète un carillon absurde.</p>
+<p>Présences et informations :</p>
+<ul>
+<li>le surveillant pénitentiaire mort est attaché à une poignée intérieure ;</li>
+<li>le second, <strong>Hugo Klein</strong>, est vivant sous le tableau de bord, blessé au ventre et presque incohérent ;</li>
+<li>la ceinture de maintien du prisonnier a été tranchée ;</li>
+<li>une traînée de sang mène vers l'atrium, mais elle vient surtout de Nora ;</li>
+<li>la trousse de secours contient de quoi stabiliser une personne, pas la remettre debout ;</li>
+<li>le dossier de transfert porte le nom et la photo de Varga ;</li>
+<li>les clés sont absentes ; Varga les a prises sans savoir qu'un coupe-circuit immobilise désormais l'ambulance.</li>
+</ul>
+<p><strong>Klein</strong> veut qu'on l'empêche de mourir. Entre deux pertes de conscience, il peut dire : « chaussure », « la fille est vivante » et « il écoute la radio ».</p>
+<h2 id="atrium-le-grand-vide">Atrium — le grand vide</h2>
+<p>Trois étages de balcons dominent une fontaine sèche. Une musique d'ambiance continue de jouer. Un mannequin d'exposition porte l'uniforme ensanglanté de Lefort, placé là par Varga pour attirer un tir ou une approche imprudente.</p>
+<ul>
+<li>Lefort est ailleurs, encore vivant au début de cette phase ;</li>
+<li>une douille de chevrotine se trouve près de la fontaine ;</li>
+<li>les ascenseurs sont bloqués au premier étage ;</li>
+<li>chaque balcon offre des lignes de vue, mais les vitrines reflètent les silhouettes ;</li>
+<li>le micro du poste de sécurité permet de parler dans tout le centre ;</li>
+<li>au moindre coup de feu, les cinq personnes cachées au cinéma croient à un massacre et commencent à bouger.</li>
+</ul>
+<h2 id="parking-ouest-les-mauvaises-silhouettes">Parking ouest — les mauvaises silhouettes</h2>
+<p>Le parking compte une centaine de véhicules, piliers en béton et néons capricieux. Deux jeunes voleurs, <strong>Sofiane</strong> et <strong>Maël</strong>, tentaient de voler un catalyseur lorsque l'ambulance a percuté le bâtiment.</p>
+<ul>
+<li>ils ont vu un homme en gilet de police pousser une femme blessée vers l'atrium ;</li>
+<li>ils ont ensuite trouvé Lefort et lui ont pris son pistolet « pour se défendre » ;</li>
+<li>Sofiane tient l'arme sans savoir enlever la sûreté ;</li>
+<li>Maël veut abandonner son ami et courir ;</li>
+<li>leur cric, leur lampe et leur fourgonnette fonctionnent ;</li>
+<li>un policier qui crie « lâche ton arme » provoque chez Sofiane une panique immédiate, pas une intention meurtrière.</li>
+</ul>
+<p>Leur silhouette armée est dangereuse parce qu'elle ressemble exactement à ce que les policiers s'attendent à rencontrer.</p>
+<h2 id="cinema-les-gens-qui-n-existent-pas-sur-les-registres">Cinéma — les gens qui n'existent pas sur les registres</h2>
+<p>Une équipe de nettoyage non déclarée travaillait après la fermeture : <strong>Irina</strong>, <strong>Moussa</strong>, <strong>Pavel</strong>, <strong>Ana</strong> et son fils <strong>Noé</strong>, neuf ans. Ils se sont enfermés dans une salle après les détonations.</p>
+<ul>
+<li>Moussa a barricadé la porte avec un distributeur de confiseries ;</li>
+<li>Pavel possède les clés du quai nord mais refuse d'ouvrir tant qu'il pense le tireur dehors ;</li>
+<li>Noé s'est caché seul dans la cabine de projection après avoir vu « un policier traîner une dame » ;</li>
+<li>Irina veut attendre les forces spéciales ;</li>
+<li>Ana veut retrouver son fils ;</li>
+<li>Varga sait que des voix viennent du cinéma et peut y chercher un véhicule ou un otage supplémentaire.</li>
+</ul>
+<p>Ils ne sont ni disciplinés ni silencieux. Une annonce rassurante, une détonation ou une rumeur change immédiatement leur conduite.</p>
+<h2 id="poste-de-securite-samir-et-les-ecrans">Poste de sécurité — Samir et les écrans</h2>
+<p><strong>Samir Ouali</strong>, agent de sécurité, s'est enfermé dans le poste avec une bombe lacrymogène, une matraque et les commandes des rideaux métalliques. Il a vu Varga frapper Lefort, mais il a aussi vu Tony en direct plusieurs semaines plus tôt et le considère comme un clown dangereux.</p>
+<ul>
+<li>il n'ouvre qu'à une voix ou une image qu'il juge crédible ;</li>
+<li>six caméras fonctionnent encore, avec des angles morts importants ;</li>
+<li>il peut lever un rideau à la fois, déverrouiller le quai nord ou rallumer certaines zones ;</li>
+<li>la caméra du couloir nord montre parfois Varga et Nora, sans son ;</li>
+<li>Varga connaît l'emplacement du poste et a déjà coupé son téléphone filaire ;</li>
+<li>si Samir se croit abandonné, il tente seul de gagner le parking.</li>
+</ul>
+<p>Le système de sonorisation, les caméras et les rideaux sont des outils. Aucun n'est nécessaire à la survie ou à la compréhension de la situation.</p>
+<h2 id="pharmacie-survivre-fait-du-bruit">Pharmacie — survivre fait du bruit</h2>
+<p>La pharmacienne <strong>Élise Vautrin</strong> faisait l'inventaire avec son compagnon <strong>Marc</strong>. Ils sont cachés derrière le rideau baissé.</p>
+<ul>
+<li>Marc a été touché par une balle perdue à la cuisse ;</li>
+<li>Élise peut traiter une blessure et possède des antalgiques puissants ;</li>
+<li>Marc a vu Nora glisser discrètement les clés de l'ambulance sous une poubelle de tri dans l'atrium ;</li>
+<li>leur rideau s'ouvre manuellement de l'intérieur, dans un vacarme métallique ;</li>
+<li>Marc veut sortir tout de suite ; Élise juge l'extérieur trop dangereux ;</li>
+<li>l'odeur du sang et les gémissements trahissent leur présence à courte distance.</li>
+</ul>
+<h2 id="hypermarche-trop-de-cachettes">Hypermarché — trop de cachettes</h2>
+<p>L'hypermarché est sombre, immense et partiellement en travaux. Les sorties arrière rejoignent la galerie technique et le quai nord.</p>
+<ul>
+<li>outils, alcool, extincteurs, couvertures, lampes et couteaux sont faciles à trouver ;</li>
+<li>les armes véritables se limitent à ce que les PJ et Lefort ont apporté ;</li>
+<li>une autolaveuse se déplace encore très lentement selon son programme ;</li>
+<li>les miroirs antivol et les portiques produisent régulièrement de faux mouvements ;</li>
+<li>un rideau coupe-feu peut séparer l'hypermarché en deux depuis un boîtier rouge ;</li>
+<li>Varga traverse ce lieu s'il doit contourner l'atrium ; il n'y attend personne sans raison.</li>
+</ul>
+<h2 id="galerie-technique-et-quai-nord-la-sortie">Galerie technique et quai nord — la sortie</h2>
+<p>Des conduites, tableaux électriques, compacteurs et réserves débouchent sur le quai. Trois véhicules s'y trouvent : le fourgon de nettoyage, la voiture de Samir et un camion frigorifique dont le chauffeur dort dans la cabine.</p>
+<ul>
+<li>Pavel possède les clés du fourgon ;</li>
+<li>Samir possède les clés de sa voiture ;</li>
+<li>le camion est ouvert, moteur froid, clés dans un gobelet ;</li>
+<li>la grille extérieure met environ quarante secondes à se lever et produit un bruit énorme ;</li>
+<li>un bouton d'arrêt peut la bloquer à mi-hauteur ;</li>
+<li>l'équipe d'intervention prévoit d'arriver par cette rue, mais Varga l'ignore ;</li>
+<li>si personne ne contrarie son trajet, Varga arrive ici avec Nora environ 35 minutes après l'appel prioritaire.</li>
+</ul>
+<hr />
+<h1 id="4-les-personnes-en-mouvement">4. Les personnes en mouvement</h1>
+<h2 id="elias-varga-le-predateur">Élias Varga — le prédateur</h2>
+<p><strong>Corps 12 · Esprit 12</strong><br />
+<strong>Armes :</strong> fusil à pompe de Lefort, 4 cartouches ; lame en céramique.<br />
+<strong>Protection :</strong> gilet pare-balles de Lefort ; il réduit d'une Blessure les tirs au torse, sans effet sur la tête, les membres ou les attaques de contact.<br />
+<strong>État :</strong> deux côtes cassées ; courir longtemps ou recevoir un choc violent lui coûte 1 Blessure.</p>
+<p>Conduite :</p>
+<ul>
+<li>écoute les fréquences de police et reconnaît les indicatifs ;</li>
+<li>parle peu, avec le vocabulaire d'un policier entendu à la radio ;</li>
+<li>utilise les reflets, les alarmes et les civils pour créer de fausses cibles ;</li>
+<li>ne tire que s'il pense toucher ou terrifier ;</li>
+<li>change de direction dès qu'un itinéraire est contenu ;</li>
+<li>abandonne le fusil s'il l'empêche de passer pour un policier blessé ;</li>
+<li>ne possède aucune connaissance surnaturelle du plan ou des PJ.</li>
+</ul>
+<p>Sous un feu clair, il peut mourir comme n'importe quel humain. Sa dangerosité vient de l'initiative et de l'incertitude, pas de points de vie artificiels.</p>
+<h2 id="nora-benali-l-otage-qui-resiste">Nora Benali — l'otage qui résiste</h2>
+<p>Ambulancière de 31 ans, entaille profonde au front, lucide malgré le choc.</p>
+<p>Elle veut survivre et empêcher Varga d'obtenir un véhicule. Elle a déjà caché les clés de l'ambulance. Elle laisse tomber de petits objets, ralentit, ment sur le bâtiment et profite de toute distraction. Elle ne tente pas automatiquement une fuite spectaculaire si elle voit un canon à quelques centimètres de son dos.</p>
+<h2 id="patrice-lefort-l-agent-a-terre">Patrice Lefort — l'agent à terre</h2>
+<p>Lefort est blessé au ventre dans un local près du parking. Son uniforme et son matériel ont été pris. Sa radio est restée ouverte assez longtemps pour déclencher l'alerte.</p>
+<p>Il veut qu'on poursuive Varga plutôt qu'on le soigne et minimise stupidement sa blessure. Sans secours dans la première demi-heure, il s'évanouit. Sans stabilisation avant la fin, il meurt.</p>
+<h2 id="commissaire-valette-la-voix-lointaine">Commissaire Valette — la voix lointaine</h2>
+<p>Elle coordonne depuis le commissariat. Elle veut figer le périmètre, attendre l'unité spécialisée et empêcher une catastrophe médiatique. Les renseignements lui parviennent avec retard.</p>
+<p>Elle peut ordonner aux PJ de rester en place, puis leur reprocher de ne pas intervenir si un civil appelle au secours. Elle n'est pas corrompue : elle est prudente, contradictoire et terrifiée à l'idée d'endosser quatre morts supplémentaires.</p>
+<hr />
+<h1 id="5-pression-pas-un-script">5. Pression — pas un script</h1>
+<p>Utiliser cette échelle lorsque le rythme ralentit. Un cran représente environ <strong>8 à 12 minutes</strong>, mais un événement peut être avancé, retardé ou supprimé selon la situation. Les événements décrivent ce que font les PNJ, jamais ce que doivent faire les joueurs.</p>
+<h2 id="0-arrivee">0 — Arrivée</h2>
+<p>L'ambulance fume. Varga conduit Nora vers le nord. Lefort perd son sang. Samir observe ses écrans. Les civils restent cachés.</p>
+<h2 id="1-mauvais-ordre">1 — Mauvais ordre</h2>
+<p>Varga utilise la radio : « Tireur aperçu au parking ouest. » Sofiane s'y trouve justement avec le pistolet de Lefort.</p>
+<h2 id="2-le-centre-se-reveille">2 — Le centre se réveille</h2>
+<p>Samir rallume une zone ou déclenche involontairement la sonorisation. Les civils du cinéma parlent trop fort. Varga apprend qu'ils existent.</p>
+<h2 id="3-une-cartouche">3 — Une cartouche</h2>
+<p>Varga tire : sur une serrure, une lumière, un témoin ou une silhouette selon sa position. Toute personne dans le bâtiment entend la détonation et l'interprète à sa manière.</p>
+<h2 id="4-panique-civile">4 — Panique civile</h2>
+<p>Marc tente de quitter la pharmacie, ou Ana part chercher Noé. Un petit groupe traverse un espace exposé. Il ne se dirige pas nécessairement vers les PJ.</p>
+<h2 id="5-la-sortie-s-ouvre">5 — La sortie s'ouvre</h2>
+<p>Varga obtient une clé ou force quelqu'un à lui donner un véhicule. La grille nord commence à monter. L'unité d'intervention annonce cinq minutes.</p>
+<h2 id="6-tout-le-monde-tire-sur-tout-le-monde">6 — Tout le monde tire sur tout le monde</h2>
+<p>L'équipe spécialisée entre avec des signalements contradictoires : Varga porte un gilet de police, Sofiane possède un pistolet, les PJ peuvent être en civil ou couverts de sang, Nora se débat. Les sommations sont brèves. La grille continue de monter ou reste bloquée selon ce qui s'est passé.</p>
+<p>Cette dernière situation peut conclure la partie, mais aucune issue n'est imposée : arrestation, fuite, échange d'otage, fusillade, reddition, erreur d'identification ou massacre sont tous possibles.</p>
+<hr />
+<h1 id="6-informations-sans-goulot-d-etranglement">6. Informations sans goulot d'étranglement</h1>
+<p>La partie n'exige jamais de réunir toutes ces informations.</p>
+<table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Sources possibles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Le fugitif est Varga</td>
+<td>dossier dans l'ambulance, Klein, central, tatouage visible</td>
+</tr>
+<tr>
+<td>Il a la radio de Lefort</td>
+<td>Klein, faux ordre, fréquence ouverte, Samir</td>
+</tr>
+<tr>
+<td>Il porte un gilet de police</td>
+<td>voleurs, caméra, Noé, uniforme exposé</td>
+</tr>
+<tr>
+<td>Nora est vivante</td>
+<td>Klein, caméra, cris, objets qu'elle laisse</td>
+</tr>
+<tr>
+<td>Il vise le quai nord</td>
+<td>caméra, plan mural, mouvement observé, véhicules disponibles</td>
+</tr>
+<tr>
+<td>Lefort est vivant</td>
+<td>gémissement, sang, voleurs, téléphone qui vibre</td>
+</tr>
+<tr>
+<td>Des civils sont au cinéma</td>
+<td>registre de Samir, bruit, caméra, appel de Noé</td>
+</tr>
+</tbody>
+</table>
+<p>En cas d'échec à un jet d'observation, donner l'information essentielle et ajouter une complication : temps perdu, position révélée, conclusion erronée ou équipement endommagé.</p>
+<hr />
+<h1 id="7-les-quatre-pretires">7. Les quatre prétirés</h1>
+<p>Les textes ci-dessous peuvent être imprimés ou copiés sur les fiches Sombre Classic.</p>
+<h2 id="jo-l-santi-brigadier-qui-se-croit-commissaire">Joël Santi — brigadier qui se croit commissaire</h2>
+<p><strong>Patrouille 13 · Corps 12 · Esprit 8 · Personnalité : Autoritaire</strong><br />
+<strong>Avantage : Chef.</strong> Donne un ordre sensé à ses subalternes et dépense 1 Adrénaline : ils l'exécutent.<br />
+<strong>Désavantage : Écervelé.</strong> Une fois dans la partie, le meneur impose une décision stupide ou une action imprudente.<br />
+<strong>Équipement :</strong> pistolet de service, 2 chargeurs, matraque télescopique, menottes, radio, lampe ; bélier léger dans le coffre.</p>
+<p>Joël parle comme un manuel de procédure qu'il n'a jamais lu. Il transforme toute discussion en briefing, répète « situation sous contrôle » quand elle ne l'est manifestement pas et prend une voix plus grave à la radio. Il attend sa promotion depuis onze ans.</p>
+<p><strong>Lien :</strong> Mélanie est sa partenaire et, selon lui, son élève. Elle corrige discrètement ses rapports depuis deux ans.<br />
+<strong>Point sensible :</strong> Lefort connaît la vérité sur une interpellation ratée que Joël a maquillée en panne de véhicule.<br />
+<strong>À jouer :</strong> donner des ordres simples avec une assurance disproportionnée ; ne jamais reconnaître publiquement une erreur.</p>
+<h2 id="melanie-roussel-la-procedure-jusqu-a-l-absurde">Mélanie Roussel — la procédure jusqu'à l'absurde</h2>
+<p><strong>Patrouille 13 · Corps 10 · Esprit 10 · Personnalité : Méthodique</strong><br />
+<strong>Avantage : Tir.</strong> Manie les armes à feu en experte.<br />
+<strong>Désavantage : Code de conduite.</strong> Identifier clairement une cible avant de tirer ; annoncer toute entorse à la procédure dans le rapport. Transgresser ce code provoque des Séquelles.<br />
+<strong>Équipement :</strong> pistolet de service, 2 chargeurs, tonfa, menottes, radio, lampe, carnet, gants nitrile.</p>
+<p>Mélanie n'est rassurée que lorsque les faits entrent dans une case. Elle cite des numéros d'articles faux avec une précision impeccable, photographie tout et déteste que quelqu'un déplace « une pièce à conviction », même si cette pièce brûle.</p>
+<p><strong>Lien :</strong> elle protège la réputation de Joël parce qu'un scandale sur leur patrouille ruinerait aussi sa carrière.<br />
+<strong>Point sensible :</strong> elle a déjà croisé Varga pendant sa garde à vue ; il se souvient qu'elle tire de la main gauche.<br />
+<strong>À jouer :</strong> réclamer une description exacte au pire moment ; préférer une certitude tardive à une intuition utile.</p>
+<h2 id="tony-cherif-policier-influenceur-legende-locale-autoproclamee">Tony Cherif — policier, influenceur, légende locale autoproclamée</h2>
+<p><strong>Patrouille 19 · Corps 12 · Esprit 8 · Personnalité : Charmeur</strong><br />
+<strong>Avantage : Fort.</strong> Ses dommages fixes infligent 4 Blessures.<br />
+<strong>Désavantage : Panique.</strong> Chaque fois qu'il coche 1 Adrénaline, il coche également 1 Esprit.<br />
+<strong>Équipement :</strong> pistolet de service, 2 chargeurs, aérosol incapacitant, menottes, radio, lampe, téléphone sur stabilisateur.</p>
+<p>Tony connaît tous les commerçants, tutoie les suspects et diffuse parfois des « conseils de sécurité » sur les réseaux. Il confond aisance sociale et compétence tactique. Son téléphone a déjà filmé plus d'interventions qu'il n'en a correctement terminées.</p>
+<p><strong>Lien :</strong> Léa est la seule collègue qui accepte encore de patrouiller avec lui, principalement parce qu'elle veut surveiller ce qu'il publie.<br />
+<strong>Point sensible :</strong> Tony a participé à l'arrestation de Varga et s'en attribue publiquement tout le mérite. Sa voix est reconnaissable.<br />
+<strong>À jouer :</strong> chercher à rassurer, séduire ou impressionner ; sauver la face compte presque autant que sauver la situation.</p>
+<h2 id="lea-bouchard-elle-avait-prevenu-tout-le-monde">Léa Bouchard — elle avait prévenu tout le monde</h2>
+<p><strong>Patrouille 19 · Corps 8 · Esprit 12 · Personnalité : Paranoïaque</strong><br />
+<strong>Avantage : Vigilant.</strong> Elle n'est jamais surprise.<br />
+<strong>Désavantage : Panne.</strong> Près d'elle, les objets technologiques ont tendance à mal fonctionner.<br />
+<strong>Équipement :</strong> pistolet de service, 2 chargeurs, taser, menottes, radio, lampe, jumelles compactes, trois batteries externes dont une gonflée.</p>
+<p>Léa relie entre eux les véhicules sans plaque, les coupures de réseau et les changements de marque du café du commissariat. Neuf théories sur dix sont absurdes ; la dixième est assez exacte pour entretenir les neuf autres. Elle couvre les objectifs des caméras avec un doigt lorsqu'elle parle.</p>
+<p><strong>Lien :</strong> elle est convaincue que Tony travaille parfois pour les Affaires internes. Tony croit qu'elle plaisante.<br />
+<strong>Point sensible :</strong> elle a transmis le matin même un message anonyme annonçant « Varga ne verra jamais l'hôpital ». Le central l'a classé comme divagation.<br />
+<strong>À jouer :</strong> soupçonner le bon danger pour la mauvaise raison ; garder toujours une solution de fuite que personne d'autre ne connaît.</p>
+<hr />
+<h1 id="8-faire-fonctionner-l-horreur-et-l-humour">8. Faire fonctionner l'horreur et l'humour</h1>
+<h2 id="quand-les-binomes-restent-separes">Quand les binômes restent séparés</h2>
+<p>Conserver des échanges courts. Terminer chaque passage sur une information ou un changement de situation, puis passer à l'autre groupe. La radio permet de communiquer, mais Varga entend tout ce qui passe sur la fréquence principale.</p>
+<h2 id="quand-ils-se-regroupent">Quand ils se regroupent</h2>
+<p>Laisser les personnalités produire les conflits. Valette, les civils, Samir et Varga continuent d'agir pendant les débats prolongés. Il n'est pas nécessaire d'inventer un nouvel obstacle : une grille qui monte, un blessé qui faiblit ou une silhouette qui traverse un balcon suffit.</p>
+<h2 id="montrer-varga-sans-le-gaspiller">Montrer Varga sans le gaspiller</h2>
+<p>Avant une confrontation nette, ses traces peuvent être concrètes :</p>
+<ul>
+<li>une voix sur la radio ;</li>
+<li>un reflet qui ne correspond pas au mouvement attendu ;</li>
+<li>Nora aperçue une seconde ;</li>
+<li>une porte maintenue ouverte puis relâchée ;</li>
+<li>le bruit d'une cartouche chambrée ;</li>
+<li>un uniforme vide placé comme un leurre.</li>
+</ul>
+<p>S'il est identifié et tenu en joue sans couverture ni otage, ne pas le sauver par magie. Une victoire rapide est une victoire. Le danger restant peut venir des blessures, des civils paniqués et de l'équipe d'intervention qui reçoit de mauvaises descriptions.</p>
+<h2 id="mort-et-remplacement">Mort et remplacement</h2>
+<p>Sombre peut tuer tôt. Un joueur éliminé peut reprendre immédiatement :</p>
+<ul>
+<li>Samir, agent de sécurité ;</li>
+<li>Nora, si elle est libérée ;</li>
+<li>Sofiane, s'il survit au parking ;</li>
+<li>Élise, pharmacienne ;</li>
+<li>Lefort, seulement s'il a été stabilisé.</li>
+</ul>
+<p>Le nouveau personnage conserve un objectif personnel simple et reçoit <strong>Corps 8 à 10, Esprit 8 à 10</strong>, sans avantage complexe.</p>
+<hr />
+<h1 id="9-fins-possibles">9. Fins possibles</h1>
+<p>Ne pas choisir la fin avant la partie.</p>
+<ul>
+<li><strong>Varga est arrêté.</strong> Le succès devient moins glorieux si des civils ou Lefort sont morts, si Tony a tout diffusé ou si un policier a abattu Sofiane.</li>
+<li><strong>Varga est tué.</strong> Les questions portent sur l'otage, l'identification de la cible et la version que les survivants donnent au rapport.</li>
+<li><strong>Varga s'échappe.</strong> Il emporte ou abandonne Nora selon ce qui lui donne la meilleure chance. Le dernier son peut être sa voix sur la radio de Lefort : « Situation sous contrôle. »</li>
+<li><strong>L'équipe d'intervention se trompe.</strong> Une arme en main, un gilet de police et une sommation mal comprise suffisent à produire une tragédie.</li>
+<li><strong>Tout le monde survit presque.</strong> Le lendemain, les images du poney ou du Chicken King font davantage d'audience que l'affaire Bellevue.</li>
+</ul>
+<hr />
+<h1 id="10-memo-mj-une-page-mentale">10. Mémo MJ — une page mentale</h1>
+<ol>
+<li>Deux interventions idiotes, 10 à 12 minutes chacune en alternance.</li>
+<li>À 25 minutes maximum : appel « agent à terre ».</li>
+<li>Varga a Nora, le fusil, le gilet et la radio de Lefort.</li>
+<li>Il avance vers le quai nord ; il n'attend pas les PJ.</li>
+<li>Parking : deux voleurs, un pistolet, une très mauvaise silhouette.</li>
+<li>Cinéma : cinq civils, un enfant séparé, les clés du fourgon.</li>
+<li>Sécurité : caméras, rideaux, Samir méfiant.</li>
+<li>Pharmacie : soins, blessé, information sur les clés.</li>
+<li>Chaque ralentissement fait monter la pression d'un cran.</li>
+<li>À environ 1 h 40 : grille nord et arrivée de l'intervention.</li>
+<li>Aucun indice n'est obligatoire. Une bonne idée fonctionne.</li>
+<li>Quand quelqu'un tire, demander d'abord : <strong>« Sur quoi exactement ? »</strong></li>
+</ol></article>
+</main>
+</div>
+<button class="floating-print" onclick="window.print()">Imprimer / PDF</button>
+<script>
+const nav=document.querySelector('#nav');
+const heads=[...document.querySelectorAll('article h1')];
+heads.forEach(h=>{const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent.replace(/^\d+\.\s*/, '');nav.appendChild(a)});
+const links=[...nav.querySelectorAll('a')];
+const observer=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.hash==='#'+e.target.id))}})},{rootMargin:'-15% 0px -75%'});heads.forEach(h=>observer.observe(h));
+let secs=Number(localStorage.getItem('p13-clock')||0), running=false, timer;
+const clock=document.querySelector('#clock'), start=document.querySelector('#start');
+function paint(){clock.textContent=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0')}paint();
+start.onclick=()=>{running=!running;start.textContent=running?'Pause':'Reprendre';clearInterval(timer);if(running)timer=setInterval(()=>{secs++;localStorage.setItem('p13-clock',secs);paint()},1000)};
+document.querySelector('#reset').onclick=()=>{running=false;clearInterval(timer);secs=0;localStorage.setItem('p13-clock',0);start.textContent='Démarrer';paint()};
+const pbox=document.querySelector('#pressure');let level=Number(localStorage.getItem('p13-pressure')||0);
+for(let i=0;i<=6;i++){const b=document.createElement('button');b.textContent=i;b.title=['Arrivée','Mauvais ordre','Le centre se réveille','Une cartouche','Panique civile','La sortie s’ouvre','Tout le monde tire'][i];b.onclick=()=>{level=i;localStorage.setItem('p13-pressure',i);drawPressure();document.querySelector('#5-pression-pas-un-script').scrollIntoView()};pbox.appendChild(b)}
+function drawPressure(){[...pbox.children].forEach((b,i)=>b.classList.toggle('active',i===level))}drawPressure();
+const notes=document.querySelector('#notes');notes.value=localStorage.getItem('p13-notes')||'';notes.oninput=()=>localStorage.setItem('p13-notes',notes.value);
+</script>
+</body></html>

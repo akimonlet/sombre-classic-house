@@ -66,7 +66,8 @@ export class SombreActorSheet extends ActorSheet {
       house: "Sombre Classic · House of the Rising Dead",
       ubiquite: "Sombre Classic · Ubiquité",
       "deep-space-gore": "Sombre Classic · Deep Space Gore",
-      "helix-2008": "Sombre Classic · HÉLIX 2008"
+      "helix-2008": "Sombre Classic · HÉLIX 2008",
+      "patrouille-13": "Sombre Classic · PATROUILLE 13"
     };
     const scenarioLabel = scenarioLabels[system.scenarioId] ?? "Sombre Classic";
     const isHouse = system.scenarioId === "house";

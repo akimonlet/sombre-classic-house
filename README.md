@@ -28,12 +28,15 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - nom des tokens affiché pour tout le monde ;
 - récapitulatif MJ interactif des Traits des acteurs ;
 - générateur MJ optionnel des 15 fiches d'**HÉLIX 2008** (5 PJ, 5 PNJ, 5 Monstres avec tokens peints dédiés, inventaires complets et secrets), rangées dans `Scénarios personnalisés / HÉLIX 2008` ;
+- générateur MJ optionnel des 15 fiches de **PATROUILLE 13** : 4 policiers prétirés attribués à Crevetolog, Pikiou, Grelot et Max, 10 PNJ et Élias Varga, avec tokens, équipement, relations et informations MJ ;
+- conducteur interactif et scénario Markdown de **PATROUILLE 13** inclus dans `assets/scenarios/patrouille-13/` ;
 - champs libres pour les relations, le background, l'équipement, les secrets et les notes MJ.
 
 ## Contenu volontairement absent
 
 - aucun Actor ni dossier créé automatiquement ;
 - le contenu optionnel d'**HÉLIX 2008** n’apparaît que si le MJ clique sur son bouton dans l’annuaire des acteurs ;
+- le contenu optionnel de **PATROUILLE 13** n’apparaît que si le MJ clique sur son bouton dans l’annuaire des acteurs ;
 - aucun plan, texte de scénario ou aide de jeu injecté de force ;
 - aucune suppression automatique des Actors déjà présents dans un monde existant.
 
