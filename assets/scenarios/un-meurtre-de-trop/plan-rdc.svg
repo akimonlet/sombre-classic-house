@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="manor-map" viewBox="0 0 1000 760" width="1000" height="760" role="img" aria-labelledby="rdc-title rdc-desc" lang="fr">
+  <title id="rdc-title">Plan du manoir — rez-de-chaussée</title>
+  <desc id="rdc-desc">Au nord à gauche, cuisine avec sortie de service ; au sud à gauche, salle à manger. Un hall central dessert les quatre pièces et contient l'escalier au nord et l'entrée principale au sud. À droite, bibliothèque au nord, salon et billard au sud. Le nord est en haut.</desc>
+  <style>
+    .manor-map { background:#f6f1e5; color:#3b332e; }
+    .manor-map .paper { fill:#f6f1e5; }
+    .manor-map .room { cursor:pointer; outline:none; }
+    .manor-map .hit { fill:transparent; stroke:none; pointer-events:all; transition:fill .15s; }
+    .manor-map .room:hover .hit { fill:#b49d6630; }
+    .manor-map .room:focus .hit, .manor-map .room:focus-visible .hit { fill:#a6834940; stroke:#94723f; stroke-width:3; stroke-dasharray:7 4; }
+    .manor-map .room.selected .hit, .manor-map .room[aria-pressed="true"] .hit { fill:#9a783e45; }
+    .manor-map .furniture { fill:none; stroke:#81847f; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
+    .manor-map .soft { fill:#e9e5da; }
+    .manor-map .fine { stroke-width:1; }
+    .manor-map .wall { fill:none; stroke:#3b332e; stroke-width:10; stroke-linecap:butt; pointer-events:none; }
+    .manor-map .outer { stroke-width:14; }
+    .manor-map .opening { fill:none; stroke:#fffdf8; stroke-width:18; stroke-linecap:butt; }
+    .manor-map .leaf { fill:none; stroke:#554d43; stroke-width:2; }
+    .manor-map .swing { fill:none; stroke:#9d978b; stroke-width:1.3; }
+    .manor-map .window { pointer-events:none; }
+    .manor-map .glazing { fill:none; stroke:#85999b; stroke-width:1.8; }
+    .manor-map .label { font-family:Georgia,'Times New Roman',serif; font-size:23px; fill:#332d28; text-anchor:middle; pointer-events:none; }
+    .manor-map .small { font-family:Arial,sans-serif; font-size:15px; letter-spacing:1px; fill:#70695e; pointer-events:none; }
+    .manor-map .level { font-family:Arial,sans-serif; font-size:18px; font-weight:bold; letter-spacing:2px; fill:#3b332e; }
+    .manor-map .architecture { pointer-events:none; }
+  </style>
+  <rect class="paper" width="1000" height="760"/>
+  <text class="level" x="60" y="34">RDC</text>
+  <g class="architecture" aria-hidden="true"><text class="small" x="888" y="35">N</text><path d="M925 47V17 M918 27L925 17L932 27" class="leaf"/></g>
+  <g class="room" data-room="cuisine" tabindex="0" role="button" aria-label="Cuisine">
+    <rect class="hit" x="67" y="67" width="328" height="293"/>
+    <g class="furniture" aria-hidden="true">
+      <path class="soft" d="M83 86H245V132H129V247H83Z"/>
+      <path d="M129 86V132 M189 86V132 M83 165H129 M83 209H129"/>
+      <rect x="143" y="94" width="37" height="28" rx="4"/><path d="M155 94V90H166V97"/>
+      <rect x="91" y="140" width="30" height="48" rx="2"/>
+      <circle cx="99" cy="152" r="5"/><circle cx="113" cy="152" r="5"/><circle cx="99" cy="176" r="5"/><circle cx="113" cy="176" r="5"/>
+      <rect x="198" y="177" width="119" height="56" rx="3"/><path d="M205 184H310V226H205Z" class="fine"/>
+      <rect x="88" y="274" width="64" height="65" rx="2"/><path d="M88 295H152 M143 303V322"/>
+      <rect x="350" y="89" width="28" height="124"/><path d="M350 130H378 M350 171H378"/>
+    </g>
+    <text class="label" x="246" y="331">Cuisine</text>
+  </g>
+  <g class="room" data-room="salle" tabindex="0" role="button" aria-label="Salle à manger">
+    <rect class="hit" x="67" y="370" width="328" height="323"/>
+    <g class="furniture" aria-hidden="true">
+      <rect x="150" y="463" width="153" height="138" rx="10" class="soft"/>
+      <rect x="157" y="470" width="139" height="124" rx="7" class="fine"/>
+      <rect x="171" y="438" width="31" height="22" rx="4"/><rect x="251" y="438" width="31" height="22" rx="4"/>
+      <rect x="171" y="604" width="31" height="22" rx="4"/><rect x="251" y="604" width="31" height="22" rx="4"/>
+      <rect x="125" y="482" width="22" height="31" rx="4"/><rect x="125" y="551" width="22" height="31" rx="4"/>
+      <rect x="306" y="482" width="22" height="31" rx="4"/><rect x="306" y="551" width="22" height="31" rx="4"/>
+      <ellipse cx="226" cy="532" rx="23" ry="13" class="fine"/>
+      <rect x="84" y="392" width="182" height="28"/><path d="M145 392V420 M205 392V420"/>
+      <rect x="354" y="525" width="25" height="99"/><path d="M354 574H379"/>
+    </g>
+    <text class="label" x="230" y="665">Salle à manger</text>
+  </g>
+  <g class="room" data-room="hall" tabindex="0" role="button" aria-label="Hall et escalier">
+    <rect class="hit" x="405" y="67" width="190" height="626"/>
+    <g class="furniture stair" data-stair="central" aria-hidden="true">
+      <path d="M447 291V95H553V291 M455 291V103H545V291"/>
+      <path d="M455 115H545 M455 130H545 M455 145H545 M455 160H545 M455 175H545 M455 190H545 M455 205H545 M455 220H545 M455 235H545 M455 250H545 M455 265H545"/>
+      <path d="M500 275V123 M494 132L500 123L506 132"/>
+      <path d="M452 202L548 183 M452 208L548 189" class="fine"/>
+    </g>
+    <text class="small" x="500" y="318" text-anchor="middle">VERS R+1</text>
+    <text class="label" x="500" y="393">Hall</text>
+    <g class="furniture" aria-hidden="true">
+      <rect x="421" y="466" width="21" height="111" rx="2"/><path d="M431 472V571"/>
+      <rect x="558" y="466" width="21" height="111" rx="2"/><path d="M569 472V571"/>
+      <rect x="467" y="601" width="66" height="30" rx="2" class="fine"/>
+    </g>
+  </g>
+  <g class="room" data-room="bibliotheque" tabindex="0" role="button" aria-label="Bibliothèque">
+    <rect class="hit" x="605" y="67" width="328" height="293"/>
+    <g class="furniture" aria-hidden="true">
+      <rect x="624" y="85" width="73" height="26"/><rect x="812" y="85" width="103" height="26"/>
+      <path d="M632 89V107 M641 89V107 M655 89V107 M668 89V107 M682 89V107 M820 89V107 M832 89V107 M841 89V107 M855 89V107 M869 89V107 M879 89V107 M891 89V107 M905 89V107" class="fine"/>
+      <rect x="888" y="123" width="27" height="130"/><path d="M892 133H911 M892 144H911 M892 156H911 M892 168H911 M892 183H911 M892 196H911 M892 207H911 M892 220H911 M892 239H911" class="fine"/>
+      <rect x="717" y="146" width="63" height="66" rx="10" class="soft"/><rect x="725" y="163" width="47" height="39" rx="5"/>
+      <path d="M720 159H777 M725 164V204 M772 164V204"/>
+      <rect x="730" y="227" width="38" height="25" rx="5"/>
+      <circle cx="820" cy="199" r="22"/><circle cx="820" cy="199" r="5" class="fine"/>
+      <rect x="690" y="274" width="166" height="33" rx="2" class="soft"/><rect x="746" y="281" width="51" height="18" class="fine"/>
+      <path d="M716 276V305 M830 276V305" class="fine"/>
+      <rect x="636" y="142" width="25" height="87"/><path d="M640 153H657 M640 165H657 M640 178H657 M640 190H657 M640 201H657 M640 215H657" class="fine"/>
+    </g>
+    <text class="label" x="770" y="331">Bibliothèque</text>
+  </g>
+  <g class="room" data-room="salon" tabindex="0" role="button" aria-label="Salon et billard">
+    <rect class="hit" x="605" y="370" width="328" height="323"/>
+    <g class="furniture" aria-hidden="true">
+      <rect x="717" y="434" width="124" height="173" rx="9" class="soft"/>
+      <rect x="729" y="447" width="100" height="147" rx="5"/>
+      <path d="M729 520H829" class="fine"/>
+      <circle cx="730" cy="448" r="4"/><circle cx="828" cy="448" r="4"/><circle cx="730" cy="593" r="4"/><circle cx="828" cy="593" r="4"/><circle cx="730" cy="520" r="4"/><circle cx="828" cy="520" r="4"/>
+      <circle cx="776" cy="476" r="4"/><path d="M779 548L766 570H792Z" class="fine"/>
+      <rect x="873" y="449" width="42" height="134" rx="7"/>
+      <rect x="878" y="458" width="27" height="54" rx="4"/><rect x="878" y="520" width="27" height="54" rx="4"/>
+      <rect x="638" y="532" width="49" height="54" rx="8"/><rect x="645" y="544" width="35" height="34" rx="4"/>
+      <circle cx="659" cy="622" r="19"/>
+      <path d="M886 622V666 M894 622V666 M902 622V666"/>
+      <path d="M739 692V664H816V692 M750 690V677H805V690"/><path d="M738 660H818"/>
+    </g>
+    <text class="label" x="774" y="406">Salon / billard</text>
+  </g>
+  <g class="architecture" aria-hidden="true">
+    <path class="wall outer" d="M60 60H940V700H60Z"/>
+    <path class="wall" d="M400 60V700 M600 60V700 M60 365H400 M600 365H940"/>
+    <g class="door" data-connects="cuisine hall"><path class="opening" d="M400 270V332"/><path class="leaf" d="M400 270H338"/><path class="swing" d="M400 332A62 62 0 0 1 338 270"/></g>
+    <g class="door" data-connects="salle hall"><path class="opening" d="M400 412V474"/><path class="leaf" d="M400 412H338"/><path class="swing" d="M400 474A62 62 0 0 1 338 412"/></g>
+    <g class="door" data-connects="bibliotheque hall"><path class="opening" d="M600 270V332"/><path class="leaf" d="M600 270H662"/><path class="swing" d="M600 332A62 62 0 0 0 662 270"/></g>
+    <g class="door" data-connects="salon hall"><path class="opening" d="M600 412V474"/><path class="leaf" d="M600 412H662"/><path class="swing" d="M600 474A62 62 0 0 0 662 412"/></g>
+    <g class="door" data-connects="cuisine exterior"><path class="opening" d="M278 60H340"/><path class="leaf" d="M278 60V122"/><path class="swing" d="M340 60A62 62 0 0 1 278 122"/></g>
+    <g class="door" data-connects="hall exterior"><path class="opening" d="M452 700H548"/><path class="leaf" d="M452 700V652 M548 700V652"/><path class="swing" d="M500 700A48 48 0 0 0 452 652 M500 700A48 48 0 0 1 548 652"/><path class="fine furniture" d="M444 716H556 M440 722H560"/></g>
+    <g class="window"><path class="opening" d="M158 60H236"/><path class="glazing" d="M158 56H236V64H158Z M197 56V64"/></g>
+    <g class="window"><path class="opening" d="M711 60H791"/><path class="glazing" d="M711 56H791V64H711Z M751 56V64"/></g>
+    <g class="window"><path class="opening" d="M60 163V243"/><path class="glazing" d="M56 163V243H64V163Z M56 203H64"/></g>
+    <g class="window"><path class="opening" d="M60 485V565"/><path class="glazing" d="M56 485V565H64V485Z M56 525H64"/></g>
+    <g class="window"><path class="opening" d="M940 156V236"/><path class="glazing" d="M936 156V236H944V156Z M936 196H944"/></g>
+    <g class="window"><path class="opening" d="M940 483V563"/><path class="glazing" d="M936 483V563H944V483Z M936 523H944"/></g>
+    <g class="window"><path class="opening" d="M180 700H280"/><path class="glazing" d="M180 696H280V704H180Z M230 696V704"/></g>
+    <g class="window"><path class="opening" d="M724 700H824"/><path class="glazing" d="M724 696H824V704H724Z M774 696V704"/></g>
+  </g>
+  <text class="small" x="500" y="747" text-anchor="middle">ENTRÉE PRINCIPALE</text>
+</svg>

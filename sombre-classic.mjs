@@ -4,6 +4,7 @@ import { registerTokenNameHooks } from "./module/token-names.mjs";
 import { registerTraitDashboard } from "./module/trait-dashboard.mjs";
 import { registerHelix2008Generator } from "./module/helix-2008.mjs";
 import { registerPatrouille13Generator } from "./module/patrouille-13.mjs";
+import { registerUnMeurtreDeTropGenerator } from "./module/un-meurtre-de-trop.mjs";
 
 Hooks.once("init", () => {
   console.log("Sombre Classic — Fiche | Initialisation");
@@ -30,4 +31,5 @@ Hooks.once("init", () => {
   registerTraitDashboard();
   registerHelix2008Generator();
   registerPatrouille13Generator();
+  registerUnMeurtreDeTropGenerator();
 });
