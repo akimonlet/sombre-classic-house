@@ -30,7 +30,7 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 - générateur MJ optionnel des 15 fiches d'**HÉLIX 2008** (5 PJ, 5 PNJ, 5 Monstres avec tokens peints dédiés, inventaires complets et secrets), rangées dans `Scénarios personnalisés / HÉLIX 2008` ;
 - générateur MJ optionnel des 15 fiches de **PATROUILLE 13** : 4 policiers prétirés attribués à Crevetolog, Pikiou, Grelot et Max, avec portraits dédiés, plus 10 PNJ et Élias Varga, avec tokens, équipement, relations et informations MJ ;
 - conducteur interactif, scénario Markdown et plan interactif en trois niveaux de **PATROUILLE 13** inclus dans `assets/scenarios/patrouille-13/` ;
-- générateur MJ optionnel d’**Un meurtre de trop** : quatre détectives et trois PNJ, jetons à initiales, scènes de réveil et informations MJ ;
+- générateur MJ optionnel d’**Un meurtre de trop** : quatre détectives et trois PNJ, portraits peints, scènes de réveil et informations MJ ;
 - conducteur condensé en trois vues et plan joueurs sur deux niveaux dans `assets/scenarios/un-meurtre-de-trop/` ;
 - champs libres pour les relations, le background, l'équipement, les secrets et les notes MJ.
 
@@ -41,9 +41,17 @@ Le nom du dossier doit rester exactement `sombre-classic-house`.
 3. Ouvrir `assets/scenarios/un-meurtre-de-trop/conducteur-un-meurtre-de-trop.html` : **L’essentiel**, **Les réveils**, **Le manoir**.
 4. Partager uniquement `plan-joueurs-un-meurtre-de-trop.html` et les documents choisis depuis le conducteur. Le conducteur contient la solution et reste une aide MJ ; les fichiers du système sont accessibles par leur URL.
 
-Les fiches démarrent avec Corps et Esprit à 12 ; les choix de Personnalité et de Traits restent disponibles. Un second clic complète les fiches manquantes et conserve les modifications des fiches déjà créées. Les jetons utilisent les initiales des personnages.
+Les fiches démarrent avec Corps et Esprit à 12 ; les choix de Personnalité et de Traits restent disponibles. Un second clic complète les fiches manquantes et conserve les modifications des fiches déjà créées.
 
-Les deux pages HTML sont autonomes. Le plan joueurs présente les pièces ; les positions des marqueurs restent enregistrées dans le navigateur du MJ.
+Dans la fenêtre **Un meurtre de trop** :
+- **Appliquer les portraits** actualise les images des fiches du scénario et de leurs tokens. Les caractéristiques, notes, permissions et positions sont conservées.
+- **Créer la scène d’accueil** ajoute un écran du manoir à l’aube, avec le titre du scénario. Le MJ l’active lorsqu’il est prêt. Une scène déjà créée est conservée.
+
+L’image `landing-un-meurtre-de-trop.webp` sert de fond à la scène Foundry ; `landing-un-meurtre-de-trop.html` offre le même accueil en plein écran dans un navigateur. Les sept portraits se trouvent dans `portraits/`.
+
+Les réveils de Jeanne, Malik et Diane comportent trois relances chacun dans le conducteur. Les nouvelles fiches reprennent ces ouvertures ; les backgrounds des fiches déjà créées restent conservés.
+
+Les pages HTML sont autonomes. Le plan joueurs présente les pièces ; les positions des marqueurs restent enregistrées dans le navigateur du MJ.
 
 ## Contenu volontairement absent
 

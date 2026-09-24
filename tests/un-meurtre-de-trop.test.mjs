@@ -8,13 +8,13 @@ const moduleURL = new URL("../module/un-meurtre-de-trop.mjs", import.meta.url);
 let instance = 0;
 
 // Only the Foundry host boundary is mocked; the generator runs unchanged.
-async function setup({ isGM = true, headerActions = true, userId = "gm-primary", actors = [], folders = [], isolated = false } = {}) {
+async function setup({ isGM = true, headerActions = true, userId = "gm-primary", actors = [], folders = [], scenes = [], isolated = false } = {}) {
   const hooks = new Map();
   const buttons = [];
   const dialogs = [];
   const notifications = [];
   globalThis.Hooks = { on: (name, callback) => hooks.set(name, callback) };
-  const clientGame = globalThis.game = { user: { id: userId, isGM }, users: { activeGM: { id: "gm-primary" } }, actors, folders };
+  const clientGame = globalThis.game = { user: { id: userId, isGM }, users: { activeGM: { id: "gm-primary" } }, actors, folders, scenes };
   globalThis.CONST = { DOCUMENT_OWNERSHIP_LEVELS: { NONE: 0 }, TOKEN_DISPLAY_MODES: { ALWAYS: 50 } };
   globalThis.ui = { notifications: Object.fromEntries(["info", "warn", "error"].map(level => [level, message => notifications.push({ level, message })])) };
   globalThis.Folder = { create: async data => {
@@ -35,6 +35,15 @@ async function setup({ isGM = true, headerActions = true, userId = "gm-primary",
     }
     return created;
   } };
+  globalThis.Scene = { create: async data => {
+    await Promise.resolve();
+    const scene = { ...structuredClone(data), id: `scene-${scenes.length}` };
+    scene.getFlag = (scope, key) => scene.flags?.[scope]?.[key];
+    scene.update = () => assert.fail("Existing landing scenes must remain unchanged");
+    scene.activate = () => assert.fail("Landing scenes must not be activated automatically");
+    scenes.push(scene);
+    return scene;
+  } };
   globalThis.Dialog = class {
     constructor(data) { this.data = data; }
     render(force) { assert.equal(force, true); dialogs.push(this.data); return this; }
@@ -54,14 +63,14 @@ async function setup({ isGM = true, headerActions = true, userId = "gm-primary",
   // Strip only the export keyword to evaluate the unchanged generator in a fresh VM.
   const generator = isolated ? runInNewContext(
     `${(await readFile(moduleURL, "utf8")).replace("export const registerUnMeurtreDeTropGenerator", "const registerUnMeurtreDeTropGenerator")}\n({ registerUnMeurtreDeTropGenerator });`,
-    { Hooks, game: clientGame, CONST, ui, Folder, Actor, Dialog, $ }
+    { Hooks, game: clientGame, CONST, ui, Folder, Actor, Scene, Dialog, $ }
   ) : await import(`${moduleURL}?test=${++instance}`).catch(error => {
     if (error.code === "ERR_MODULE_NOT_FOUND") return {};
     throw error;
   });
   assert.equal(typeof generator.registerUnMeurtreDeTropGenerator, "function", "Optional generator registration exists");
   generator.registerUnMeurtreDeTropGenerator();
-  return { hooks, buttons, dialogs, notifications, actors, folders, game: clientGame, render: () => hooks.get("renderActorDirectory")({}, html) };
+  return { hooks, buttons, dialogs, notifications, actors, folders, scenes, game: clientGame, render: () => hooks.get("renderActorDirectory")({}, html) };
 }
 
 test("directory registration is optional, GM-only and explicitly confirmed", async () => {
@@ -107,8 +116,8 @@ async function openConfirmation(host) {
 const expectedCharacters = [
   ["rene", "René Valmont", "Ancien policier autoritaire", "PJ", /renversé du vin/, /baignoire/],
   ["jeanne", "Jeanne Vidal", "Détective méthodique", "PJ", /preuves des détournements de Céleste/, /classeur rouge/],
-  ["malik", "Malik Serra", "Privé débrouillard", "PJ", /Octave vivant après le jeu/, /vaisselle/],
-  ["diane", "Diane Vasseur", "Détective médiatique", "PJ", /argent à son père après le jeu/, /méridienne/],
+  ["malik", "Malik Serra", "Privé débrouillard", "PJ", /Octave vivant après le jeu/, /oie vivante/],
+  ["diane", "Diane Vasseur", "Détective médiatique", "PJ", /argent pris à son père après le jeu/, /méridienne/],
   ["celeste", "Céleste Arnaud", "Secrétaire d’Octave", "PNJ", /coupe-papier/, /secrétaire/i],
   ["agathe", "Agathe Delmas", "Fille d’Octave", "PNJ", /Octave vivant/, /fille/i],
   ["victor", "Victor Perrin", "Majordome", "PNJ", /jouait l’assassin/, /majordome/i]
@@ -160,7 +169,7 @@ test("GM confirmation creates the seven source characters with safe public field
     assert.deepEqual(actor.system.resources, {
       body: { value: 12, max: 12 }, spirit: { value: 12, max: 12 }, adrenaline: { value: 0, max: 3 }
     });
-    const image = `systems/sombre-classic-house/assets/scenarios/un-meurtre-de-trop/tokens/${id}.svg`;
+    const image = `systems/sombre-classic-house/assets/scenarios/un-meurtre-de-trop/portraits/${id}.webp`;
     assert.equal(actor.img, image);
     assert.equal(actor.prototypeToken.texture.src, image);
     assert.equal(actor.prototypeToken.name, name);
@@ -168,7 +177,261 @@ test("GM confirmation creates the seven source characters with safe public field
   }
 });
 
+test("generated detective openings match the packaged conductor", async () => {
+  const html = await readFile(new URL("../assets/scenarios/un-meurtre-de-trop/conducteur-un-meurtre-de-trop.html", import.meta.url), "utf8");
+  const source = html.match(/<script>(const DATA = [\s\S]*?)<\/script>/)?.[1];
+  assert.ok(source, "Packaged scenario data exists");
+  const data = runInNewContext(`${source}; DATA`);
+  const host = await setup();
+  await (await openConfirmation(host))();
+  for (const character of data.characters) {
+    const actor = host.actors.find(a => a.getFlag("sombre-classic-house", "unMeurtreDeTropId") === character.id);
+    assert.equal(actor.system.background, `${character.public}\n\n${character.opening}`);
+    assert.ok(actor.system.gmNotes.includes(character.truth));
+  }
+});
+
 const snapshot = value => JSON.stringify(value);
+
+const portrait = id => `systems/sombre-classic-house/assets/scenarios/un-meurtre-de-trop/portraits/${id}.webp`;
+const applyPatch = (target, changes) => {
+  for (const [path, value] of Object.entries(changes)) {
+    const keys = path.split(".");
+    const key = keys.pop();
+    const parent = keys.reduce((object, part) => object[part] ??= {}, target);
+    parent[key] = structuredClone(value);
+  }
+};
+
+async function openAction(host, action) {
+  await openConfirmation(host);
+  const button = host.dialogs.at(-1).buttons[action];
+  assert.equal(typeof button?.callback, "function", `Explicit ${action} action exists`);
+  return button.callback;
+}
+
+test("portrait action changes only matching actor and linked or unlinked scene token images", async () => {
+  const host = await setup();
+  await (await openConfirmation(host))();
+  const actorWrites = [];
+  for (const actor of host.actors) {
+    actor.img = "old-portrait.svg";
+    actor.prototypeToken.texture = { src: "old-token.svg", scaleX: 0.7, tint: "#abcdef" };
+    actor.system.resources.body.value = 4;
+    actor.system.gmNotes = "Private progress";
+    actor.ownership = { default: 0, player: 3 };
+    actor.update = async changes => {
+      actorWrites.push({ id: actor.id, changes });
+      applyPatch(actor, changes);
+    };
+  }
+  for (const id of [undefined, "unknown", "toString"]) {
+    host.actors.push({ id: `unrelated-${id}`, name: "René Valmont", img: "keep.webp", getFlag: () => id,
+      update: async () => assert.fail("Unrelated actors must not be updated") });
+  }
+  const tokenWrites = [];
+  for (const actorLink of [true, false]) {
+    const tokens = [host.actors[0], host.actors[1], host.actors[7]].map((actor, index) => ({
+      id: `${actorLink}-${index}`, actorId: actor.id, actorLink, x: 123, y: 456, width: 2, height: 3,
+      texture: { src: "old-token.svg", scaleX: 0.8, scaleY: 1.2, tint: "#aabbcc" },
+      delta: { system: { resources: { body: { value: 1 } } } }, flags: { custom: true }
+    }));
+    host.scenes.push({ tokens, updateEmbeddedDocuments: async (type, updates) => {
+      assert.equal(type, "Token");
+      tokenWrites.push(updates);
+      for (const update of updates) {
+        assert.deepEqual(Object.keys(update).sort(), ["_id", "texture.src"]);
+        applyPatch(tokens.find(token => token.id === update._id), { "texture.src": update["texture.src"] });
+      }
+    } });
+  }
+  const expectedActors = JSON.parse(snapshot(host.actors));
+  for (const actor of expectedActors.slice(0, 7)) {
+    actor.img = portrait(actor.flags["sombre-classic-house"].unMeurtreDeTropId);
+    actor.prototypeToken.texture.src = actor.img;
+  }
+  const expectedScenes = JSON.parse(snapshot(host.scenes));
+  for (const scene of expectedScenes) {
+    scene.tokens[0].texture.src = portrait("rene");
+    scene.tokens[1].texture.src = portrait("jeanne");
+  }
+  const apply = await openAction(host, "portraits");
+  assert.equal(actorWrites.length, 0, "Opening the dialog does not apply images");
+  await apply();
+  assert.equal(actorWrites.length, 7);
+  for (const { changes } of actorWrites) assert.deepEqual(Object.keys(changes).sort(), ["img", "prototypeToken.texture.src"]);
+  assert.equal(snapshot(host.actors), snapshot(expectedActors));
+  assert.equal(snapshot(host.scenes), snapshot(expectedScenes));
+  assert.equal(tokenWrites.length, 2);
+  await apply();
+  assert.equal(actorWrites.length, 7, "Already-correct actors perform no writes");
+  assert.equal(tokenWrites.length, 2, "Already-correct tokens perform no writes");
+  assert.equal(host.notifications.filter(entry => entry.level === "error").length, 0);
+});
+
+test("portrait permission is rechecked for stale dialogs before any write", async t => {
+  for (const mode of ["player", "secondary", "missing", "null"]) {
+    await t.test(mode, async () => {
+      const host = await setup();
+      await (await openConfirmation(host))();
+      host.actors[0].img = "old.svg";
+      let writes = 0;
+      host.actors[0].update = async () => { writes++; };
+      const apply = await openAction(host, "portraits");
+      if (mode === "player") host.game.user.isGM = false;
+      else host.game.users.activeGM = mode === "secondary" ? { id: "other-gm" } : mode === "null" ? null : undefined;
+      await apply();
+      assert.equal(writes, 0);
+      if (mode !== "player") assert.equal(host.notifications.at(-1).level, "warn");
+    });
+  }
+});
+
+test("portrait double clicks across dialogs share an in-flight guard", async () => {
+  const host = await setup();
+  await (await openConfirmation(host))();
+  host.actors[0].img = "old.svg";
+  let writes = 0;
+  host.actors[0].update = async changes => {
+    writes++;
+    await Promise.resolve();
+    applyPatch(host.actors[0], changes);
+  };
+  const first = await openAction(host, "portraits");
+  const second = await openAction(host, "portraits");
+  await Promise.all([first(), second(), first()]);
+  assert.equal(writes, 1);
+});
+
+test("portrait storage failures notify and release the guard for a preserving retry", async t => {
+  for (const failure of ["actor", "token"]) {
+    await t.test(failure, async () => {
+      const host = await setup();
+      await (await openConfirmation(host))();
+      const actor = host.actors[0];
+      actor.img = "old.svg";
+      const token = { id: "token", actorId: actor.id, texture: { src: "old.svg" }, x: 10 };
+      let fail = true;
+      let actorWrites = 0;
+      actor.update = async changes => {
+        if (fail && failure === "actor") throw new Error("Storage failure");
+        actorWrites++;
+        applyPatch(actor, changes);
+      };
+      host.scenes.push({ tokens: [token], updateEmbeddedDocuments: async () => {
+        if (fail && failure === "token") throw new Error("Storage failure");
+        token.texture.src = portrait("rene");
+      } });
+      const apply = await openAction(host, "portraits");
+      await assert.doesNotReject(apply);
+      assert.equal(host.notifications.at(-1).level, "error");
+      assert.match(host.notifications.at(-1).message, /Storage failure/);
+      fail = false;
+      await apply();
+      assert.equal(actor.img, portrait("rene"));
+      assert.equal(token.texture.src, portrait("rene"));
+      assert.equal(actorWrites, 1, "Retry skips previously completed actor updates");
+      assert.equal(host.notifications.at(-1).level, "info");
+    });
+  }
+});
+
+test("landing action creates only a spoiler-free inactive 1920x1080 scene", async () => {
+  const host = await setup();
+  const create = await openAction(host, "landing");
+  assert.equal(host.scenes.length, 0, "Opening the dialog does not create a scene");
+  const scene = await create();
+  assert.equal(host.scenes.length, 1);
+  assert.equal(scene, host.scenes[0]);
+  assert.deepEqual(JSON.parse(snapshot(scene)), {
+    id: "scene-0", name: "Un meurtre de trop",
+    background: { src: "systems/sombre-classic-house/assets/scenarios/un-meurtre-de-trop/landing-un-meurtre-de-trop.webp" },
+    width: 1920, height: 1080, padding: 0, grid: { type: 0 }, tokenVision: false,
+    fog: { exploration: false }, navigation: true, active: false, tokens: [],
+    flags: { "sombre-classic-house": { unMeurtreDeTropLanding: true } }
+  });
+  assert.equal(host.actors.length, 0);
+  assert.equal(host.folders.length, 0);
+  assert.equal(host.notifications.at(-1).level, "info");
+});
+
+test("landing creation preserves an existing flagged scene and ignores an unrelated namesake", async () => {
+  const namesake = { id: "other", name: "Un meurtre de trop", active: true, getFlag: () => undefined };
+  const host = await setup({ scenes: [namesake] });
+  const create = await openAction(host, "landing");
+  const scene = await create();
+  assert.notEqual(scene, namesake);
+  scene.name = "Accueil personnalisé";
+  scene.background.src = "custom.webp";
+  scene.active = true;
+  scene.width = 1500;
+  scene.tokens = [{ _id: "custom", x: 50 }];
+  const before = snapshot(host.scenes);
+  let writes = 0;
+  Scene.create = async () => { writes++; };
+  assert.equal(await create(), scene);
+  assert.equal(await create(), scene);
+  assert.equal(writes, 0);
+  assert.equal(snapshot(host.scenes), before);
+  assert.match(host.notifications.at(-1).message, /conservée/);
+});
+
+test("landing permission is rechecked for stale dialogs before any write", async t => {
+  for (const mode of ["player", "secondary", "missing", "null"]) {
+    await t.test(mode, async () => {
+      const host = await setup();
+      const create = await openAction(host, "landing");
+      if (mode === "player") host.game.user.isGM = false;
+      else host.game.users.activeGM = mode === "secondary" ? { id: "other-gm" } : mode === "null" ? null : undefined;
+      await create();
+      assert.equal(host.scenes.length, 0);
+      if (mode !== "player") assert.equal(host.notifications.at(-1).level, "warn");
+    });
+  }
+});
+
+test("landing double clicks across dialogs create just one scene", async () => {
+  const host = await setup();
+  const first = await openAction(host, "landing");
+  const second = await openAction(host, "landing");
+  await Promise.all([first(), second(), first()]);
+  assert.equal(host.scenes.length, 1);
+});
+
+test("landing storage failure notifies and releases the guard for retry", async () => {
+  const host = await setup();
+  const create = await openAction(host, "landing");
+  const originalCreate = Scene.create;
+  Scene.create = async () => { throw new Error("Scene storage failure"); };
+  await assert.doesNotReject(create);
+  assert.equal(host.scenes.length, 0);
+  assert.equal(host.notifications.at(-1).level, "error");
+  assert.match(host.notifications.at(-1).message, /Scene storage failure/);
+  Scene.create = originalCreate;
+  const scene = await create();
+  assert.equal(scene, host.scenes[0]);
+  assert.equal(host.scenes.length, 1);
+  assert.equal(host.notifications.at(-1).level, "info");
+});
+
+test("dialog explains independent image and landing actions with safe preview links", async () => {
+  const host = await setup();
+  await openConfirmation(host);
+  const dialog = host.dialogs.at(-1);
+  assert.equal(dialog.buttons.portraits.label, "Appliquer les portraits");
+  assert.equal(dialog.buttons.landing.label, "Créer la scène d’accueil");
+  assert.equal(dialog.default, "cancel");
+  assert.doesNotMatch(dialog.content, /initiales|coupe-papier|détourn|bracelet|maillon/i);
+  assert.match(dialog.content, /uniquement les images/i);
+  assert.match(dialog.content, /sans activation automatique/i);
+  assert.match(dialog.content, /scène.*existante.*conservée/i);
+  for (const [id] of expectedCharacters) assert.ok(dialog.content.includes(`href="${portrait(id)}"`));
+  for (const extension of ["html", "webp"]) {
+    assert.ok(dialog.content.includes(`href="systems/sombre-classic-house/assets/scenarios/un-meurtre-de-trop/landing-un-meurtre-de-trop.${extension}"`));
+  }
+  assert.equal(host.actors.length, 0);
+  assert.equal(host.scenes.length, 0);
+});
 
 test("repeated confirmation preserves complete existing actor state and fills only missing IDs", async () => {
   const host = await setup();
