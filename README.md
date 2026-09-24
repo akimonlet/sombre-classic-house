@@ -49,7 +49,7 @@ Dans la fenêtre **Un meurtre de trop** :
 
 L’image `landing-un-meurtre-de-trop.webp` sert de fond à la scène Foundry ; `landing-un-meurtre-de-trop.html` offre le même accueil en plein écran dans un navigateur. Les sept portraits se trouvent dans `portraits/`.
 
-Les réveils de Jeanne, Malik et Diane comportent trois relances chacun dans le conducteur. Les nouvelles fiches reprennent ces ouvertures ; les backgrounds des fiches déjà créées restent conservés.
+Les quatre réveils comportent trois relances chacun dans le conducteur. Un encadré résume le but de chaque scène, ce que chacun veut et pourquoi ; chaque relance affiche aussi son objectif. René conserve son ouverture avec Victor et les pantalons ; ses relances développent les excuses, la chaussure sous scellés et les aveux du majordome. Les nouvelles fiches reprennent ces ouvertures ; les backgrounds des fiches déjà créées restent conservés.
 
 Les pages HTML sont autonomes. Le plan joueurs présente les pièces ; les positions des marqueurs restent enregistrées dans le navigateur du MJ.
 
