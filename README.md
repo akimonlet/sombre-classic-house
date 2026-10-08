@@ -59,8 +59,9 @@ Les pages HTML sont autonomes. Le plan joueurs présente les pièces ; les posit
 1. Avec le compte du **MJ actif désigné par Foundry V12** (`game.users.activeGM`), ouvrir l’annuaire des acteurs et cliquer sur **Les jours heureux**. L’ouverture du menu ne crée rien ; **Annuler** est le bouton par défaut.
 2. Laisser **Inclure Suzanne, 4e PJ optionnel** coché pour préparer les quatre fiches, ou le décocher pour jouer à trois. Confirmer **Créer les fiches manquantes**.
 3. Les fiches apparaissent dans `Scénarios personnalisés / Les jours heureux / 1. Personnages Joueurs`. Attribuer les permissions aux joueurs manuellement : aucune attribution ni permission publique n’est ajoutée.
-4. Ouvrir `assets/scenarios/les-jours-heureux/conducteur-les-jours-heureux.html` pour les réveils, les récréations et le plan MJ. La fiche de Suzanne reste consultable dans le conducteur même à trois joueurs ; aucun indice essentiel ne dépend d’elle.
-5. Partager uniquement `plan-joueurs-les-jours-heureux.html` et les fiches joueurs exportées volontairement depuis le conducteur. Le plan joueurs ne contient ni identités réelles, ni notes MJ, ni marqueur de menace.
+4. Cliquer sur **Créer La Patiente** pour ajouter uniquement sa fiche dans `Scénarios personnalisés / Les jours heureux / 2. Antagonistes`, puis la glisser sur la scène pour placer le token circulaire lié. Mode Antagoniste, **Corps 12/12 et Esprit 12/12**, réglage maison modifiable ; jets de Corps, Esprit et Attaque disponibles. Relancer conserve les valeurs et notes existantes ; les PJ ne sont pas modifiés.
+5. Ouvrir `assets/scenarios/les-jours-heureux/conducteur-les-jours-heureux.html` pour les réveils, les récréations et le plan MJ. La fiche de Suzanne reste consultable dans le conducteur même à trois joueurs ; aucun indice essentiel ne dépend d’elle.
+6. Partager uniquement `plan-joueurs-les-jours-heureux.html` et les fiches joueurs exportées volontairement depuis le conducteur. Le plan joueurs ne contient ni identités réelles, ni notes MJ, ni marqueur de menace.
 
 | Fiche publique — identité imposée | Corps actuel / max | Esprit actuel / max |
 | --- | --- | --- |

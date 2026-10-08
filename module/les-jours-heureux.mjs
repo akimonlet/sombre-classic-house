@@ -124,6 +124,31 @@ const createCharacters = async (html) => runAsActiveGM(async () => {
     : "Les jours heureux : les fiches sélectionnées existent déjà et sont conservées.");
 });
 
+const createMonster = async () => runAsActiveGM(async () => {
+  if (game.actors.some(actor => actor.getFlag(SYSTEM_ID, "lesJoursHeureuxId") === "patiente")) {
+    ui.notifications.info("La Patiente existe déjà : sa fiche et ses valeurs sont conservées.");
+    return;
+  }
+  const root = await ensureActorFolder("Scénarios personnalisés");
+  const scenario = await ensureActorFolder("Les jours heureux", root.id);
+  const folder = await ensureActorFolder("2. Antagonistes", scenario.id);
+  const data = actorData({
+    id: "patiente", name: "La Patiente", body: 12, spirit: 12,
+    background: "Une silhouette féminine démesurée, aux cheveux trempés, vêtue d’une chemise d’hôpital.",
+    gmNotes: "Réglage maison de départ, modifiable : Corps 12/12, Esprit 12/12. Utiliser les boutons Corps, Esprit et Attaque de la fiche. L’Adrénaline est désactivée en mode Antagoniste.\n\nElle suit les bruits et imite les voix réellement entendues. Les verrous et barricades la retardent ; annoncer ses pas ou une poignée avant son approche. Elle cherche à saisir et emporter au bassin : laisser une possibilité de diversion ou de sauvetage, sans mort automatique."
+  }, folder.id);
+  data.img = `${ASSET_ROOT}/creatures/patiente.webp`;
+  data.prototypeToken.texture.src = `${ASSET_ROOT}/creatures/patiente-token.webp`;
+  data.prototypeToken.disposition = -1;
+  data.prototypeToken.displayName = 0;
+  data.system.isAntagonist = true;
+  data.system.profession = "Créature du bassin";
+  data.system.equipment = "";
+  requireActiveGM();
+  await Actor.createDocuments([data]);
+  ui.notifications.info("La Patiente créée dans Les jours heureux / 2. Antagonistes. Glissez sa fiche sur la scène pour placer son token.");
+});
+
 const applyPortraits = async () => runAsActiveGM(async () => {
   const images = new Map();
   for (const actor of game.actors) {
@@ -159,13 +184,14 @@ const confirmCreation = () => {
       "<p>Les fiches existantes conservent toutes leurs données et permissions. Décocher Suzanne ne supprime pas sa fiche si elle existe déjà.</p>",
       "<p><strong>Appliquer les portraits</strong> remplace uniquement les images des fiches de ce scénario, de leurs pions prototypes et de leurs pions dans les scènes, y compris Suzanne si elle existe. Les autres données et permissions restent inchangées.</p>",
       `<p>Portraits : ${CHARACTER_IDS.map(id => `<a href="${ASSET_ROOT}/portraits/${id}.webp" target="_blank" rel="noopener">${id === "rene" ? "René" : id[0].toUpperCase() + id.slice(1)}</a>`).join(" · ")}</p>`,
-      `<p>La Patiente : <a href="${ASSET_ROOT}/creatures/patiente.webp" target="_blank" rel="noopener">Illustration</a> · <a href="${ASSET_ROOT}/creatures/patiente-token.webp" target="_blank" rel="noopener">Token circulaire transparent</a> (visuels seuls, aucune fiche de monstre créée)</p>`,
+      `<p>La Patiente : <a href="${ASSET_ROOT}/creatures/patiente.webp" target="_blank" rel="noopener">Illustration</a> · <a href="${ASSET_ROOT}/creatures/patiente-token.webp" target="_blank" rel="noopener">Token circulaire transparent</a> (bouton « Créer La Patiente » : fiche avec jets, Corps 12/12 et Esprit 12/12 modifiables, token lié ; les PJ restent inchangés)</p>`,
       `<p><a href="${ASSET_ROOT}/conducteur-les-jours-heureux.html" target="_blank" rel="noopener">Conducteur MJ</a> · `,
       `<a href="${ASSET_ROOT}/plan-joueurs-les-jours-heureux.html" target="_blank" rel="noopener">Plan joueurs</a></p>`,
       "<p>Le conducteur est une aide MJ, accessible par son URL comme les autres fichiers du système. Les notes MJ masquées par la fiche ne constituent pas un stockage confidentiel.</p>"
     ].join(""),
     buttons: {
       create: { icon: '<i class="fa-solid fa-user-plus"></i>', label: "Créer les fiches manquantes", callback: createCharacters },
+      monster: { icon: '<i class="fa-solid fa-skull"></i>', label: "Créer La Patiente", callback: createMonster },
       portraits: { icon: '<i class="fa-solid fa-image"></i>', label: "Appliquer les portraits", callback: applyPortraits },
       cancel: { icon: '<i class="fa-solid fa-xmark"></i>', label: "Annuler" }
     },

@@ -91,6 +91,88 @@ function action(host, name) {
   return callback;
 }
 
+test("explicit monster creation adds a rollable antagonist with circular linked token without touching PCs", async () => {
+  const host = await setup();
+  await action(host, "create")();
+  const pcs = snapshot(host.actors);
+  await action(host, "monster")();
+  const monster = host.actors.find(a => a.getFlag(SYSTEM_ID, "lesJoursHeureuxId") === "patiente");
+  assert.ok(monster, "La Patiente must be an actor, not merely an image link");
+  assert.equal(snapshot(host.actors.slice(0, 4)), pcs);
+  assert.equal(host.actors.length, 5);
+  assert.equal(monster.type, "victime");
+  assert.equal(monster.name, "La Patiente");
+  assert.equal(monster.system.isAntagonist, true);
+  assert.deepEqual(monster.system.resources, {body:{value:12,max:12},spirit:{value:12,max:12},adrenaline:{value:0,max:3}});
+  assert.equal(monster.prototypeToken.actorLink, true);
+  assert.ok(monster.img.endsWith('/creatures/patiente.webp'));
+  assert.ok(monster.prototypeToken.texture.src.endsWith('/creatures/patiente-token.webp'));
+  assert.equal(monster.prototypeToken.disposition, -1);
+  assert.equal(monster.prototypeToken.displayName, 0);
+  assert.deepEqual(monster.ownership, {default:0});
+  const folder = host.folders.find(f => f.id === monster.folder);
+  assert.equal(folder.name, '2. Antagonistes');
+  assert.equal(folder.folder, host.folders.find(f => f.name === 'Les jours heureux').id);
+  monster.system.resources.body.value = 7;
+  monster.system.gmNotes = 'Notes MJ en cours';
+  const retained = snapshot(host.actors);
+  await action(host, "monster")();
+  assert.equal(snapshot(host.actors), retained);
+});
+
+test("monster creation is GM-only, serialized and can retry a failed write", async () => {
+  const actors = [], folders = [], users = {activeGM:{id:'gm-primary'}};
+  const host = await setup({actors,folders,users});
+  const other = await setup({actors,folders,users,userId:'gm-secondary'});
+  const create = action(host, 'monster');
+  const denied = action(other, 'monster');
+  await denied();
+  assert.equal(actors.length, 0);
+  host.game.user.isGM = false;
+  await create();
+  assert.equal(folders.length, 0);
+  host.game.user.isGM = true;
+  const original = host.Actor.createDocuments;
+  host.Actor.createDocuments = async () => {throw new Error('storage unavailable')};
+  await create();
+  assert.equal(host.notifications.at(-1).level, 'error');
+  host.Actor.createDocuments = original;
+  await Promise.all([create(),create(),denied()]);
+  assert.equal(actors.length, 1);
+  assert.equal(folders.length, 3);
+  const kept = snapshot(actors);
+  await action(host, 'portraits')();
+  assert.equal(snapshot(actors), kept, 'PC portrait action must not replace the circular monster token');
+});
+
+test("created monster executes the real sheet Corps, Esprit and attack handlers", async () => {
+  const host = await setup();
+  await action(host, 'monster')();
+  const actor = host.actors[0];
+  const messages = [], formulas = [];
+  class Roll {
+    constructor(formula) {this.formula = formula; formulas.push(formula);}
+    async evaluate() {this.total = this.formula === '1d20' ? 6 : 3; return this;}
+    async toMessage(data) {messages.push(data);}
+  }
+  const source = await readFile(new URL('../module/actor-sheet.mjs', import.meta.url), 'utf8');
+  const method = source.slice(source.indexOf('  async _onRoll(event)'), source.lastIndexOf('\n}'));
+  const sheet = runInNewContext(`({${method}})`, {Roll,ChatMessage:{getSpeaker:({actor})=>({actor:actor.id}),create:async data=>messages.push(data)},CONFIG:{sounds:{dice:'dice'}}});
+  sheet.actor = actor;
+  for (const [roll,ability] of [['test','body'],['test','spirit'],['attack','body']]) {
+    await sheet._onRoll({preventDefault(){},currentTarget:{dataset:{roll,ability}}});
+  }
+  assert.deepEqual(formulas, ['1d20','1d20','1d20','1d6']);
+  assert.equal(messages.length, 3);
+  for (const message of messages) {
+    assert.equal(message.speaker.actor, actor.id);
+    assert.match(message.flavor, /La Patiente/);
+    assert.match(message.flavor, /6 sous 12/);
+    assert.match(message.flavor, /réussite/);
+  }
+  assert.match(messages[2].flavor, /3 Blessures/);
+});
+
 const expectedCharacters = [
   ["rene", "René Vautrin", "René Marchand", 7, 5, "représentant en aspirateurs", "Vous remarquez immédiatement lorsqu’on évite de répondre à une question.", "cigarette écrasée"],
   ["madeleine", "Madeleine Aubry", "Madeleine Perrin", 5, 7, "photographe de mariages", "Vous regardez spontanément les visages, les fenêtres et les reflets.", "viseur d’un appareil"],
